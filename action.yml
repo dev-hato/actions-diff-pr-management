@@ -18,13 +18,13 @@ runs:
           git config user.email "hatohakaraage@example.com"
           git add -u
           git commit -m "鳩は唐揚げ！(自動で直してあげたよ！)"
-          git push -f https://${{github.actor}}:${{inputs.GITHUB_TOKEN}}@github.com/${{github.repository}}.git HEAD:refs/heads/fix-text-${{github.event.pull_request.head.ref}}
+          git push -f https://${{github.actor}}:${{inputs.github-token}}@github.com/${{github.repository}}.git HEAD:refs/heads/fix-text-${{github.event.pull_request.head.ref}}
         shell: bash
       # pushしたブランチでPRを作る
       - name: Create PullRequest
         uses: actions/github-script@v3
         with:
-          github-token: ${{inputs.GITHUB_TOKEN}}
+          github-token: ${{inputs.github-token}}
           script: |
             const common_params = {
               owner: context.repo.owner,
@@ -68,7 +68,7 @@ runs:
       - name: Close PullRequest
         uses: actions/github-script@v3
         with:
-          github-token: ${{inputs.GITHUB_TOKEN}}
+          github-token: ${{inputs.github-token}}
           script: |
             const head_name = "fix-text-${{github.event.pull_request.head.ref}}"
             const common_params = {
