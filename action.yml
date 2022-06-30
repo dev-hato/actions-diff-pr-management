@@ -40,7 +40,7 @@ runs:
         if: env.REPO_NAME == github.repository
         id: set_org_name
         with:
-          github-token: ${{input.github-token}}
+          github-token: ${{inputs.github-token}}
           result-encoding: string
           script: return process.env.GITHUB_REPOSITORY.split('/')[0]
       - name: Get PullRequests
