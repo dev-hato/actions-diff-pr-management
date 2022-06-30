@@ -19,7 +19,6 @@ runs:
           git add -u
           git commit -m "鳩は唐揚げ！(自動で直してあげたよ！)"
           git push -f https://${{github.actor}}:${{inputs.GITHUB_TOKEN}}@github.com/${{github.repository}}.git HEAD:refs/heads/fix-text-${{github.event.pull_request.head.ref}}
-        shell: bash
       # pushしたブランチでPRを作る
       - name: Create PullRequest
         uses: actions/github-script@v3
@@ -64,7 +63,6 @@ runs:
                 })
               }
             })
-        shell: bash
       # 既にformat修正のPRがある状態で、手動でformatを修正した場合、format修正のPRを閉じる
       - name: Close PullRequest
         uses: actions/github-script@v3
@@ -104,7 +102,5 @@ runs:
                 })
               }
             })
-        shell: bash
       - name: Exit
         run: exit 1
-        shell: bash
