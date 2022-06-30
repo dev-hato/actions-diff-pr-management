@@ -35,6 +35,14 @@ runs:
           GITHUB_HEAD="HEAD:refs/heads/fix-text-${HEAD_REF}"
           git push -f "${REPO_URL}" "${GITHUB_HEAD}"
         shell: bash
+      - name: Set org name
+        uses: actions/github-script@v6.1.0
+        if: env.REPO_NAME == github.repository
+        id: set_org_name
+        with:
+          github-token: ${{input.github-token}}
+          result-encoding: string
+          script: return process.env.GITHUB_REPOSITORY.split('/')[0]
       - name: Get PullRequests
         uses: actions/github-script@v6.1.0
         env:
