@@ -4,6 +4,12 @@ inputs:
   github-token: # id of input
     description: 'GITHUB_TOKEN'
     required: true
+  branch-name-prefix:
+    description: 'Prefix of PR branch name'
+    required: true
+  pr-title-prefix:
+    description: 'Prefix of PR title'
+    required: true
 runs:
   using: "composite"
   steps:
@@ -32,7 +38,7 @@ runs:
         REPO_URL="https://"
         REPO_URL+="${{github.actor}}:${{inputs.github-token}}@github.com/"
         REPO_URL+="${{github.repository}}.git"
-        GITHUB_HEAD="HEAD:refs/heads/fix-text-${HEAD_REF}"
+        GITHUB_HEAD="HEAD:refs/heads/${{inputs.branch-name-prefix}}-${HEAD_REF}"
         git push -f "${REPO_URL}" "${GITHUB_HEAD}"
       shell: bash
     - name: Set org name
@@ -56,7 +62,7 @@ runs:
           const pulls_list_params = {
             owner: context.repo.owner,
             repo: context.repo.repo,
-            head: "${{steps.set_org_name.outputs.result}}:fix-text-" + HEAD_REF,
+            head: "${{steps.set_org_name.outputs.result}}:${{inputs.branch-name-prefix}}-" + HEAD_REF,
             base: HEAD_REF,
             state: "open"
           }
@@ -78,12 +84,12 @@ runs:
         script: |
           const HEAD_REF = process.env["HEAD_REF"]
           const number = "#${{github.event.pull_request.number}}"
-          let title = "日本語が間違ってたので直してあげたよ！PRをマージしてね！ "
+          let title = "${{inputs.pr-title-prefix}}PRをマージしてね！ "
           title += number
           const pulls_create_params = {
             owner: context.repo.owner,
             repo: context.repo.repo,
-            head: "${{steps.set_org_name.outputs.result}}:fix-text-" + HEAD_REF,
+            head: "${{steps.set_org_name.outputs.result}}:${{inputs.branch-name-prefix}}-" + HEAD_REF,
             base: HEAD_REF,
             title,
             body: "鳩の唐揚げおいしい！😋😋😋 " + number
@@ -122,7 +128,7 @@ runs:
         github-token: ${{inputs.github-token}}
         script: |
           const HEAD_REF = process.env["HEAD_REF"]
-          const head_name = "fix-text-" + HEAD_REF
+          const head_name = "${{inputs.branch-name-prefix}}-" + HEAD_REF
           const common_params = {
             owner: context.repo.owner,
             repo: context.repo.repo
