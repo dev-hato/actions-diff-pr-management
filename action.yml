@@ -10,6 +10,9 @@ inputs:
   pr-title-prefix:
     description: 'Prefix of PR title'
     required: true
+  repo_name:
+    description: 'Repository name'
+    required: true
 runs:
   using: "composite"
   steps:
@@ -20,16 +23,11 @@ runs:
       run: |
         result=$(git diff)
         echo "::set-output name=result::$result"
-    - shell: bash
-      if: github.event_name == 'pull_request' || github.event_name == 'schedule'
-      run: |
-        REPO_NAME="${{ github.event.pull_request.head.repo.full_name }}"
-        echo "REPO_NAME=${REPO_NAME}" >> "${GITHUB_ENV}"
     # 差分があったときは、コミットを作りpushする
     - name: Push
       env:
         HEAD_REF: ${{github.event.pull_request.head.ref}}
-      if: env.REPO_NAME == github.repository
+      if: inputs.repo_name == github.repository
         && steps.diff.outputs.result != ''
         && (github.event_name == 'pull_request' || github.event_name == 'schedule')
       run: |
@@ -41,12 +39,17 @@ runs:
         REPO_URL="https://"
         REPO_URL+="${{github.actor}}:${{inputs.github-token}}@github.com/"
         REPO_URL+="${{github.repository}}.git"
-        GITHUB_HEAD="HEAD:refs/heads/${{inputs.branch-name-prefix}}-${HEAD_REF}"
+        GITHUB_HEAD="HEAD:refs/heads/${{inputs.branch-name-prefix}}"
+
+        if [ "${HEAD_REF}" != "" ]; then
+          GITHUB_HEAD+="-${HEAD_REF}"
+        fi
+
         git push -f "${REPO_URL}" "${GITHUB_HEAD}"
       shell: bash
     - name: Set org name
       uses: actions/github-script@v6.1.0
-      if: env.REPO_NAME == github.repository && (github.event_name == 'pull_request' || github.event_name == 'schedule')
+      if: inputs.repo_name == github.repository && (github.event_name == 'pull_request' || github.event_name == 'schedule')
       id: set_org_name
       with:
         github-token: ${{inputs.github-token}}
@@ -56,7 +59,7 @@ runs:
       uses: actions/github-script@v6.1.0
       env:
         HEAD_REF: ${{github.event.pull_request.head.ref}}
-      if: env.REPO_NAME == github.repository
+      if: inputs.repo_name == github.repository
         && steps.diff.outputs.result != ''
         && (github.event_name == 'pull_request' || github.event_name == 'schedule')
       id: get_pull_requests
@@ -64,10 +67,16 @@ runs:
         github-token: ${{inputs.github-token}}
         script: |
           const HEAD_REF = process.env["HEAD_REF"]
+          let head = "${{steps.set_org_name.outputs.result}}:${{inputs.branch-name-prefix}}"
+
+          if (HEAD_REF != "") {
+            head += "-${HEAD_REF}"
+          }
+
           const pulls_list_params = {
             owner: context.repo.owner,
             repo: context.repo.repo,
-            head: "${{steps.set_org_name.outputs.result}}:${{inputs.branch-name-prefix}}-" + HEAD_REF,
+            head,
             base: HEAD_REF,
             state: "open"
           }
@@ -80,7 +89,7 @@ runs:
       uses: actions/github-script@v6.1.0
       env:
         HEAD_REF: ${{github.event.pull_request.head.ref}}
-      if: env.REPO_NAME == github.repository
+      if: inputs.repo_name == github.repository
         && steps.diff.outputs.result != ''
         && steps.get_pull_requests.outputs.result == 0
         && (github.event_name == 'pull_request' || github.event_name == 'schedule')
@@ -89,16 +98,27 @@ runs:
         github-token: ${{inputs.github-token}}
         script: |
           const HEAD_REF = process.env["HEAD_REF"]
-          const number = "#${{github.event.pull_request.number}}"
-          let title = "${{inputs.pr-title-prefix}}PRをマージしてね！ "
-          title += number
+          let title = "${{inputs.pr-title-prefix}}PRをマージしてね！"
+          let body = "鳩の唐揚げおいしい！😋😋😋"
+
+          if ("${{github.event.pull_request.number}}" != "") {
+            body += " #${{github.event.pull_request.number}}"
+            title += " #${{github.event.pull_request.number}}"
+          }
+
+          let head = "${{steps.set_org_name.outputs.result}}:${{inputs.branch-name-prefix}}"
+
+          if (HEAD_REF != "") {
+            head += "-${HEAD_REF}"
+          }
+
           const pulls_create_params = {
             owner: context.repo.owner,
             repo: context.repo.repo,
-            head: "${{steps.set_org_name.outputs.result}}:${{inputs.branch-name-prefix}}-" + HEAD_REF,
+            head,
             base: HEAD_REF,
             title,
-            body: "鳩の唐揚げおいしい！😋😋😋 " + number
+            body
           }
           console.log("call pulls.create:", pulls_create_params)
           const create_pull_res = await github.rest.pulls.create(
@@ -107,12 +127,12 @@ runs:
           return create_pull_res.data.number
     - name: Assign a user
       uses: actions/github-script@v6.1.0
-      if: env.REPO_NAME == github.repository
+      if: inputs.repo_name == github.repository
         && steps.diff.outputs.result != ''
         && steps.get_pull_requests.outputs.result == 0
+        && github.event_name == 'pull_request'
         && github.event.pull_request.user.login != 'dependabot[bot]'
         && github.event.pull_request.user.login != 'renovate[bot]'
-        && github.event_name == 'pull_request'
       with:
         github-token: ${{inputs.github-token}}
         script: |
@@ -130,14 +150,19 @@ runs:
       uses: actions/github-script@v6.1.0
       env:
         HEAD_REF: ${{github.event.pull_request.head.ref}}
-      if: env.REPO_NAME == github.repository
+      if: inputs.repo_name == github.repository
         && steps.diff.outputs.result == ''
         && (github.event_name == 'pull_request' || github.event_name == 'schedule')
       with:
         github-token: ${{inputs.github-token}}
         script: |
           const HEAD_REF = process.env["HEAD_REF"]
-          const head_name = "${{inputs.branch-name-prefix}}-" + HEAD_REF
+          let head_name = "${{inputs.branch-name-prefix}}"
+
+          if (HEAD_REF != "") {
+            head_name += "-${HEAD_REF}"
+          }
+
           const common_params = {
             owner: context.repo.owner,
             repo: context.repo.repo
