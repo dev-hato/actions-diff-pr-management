@@ -19,6 +19,7 @@ runs:
           git add -u
           git commit -m "鳩は唐揚げ！(自動で直してあげたよ！)"
           git push -f https://${{github.actor}}:${{inputs.GITHUB_TOKEN}}@github.com/${{github.repository}}.git HEAD:refs/heads/fix-text-${{github.event.pull_request.head.ref}}
+        shell: bash
       # pushしたブランチでPRを作る
       - name: Create PullRequest
         uses: actions/github-script@v3
@@ -104,3 +105,4 @@ runs:
             })
       - name: Exit
         run: exit 1
+        shell: bash
