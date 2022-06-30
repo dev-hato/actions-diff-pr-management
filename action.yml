@@ -4,105 +4,147 @@ inputs:
   github-token:  # id of input
     description: 'GITHUB_TOKEN'
     required: true
-outputs:
-  random-number:
-    description: "Random number"
-    value: ${{ steps.random-number-generator.outputs.random-id }}
 runs:
   using: "composite"
   steps:
+      # 差分があったときは差分を出力する
+      - name: Show diff
+        id: diff
+        shell: bash
+        run: |
+          result=$(git diff)
+          echo "::set-output name=result::$result"
+      - shell: bash
+        run: |
+          REPO_NAME="${{ github.event.pull_request.head.repo.full_name }}"
+          echo "REPO_NAME=${REPO_NAME}" >> "${GITHUB_ENV}"
       # 差分があったときは、コミットを作りpushする
       - name: Push
+        env:
+          HEAD_REF: ${{github.event.pull_request.head.ref}}
+        if: env.REPO_NAME == github.repository && steps.diff.outputs.result != ''
         run: |
-          git config user.name "hatohakaraage"
-          git config user.email "hatohakaraage@example.com"
+          git config user.name "github-actions[bot]"
+          EMAIL="41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.email "${EMAIL}"
           git add -u
           git commit -m "鳩は唐揚げ！(自動で直してあげたよ！)"
-          git push -f https://${{github.actor}}:${{inputs.github-token}}@github.com/${{github.repository}}.git HEAD:refs/heads/fix-text-${{github.event.pull_request.head.ref}}
+          REPO_URL="https://"
+          REPO_URL+="${{github.actor}}:${{inputs.github-token}}@github.com/"
+          REPO_URL+="${{github.repository}}.git"
+          GITHUB_HEAD="HEAD:refs/heads/fix-text-${HEAD_REF}"
+          git push -f "${REPO_URL}" "${GITHUB_HEAD}"
         shell: bash
+      - name: Get PullRequests
+        uses: actions/github-script@v6.1.0
+        env:
+          HEAD_REF: ${{github.event.pull_request.head.ref}}
+        if: env.REPO_NAME == github.repository && steps.diff.outputs.result != ''
+        id: get_pull_requests
+        with:
+          github-token: ${{inputs.github-token}}
+          script: |
+            const HEAD_REF = process.env["HEAD_REF"]
+            const pulls_list_params = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head: "${{steps.set_org_name.outputs.result}}:fix-text-" + HEAD_REF,
+              base: HEAD_REF,
+              state: "open"
+            }
+            console.log("call pulls.list:", pulls_list_params)
+            const pulls = await github.paginate(github.rest.pulls.list,
+                                                pulls_list_params)
+            return pulls.length
       # pushしたブランチでPRを作る
       - name: Create PullRequest
-        uses: actions/github-script@v3
+        uses: actions/github-script@v6.1.0
+        env:
+          HEAD_REF: ${{github.event.pull_request.head.ref}}
+        if: env.REPO_NAME == github.repository
+          && steps.diff.outputs.result != ''
+          && steps.get_pull_requests.outputs.result == 0
+        id: create_pull_request
         with:
           github-token: ${{inputs.github-token}}
           script: |
-            const common_params = {
+            const HEAD_REF = process.env["HEAD_REF"]
+            const number = "#${{github.event.pull_request.number}}"
+            let title = "日本語が間違ってたので直してあげたよ！PRをマージしてね！ "
+            title += number
+            const pulls_create_params = {
               owner: context.repo.owner,
-              repo: context.repo.repo
+              repo: context.repo.repo,
+              head: "${{steps.set_org_name.outputs.result}}:fix-version-pre-commit-config-" + HEAD_REF,
+              base: HEAD_REF,
+              title,
+              body: "鳩の唐揚げおいしい！😋😋😋 " + number
             }
-            const pull_params = {
-              head: "dev-hato:fix-text-${{github.event.pull_request.head.ref}}",
-              base: "${{github.event.pull_request.head.ref}}",
-              ...common_params
+            console.log("call pulls.create:", pulls_create_params)
+            const create_pull_res = await github.rest.pulls.create(
+                                      pulls_create_params
+                                    )
+            return create_pull_res.data.number
+      - name: Assign a user
+        uses: actions/github-script@v6.1.0
+        if: env.REPO_NAME == github.repository
+          && steps.diff.outputs.result != ''
+          && steps.get_pull_requests.outputs.result == 0
+          && github.event.pull_request.user.login != 'dependabot[bot]'
+          && github.event.pull_request.user.login != 'renovate[bot]'
+        with:
+          github-token: ${{inputs.github-token}}
+          script: |
+            const issues_add_assignees_params = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{steps.create_pull_request.outputs.result}},
+              assignees: ["${{github.event.pull_request.user.login}}"]
             }
-            const pulls_list_params = {
-              state: "open",
-              ...pull_params
-            }
-            console.log("call pulls.list:")
-            console.log(pulls_list_params)
-            github.pulls.list(pulls_list_params).then(list_res => {
-              if (list_res.data.length === 0) {
-                const pulls_create_params = {
-                  title: "日本語が間違ってたので直してあげたよ！PRをマージしてね！ #${{github.event.pull_request.number}}",
-                  body: "鳩の唐揚げおいしい！😋😋😋 #${{github.event.pull_request.number}}",
-                  ...pull_params
-                }
-                console.log("call pulls.create:")
-                console.log(pulls_create_params)
-                github.pulls.create(pulls_create_params).then(create_res => {
-                  if("${{github.event.pull_request.user.login}}" !== "dependabot[bot]") {
-                    const issues_add_assignees_params = {
-                      issue_number: create_res.data.number,
-                      assignees: ["${{github.event.pull_request.user.login}}"],
-                      ...common_params
-                    }
-                    console.log("call issues.addAssignees:")
-                    console.log(issues_add_assignees_params)
-                    github.issues.addAssignees(issues_add_assignees_params)
-                  }
-                })
-              }
-            })
+            console.log("call issues.addAssignees:")
+            console.log(issues_add_assignees_params)
+            await github.rest.issues.addAssignees(issues_add_assignees_params)
       # 既にformat修正のPRがある状態で、手動でformatを修正した場合、format修正のPRを閉じる
       - name: Close PullRequest
-        uses: actions/github-script@v3
+        uses: actions/github-script@v6.1.0
+        env:
+          HEAD_REF: ${{github.event.pull_request.head.ref}}
+        if: env.REPO_NAME == github.repository && steps.diff.outputs.result == ''
         with:
           github-token: ${{inputs.github-token}}
           script: |
-            const head_name = "fix-text-${{github.event.pull_request.head.ref}}"
+            const HEAD_REF = process.env["HEAD_REF"]
+            const head_name = "fix-text-" + HEAD_REF
             const common_params = {
               owner: context.repo.owner,
               repo: context.repo.repo
             }
             const pulls_list_params = {
-              head: "dev-hato:" + head_name,
-              base: "${{github.event.pull_request.head.ref}}",
+              head: "${{steps.set_org_name.outputs.result}}:" + head_name,
+              base: HEAD_REF,
               state: "open",
               ...common_params
             }
-            console.log("call pulls.list:")
-            console.log(pulls_list_params)
-            github.pulls.list(pulls_list_params).then(res => {
-              for(const data of res.data){
-                const pulls_update_params = {
-                  pull_number: data.number,
-                  state: "closed",
-                  ...common_params
-                }
-                console.log("call pulls.update:")
-                console.log(pulls_update_params)
-                github.pulls.update(pulls_update_params).then(res2 => {
-                  const git_deleteRef_params = {
-                    ref: "heads/" + head_name,
-                    ...common_params
-                  }
-                  console.log("call git.deleteRef:")
-                  console.log(git_deleteRef_params)
-                  github.git.deleteRef(git_deleteRef_params)
-                })
+            console.log("call pulls.list:", pulls_list_params)
+            const pulls = await github.paginate(github.rest.pulls.list,
+                                                pulls_list_params)
+            
+            for (const pull of pulls) {
+              const pulls_update_params = {
+                pull_number: pull.number,
+                state: "closed",
+                ...common_params
               }
-            })
+              console.log("call pulls.update:", pulls_update_params)
+              await github.rest.pulls.update(pulls_update_params)
+              const git_deleteRef_params = {
+                ref: "heads/" + head_name,
+                ...common_params
+              }
+              console.log("call git.deleteRef:", git_deleteRef_params)
+              await github.rest.git.deleteRef(git_deleteRef_params)
+            }
       - name: Exit
+        if: steps.diff.outputs.result != ''
         run: exit 1
         shell: bash
