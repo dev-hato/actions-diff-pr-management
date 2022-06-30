@@ -83,7 +83,7 @@ runs:
             const pulls_create_params = {
               owner: context.repo.owner,
               repo: context.repo.repo,
-              head: "${{steps.set_org_name.outputs.result}}:fix-version-pre-commit-config-" + HEAD_REF,
+              head: "${{steps.set_org_name.outputs.result}}:fix-text-" + HEAD_REF,
               base: HEAD_REF,
               title,
               body: "鳩の唐揚げおいしい！😋😋😋 " + number
