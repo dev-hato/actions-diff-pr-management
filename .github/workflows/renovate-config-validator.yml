@@ -1,0 +1,20 @@
+---
+name: renovate-config-validator
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  renovate-config-validator:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3.0.2
+      - uses: actions/setup-node@v3.3.0
+        with:
+          cache: npm
+      - run: npm ci --prefer-offline
+      - run: npx renovate-config-validator
