@@ -160,7 +160,7 @@ runs:
           let head_name = "${{inputs.branch-name-prefix}}"
 
           if (HEAD_REF != "") {
-            head_name += "-" + HEAD_REF"
+            head_name += "-" + HEAD_REF
           }
 
           const common_params = {
