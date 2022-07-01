@@ -64,13 +64,7 @@ jobs:
                 console.error(err.message)
                 process.exit(1)
             }
-      - run: echo "HEAD_REF=${HEAD_REF}" >> "$GITHUB_ENV"
-        env:
-          HEAD_REF: ${{github.head_ref}}
-        if: github.event_name == 'pull_request'
-      - run: echo 'HEAD_REF=latest' >> "$GITHUB_ENV"
-        if: github.event_name == 'push'
-      - uses: dev-hato/actions-diff-pr-management@${{env.HEAD_REF}}
+      - uses: ./action.yml
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-version-pre-commit-config
