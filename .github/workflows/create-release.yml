@@ -1,0 +1,62 @@
+---
+name: create-release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.0.2
+      - name: Get latest release version
+        id: get_latest_release_version
+        uses: actions/github-script@v6.1.0
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          result-encoding: string
+          script: |
+            try {
+              return (await github.rest.repos.getLatestRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo
+              })).data.tag_name;
+            } catch (e) {
+              if (e.status === 404) {
+                return 'v0.0.0';
+              }
+
+              throw e;
+            }
+      - run: echo "MAJOR_VERSION=$(cat .version)" >> "${GITHUB_ENV}"
+      - name: Increment version
+        id: increment_version
+        uses: actions/github-script@v6.1.0
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          result-encoding: string
+          script: |
+            const majorVersion = process.env['MAJOR_VERSION'];
+            let version = [];
+
+            if ('${{ steps.get_latest_release_version.outputs.result }}'.startsWith(majorVersion)) {
+              const tagNames = '${{ steps.get_latest_release_version.outputs.result }}'.split('.');
+              version = [tagNames[0], tagNames[1], Number(tagNames[2]) + 1];
+            } else {
+              version = [majorVersion, 0];
+            }
+
+            return version.join('.');
+      - name: Create release
+        uses: actions/github-script@v6.1.0
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: '${{ steps.increment_version.outputs.result }}',
+              generate_release_notes: true
+            });
