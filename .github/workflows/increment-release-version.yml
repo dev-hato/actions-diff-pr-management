@@ -47,7 +47,8 @@ jobs:
             const tagNames = '${{ steps.get_latest_release_version.outputs.result }}'.split('.');
             return [tagNames[0], tagNames[1], Number(tagNames[2]) + 1].join('.');
       - if: startsWith(steps.get_latest_release_version.outputs.result, env.CURRENT_MAJOR_VERSION)
-        run: sed -i -e "s/tag_name:.*'v[0-9.]*'/tag_name:.*'${{ steps.increment_version.outputs.result }}'/g" .github/workflows/create-release.yml
+        run: |
+          sed -i -e "s/tag_name: 'v[0-9.]*'/tag_name: '${{ steps.increment_version.outputs.result }}'/g" .github/workflows/create-release.yml
       - uses: ./
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
