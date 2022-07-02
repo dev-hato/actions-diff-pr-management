@@ -4,6 +4,10 @@ name: increment-release-version
 on:
   pull_request:
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   increment-release-version:
     runs-on: ubuntu-latest
