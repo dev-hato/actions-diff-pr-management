@@ -12,7 +12,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - run: echo "CURRENT_MAJOR_VERSION=$(grep tag_name .github/workflows/create-release.yml | sed -e 's/.*\(v[0-9]*\.[0-9]*\)\..*/\1/g')" >> "${GITHUB_ENV}"
+      - run: echo "CURRENT_MAJOR_VERSION=$(sed -e 's/.*\(v[0-9]*\.[0-9]*\)\..*/\1/g' .version)" >> "${GITHUB_ENV}"
       - name: Get latest release version
         id: get_latest_release_version
         uses: actions/github-script@v6.1.0
@@ -43,8 +43,7 @@ jobs:
             const tagNames = '${{ steps.get_latest_release_version.outputs.result }}'.split('.');
             return [tagNames[0], tagNames[1], Number(tagNames[2]) + 1].join('.');
       - if: startsWith(steps.get_latest_release_version.outputs.result, env.CURRENT_MAJOR_VERSION)
-        run: |
-          sed -i -e "s/tag_name: 'v[0-9.]*'/tag_name: '${{ steps.increment_version.outputs.result }}'/g" .github/workflows/create-release.yml
+        run: echo ${{ steps.increment_version.outputs.result }} > .version
       - uses: ./
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}

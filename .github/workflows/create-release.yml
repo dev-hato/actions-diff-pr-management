@@ -10,6 +10,7 @@ jobs:
   create-release:
     runs-on: ubuntu-latest
     steps:
+      - run: echo "TAG_NAME=$(cat .version)" >> "${GITHUB_ENV}"
       - name: Create release
         uses: actions/github-script@v6.1.0
         with:
@@ -18,6 +19,6 @@ jobs:
             await github.rest.repos.createRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              tag_name: 'v0.0.3',
+              tag_name: env.TAG_NAME,
               generate_release_notes: true
             });
