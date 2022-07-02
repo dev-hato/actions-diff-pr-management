@@ -24,10 +24,18 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           result-encoding: string
           script: |
-            (await github.rest.repos.getLatestRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo
-            })).data.tag_name;
+            try {
+              return (await github.rest.repos.getLatestRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo
+              })).data.tag_name;
+            } catch (e) {
+              if (e instanceOf HttpError && e.status === 404) {
+                return 'v0.0.0'
+              }
+
+              throw e;
+            }
       - name: Increment version
         id: increment_version
         if: startsWith(steps.get_latest_release_version.outputs.result, env.CURRENT_MAJOR_VERSION)
