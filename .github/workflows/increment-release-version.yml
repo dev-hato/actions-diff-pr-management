@@ -30,8 +30,8 @@ jobs:
                 repo: context.repo.repo
               })).data.tag_name;
             } catch (e) {
-              if (e instanceOf HttpError && e.status === 404) {
-                return 'v0.0.0'
+              if (e instanceof HttpError && e.status === 404) {
+                return 'v0.0.0';
               }
 
               throw e;
