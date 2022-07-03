@@ -1,4 +1,5 @@
 name: 'diff-pr-management'
+author: 'dev-hato Development Team'
 description: '差分があればPRを作り、差分がなければPRを閉じます'
 inputs:
   github-token: # id of input
