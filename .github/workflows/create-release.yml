@@ -49,6 +49,7 @@ jobs:
               listPullRequestsAssociatedWithCommitParams
             );
             const labels = pulls.flatMap(p => p.labels.map(l => l.name));
+            console.log(labels);
             const tagNames = latestReleaseVersion.split('.');
             let version = [];
 
