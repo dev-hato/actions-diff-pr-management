@@ -41,7 +41,7 @@ jobs:
             const listPullRequestsAssociatedWithCommitParams = {
               owner: context.repo.owner,
               repo: context.repo.repo,
-              commit_sha: '${{github.sha}}',
+              commit_sha: '${{ github.event.pull_request.head.sha }}',
             };
             console.log("call repos.listPullRequestsAssociatedWithCommit:", listPullRequestsAssociatedWithCommitParams);
             const pulls = await github.paginate(
