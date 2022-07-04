@@ -54,7 +54,7 @@ jobs:
             let version = [];
 
             if (labels.includes('major release')) {
-              version = [Number(tagNames[0]) + 1, 0, 0];
+              version = [`v${Number(tagNames[0].replace('v', '')) + 1}`, 0, 0];
             } else if (labels.includes('minor release')) {
               version = [tagNames[0], Number(tagNames[1]) + 1, 0];
             } else {
