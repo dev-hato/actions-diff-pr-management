@@ -2,7 +2,6 @@
 name: create-release
 
 on:
-  pull_request:
   push:
     branches:
       - main
@@ -41,7 +40,7 @@ jobs:
             const listPullRequestsAssociatedWithCommitParams = {
               owner: context.repo.owner,
               repo: context.repo.repo,
-              commit_sha: '${{ github.event.pull_request.head.sha }}',
+              commit_sha: '${{ github.sha }}',
             };
             console.log("call repos.listPullRequestsAssociatedWithCommit:", listPullRequestsAssociatedWithCommitParams);
             const pulls = await github.paginate(
@@ -49,7 +48,6 @@ jobs:
               listPullRequestsAssociatedWithCommitParams
             );
             const labels = pulls.flatMap(p => p.labels.map(l => l.name));
-            console.log(labels);
             const tagNames = latestReleaseVersion.split('.');
             let version = [];
 
@@ -74,4 +72,4 @@ jobs:
               generate_release_notes: true
             };
             console.log("call repos.createRelease:", createReleaseParams);
-            // await github.rest.repos.createRelease(createReleaseParams);
+            await github.rest.repos.createRelease(createReleaseParams);
