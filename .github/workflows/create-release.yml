@@ -14,12 +14,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Increment version
-       id: increment_version
-       uses: actions/github-script@v6.1.0
-       with:
-         github-token: ${{secrets.GITHUB_TOKEN}}
-         result-encoding: string
-         script: |
+        id: increment_version
+        uses: actions/github-script@v6.1.0
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          result-encoding: string
+          script: |
             let latestReleaseVersion = '';
 
             try {
