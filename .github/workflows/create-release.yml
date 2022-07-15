@@ -12,64 +12,6 @@ jobs:
   create-release:
     runs-on: ubuntu-latest
     steps:
-      - name: Increment version
-        id: increment_version
-        uses: actions/github-script@v6.1.0
+      - uses: dev-hato/actions-create-release@v0.0.1
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
-          result-encoding: string
-          script: |
-            let latestReleaseVersion = '';
-
-            try {
-              const getLatestReleaseParams = {
-                owner: context.repo.owner,
-                repo: context.repo.repo
-              };
-              console.log("call repos.getLatestRelease:", getLatestReleaseParams);
-              const latestRelease = await github.rest.repos.getLatestRelease(getLatestReleaseParams);
-              latestReleaseVersion = latestRelease.data.tag_name;
-            } catch (e) {
-              if (e.status === 404) {
-                latestReleaseVersion = 'v0.0.0';
-              } else {
-                throw e;
-              }
-            }
-
-            const listPullRequestsAssociatedWithCommitParams = {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              commit_sha: '${{ github.sha }}',
-            };
-            console.log("call repos.listPullRequestsAssociatedWithCommit:", listPullRequestsAssociatedWithCommitParams);
-            const pulls = await github.paginate(
-              github.rest.repos.listPullRequestsAssociatedWithCommit,
-              listPullRequestsAssociatedWithCommitParams
-            );
-            const labels = pulls.flatMap(p => p.labels.map(l => l.name));
-            const tagNames = latestReleaseVersion.split('.');
-            let version = [];
-
-            if (labels.includes('major release')) {
-              version = [`v${Number(tagNames[0].replace('v', '')) + 1}`, 0, 0];
-            } else if (labels.includes('minor release')) {
-              version = [tagNames[0], Number(tagNames[1]) + 1, 0];
-            } else {
-              version = [tagNames[0], tagNames[1], Number(tagNames[2]) + 1];
-            }
-
-            return version.join('.');
-      - name: Create release
-        uses: actions/github-script@v6.1.0
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            const createReleaseParams = {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              tag_name: '${{ steps.increment_version.outputs.result }}',
-              generate_release_notes: true
-            };
-            console.log("call repos.createRelease:", createReleaseParams);
-            await github.rest.repos.createRelease(createReleaseParams);
