@@ -21,7 +21,7 @@ jobs:
         with:
           cache: npm
       - run: npm ci --prefer-offline
-      - uses: dev-hato/actions-close-pr@v0.0.1
+      - uses: dev-hato/actions-close-pr@v0.0.2
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           repo-name: ${{ github.event.pull_request.head.repo.full_name }}
