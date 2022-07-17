@@ -6,6 +6,7 @@ on:
     branches:
       - main
     paths:
+      - .github/workflows/create-release.yml
       - action.yml
 
 jobs:
