@@ -106,7 +106,8 @@ runs:
           let body = "${{inputs.pr-description-prefix}}"
 
           if ("${{github.event.pull_request.number}}" != "") {
-            body += "本PRをマージすると差分が #${{github.event.pull_request.number}} に反映されます。"
+            body += "本PRをマージすると差分が次のPRに反映されます。\n"
+            body += "* #${{github.event.pull_request.number}}"
             title += " #${{github.event.pull_request.number}}"
           }
 
