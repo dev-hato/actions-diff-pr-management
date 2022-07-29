@@ -27,5 +27,6 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-package
-          pr-title-prefix: package.jsonやpackage-lock.jsonを直してあげたよ！
+          pr-title-prefix: package.json, package-lock.json修正
+          pr-description-prefix: package.jsonやpackage-lock.jsonを修正しました。
           repo-name: ${{ github.event.pull_request.head.repo.full_name }}
