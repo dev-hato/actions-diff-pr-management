@@ -7,7 +7,7 @@ PRのブランチに対して、フォーマッタによって修正された結
 ## 注意点
 
 元のPRを閉じた場合、本Actionsが立てたPRは残ります。  
-このような場合、https://github.com/dev-hato/actions-close-pr を併用することで自動的にPRを閉じることができます。
+このような場合、 <https://github.com/dev-hato/actions-close-pr> を併用することで自動的にPRを閉じることができます。
 
 ## 使い方
 
@@ -33,8 +33,8 @@ jobs:
 
 ## 例
 
-* 元のPR: https://github.com/dev-hato/actions-diff-pr-management/pull/96
-* 本Actionsによって作成されたPR: https://github.com/dev-hato/actions-diff-pr-management/pull/98
+* 元のPR: <https://github.com/dev-hato/actions-diff-pr-management/pull/96>
+* 本Actionsによって作成されたPR: <https://github.com/dev-hato/actions-diff-pr-management/pull/98>
 
 ## 引数
 
