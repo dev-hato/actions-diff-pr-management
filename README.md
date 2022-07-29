@@ -6,8 +6,8 @@ PRのブランチに対して、フォーマッタによって修正された結
 
 ## 注意点
 
-元のPRを閉じた場合、本Actionsが立てたPRは残ってしまいますが、 https://github.com/dev-hato/actions-close-pr を併用することでそのような場合でもPRを閉じます。
-
+元のPRを閉じた場合、本Actionsが立てたPRは残ります。  
+このような場合、https://github.com/dev-hato/actions-close-pr を併用することで自動的にPRを閉じることができます。
 
 ## 使い方
 
