@@ -32,6 +32,7 @@ jobs:
 ```
 
 ## 例
+
 * 元のPR: https://github.com/dev-hato/actions-diff-pr-management/pull/96
 * 本Actionsによって作成されたPR: https://github.com/dev-hato/actions-diff-pr-management/pull/98
 
@@ -49,5 +50,5 @@ jobs:
 
 ### 設定
 
-<https://pre-commit.com/> の手順に従って `pre-commit` をインストールする。  
-これにより、[.pre-commit-config.yaml](.pre-commit-config.yaml)の設定に基づいて、コミット時にクレデンシャルが含まれていないかの検査が行われるようになる。
+<https://pre-commit.com/> の手順に従って `pre-commit` をインストールします。  
+これにより、コミット時にクレデンシャルが含まれていないかの検査が行われるようになります。
