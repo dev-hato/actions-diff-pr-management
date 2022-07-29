@@ -8,8 +8,14 @@ inputs:
   branch-name-prefix:
     description: 'Prefix of PR branch name'
     required: true
+  commit-message:
+    description: 'Commit message'
+    required: true
   pr-title-prefix:
     description: 'Prefix of PR title'
+    required: true
+  pr-description-prefix:
+    description: 'Prefix of PR description'
     required: true
   repo-name:
     description: 'Repository name'
@@ -36,7 +42,7 @@ runs:
         EMAIL="41898282+github-actions[bot]@users.noreply.github.com"
         git config user.email "${EMAIL}"
         git add -u
-        git commit -m "鳩は唐揚げ！(自動で直してあげたよ！)"
+        git commit -m "${{inputs.commit-message}}"
         REPO_URL="https://"
         REPO_URL+="${{github.actor}}:${{inputs.github-token}}@github.com/"
         REPO_URL+="${{github.repository}}.git"
@@ -99,11 +105,11 @@ runs:
         github-token: ${{inputs.github-token}}
         script: |
           const HEAD_REF = process.env["HEAD_REF"]
-          let title = "${{inputs.pr-title-prefix}}PRをマージしてね！"
-          let body = "鳩の唐揚げおいしい！😋😋😋"
+          let title = "${{inputs.pr-title-prefix}}"
+          let body = "${{inputs.pr-description-prefix}}"
 
           if ("${{github.event.pull_request.number}}" != "") {
-            body += " #${{github.event.pull_request.number}}"
+            body += "本PRをマージすると差分が #${{github.event.pull_request.number}} に反映されます。"
             title += " #${{github.event.pull_request.number}}"
           }
 
