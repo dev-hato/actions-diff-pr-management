@@ -8,12 +8,15 @@ inputs:
   branch-name-prefix:
     description: 'Prefix of PR branch name'
     required: true
+    default: fix
   pr-title-prefix:
     description: 'Prefix of PR title'
     required: true
+    default: fix
   pr-description-prefix:
     description: 'Prefix of PR description'
     required: true
+    default: ""
   repo-name:
     description: 'Repository name'
     required: true
