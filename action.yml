@@ -8,9 +8,6 @@ inputs:
   branch-name-prefix:
     description: 'Prefix of PR branch name'
     required: true
-  commit-message:
-    description: 'Commit message'
-    required: true
   pr-title-prefix:
     description: 'Prefix of PR title'
     required: true
@@ -42,7 +39,7 @@ runs:
         EMAIL="41898282+github-actions[bot]@users.noreply.github.com"
         git config user.email "${EMAIL}"
         git add -u
-        git commit -m "${{inputs.commit-message}}"
+        git commit -m "${{inputs.pr-title-prefix}}"
         REPO_URL="https://"
         REPO_URL+="${{github.actor}}:${{inputs.github-token}}@github.com/"
         REPO_URL+="${{github.repository}}.git"
