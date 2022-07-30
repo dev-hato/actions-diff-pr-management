@@ -42,7 +42,7 @@ jobs:
             for (const input_name of Object.keys(inputs)) {
               let row = `| ${input_name} | ${inputs[input_name].description} | `
 
-              if (inputs[input_name].default === undefined && inputs[input_name].required === 'true') {
+              if (inputs[input_name].default === undefined && inputs[input_name].required) {
                 row += 'O'
               }
 
