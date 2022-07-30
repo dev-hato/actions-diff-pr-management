@@ -5,6 +5,9 @@ inputs:
   github-token: # id of input
     description: 'GitHubのトークン。'
     required: true
+  repo-name:
+    description: 'リポジトリ名。 `pull_request` 以外のトリガーも設定している場合はリポジトリ名を決め打ちで入力。'
+    required: true
   branch-name-prefix:
     description: 'branch名の接頭語。'
     required: true
@@ -17,9 +20,6 @@ inputs:
     description: '本文の接頭語。'
     required: true
     default: ""
-  repo-name:
-    description: 'リポジトリ名。 `pull_request` 以外のトリガーも設定している場合はリポジトリ名を決め打ちで入力。'
-    required: true
 runs:
   using: "composite"
   steps:
