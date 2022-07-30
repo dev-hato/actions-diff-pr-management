@@ -57,8 +57,7 @@ runs:
       shell: bash
     - name: Set org name
       uses: actions/github-script@v6.1.0
-      if: inputs.repo-name == github.repository
-        && (github.event_name == 'pull_request' || github.event_name == 'schedule')
+      if: inputs.repo-name == github.repository && (github.event_name == 'pull_request' || github.event_name == 'schedule')
       id: set_org_name
       with:
         github-token: ${{inputs.github-token}}
