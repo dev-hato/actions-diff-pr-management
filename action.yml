@@ -1,25 +1,25 @@
 name: 'diff-pr-management'
 author: 'dev-hato Development Team'
-description: '差分があればPRを作り、差分がなければPRを閉じます'
+description: 'PRのブランチに対して、フォーマッタを実行した結果をPRにするGitHub Actionsです。'
 inputs:
   github-token: # id of input
-    description: 'GITHUB_TOKEN'
+    description: 'GitHubのトークン。'
+    required: true
+  repo-name:
+    description: 'リポジトリ名。 `pull_request` 以外のトリガーも設定している場合はリポジトリ名を決め打ちで入力。'
     required: true
   branch-name-prefix:
-    description: 'Prefix of PR branch name'
+    description: 'branch名の接頭語。'
     required: true
     default: fix
   pr-title-prefix:
-    description: 'Prefix of PR title'
+    description: 'PRのタイトルの接頭語。'
     required: true
     default: fix
   pr-description-prefix:
-    description: 'Prefix of PR description'
+    description: '本文の接頭語。'
     required: true
     default: ""
-  repo-name:
-    description: 'Repository name'
-    required: true
 runs:
   using: "composite"
   steps:
