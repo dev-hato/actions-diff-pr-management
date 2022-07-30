@@ -38,13 +38,13 @@ jobs:
 
 ## 引数
 
-|          引数名          |                           説明                            | 必須  |
-|:---------------------:|:-------------------------------------------------------:|:---:|
-|     github-token      |                      GitHubのトークン。                       |  O  |
-|       repo-name       | リポジトリ名。 `pull_request` 以外のトリガーも設定している場合はリポジトリ名を決め打ちで入力。 |  O  |
-|  branch-name-prefix   |                      branch名の接頭語。                       |     |
-|    pr-title-prefix    |                      PRのタイトルの接頭語。                       |     |
-| pr-description-prefix |                         本文の接頭語。                         |     |
+| 引数名 | 説明 | 必須 |
+|:---:|:---:|:---:|
+| github-token | GitHubのトークン。 | O |
+| repo-name | リポジトリ名。 `pull_request` 以外のトリガーも設定している場合はリポジトリ名を決め打ちで入力。 | O |
+| branch-name-prefix | branch名の接頭語。 |  |
+| pr-title-prefix | PRのタイトルの接頭語。 |  |
+| pr-description-prefix | 本文の接頭語。 |  |
 
 ## 開発
 
