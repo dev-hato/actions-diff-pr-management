@@ -1,6 +1,6 @@
 # actions-diff-pr-management
 
-PRのブランチに対して、フォーマッタを実行した結果をPRにするGitHub Actionsです。
+${DESCRIPTION}
 
 本Actionsを使わずにフォーマットを修正した場合、自動的にPRを閉じます。
 
@@ -38,13 +38,7 @@ jobs:
 
 ## 引数
 
-| 引数名 | 説明 | 必須 |
-|:---:|:---:|:---:|
-| github-token | GitHubのトークン。 | O |
-| repo-name | リポジトリ名。 `pull_request` 以外のトリガーも設定している場合はリポジトリ名を決め打ちで入力。 | O |
-| branch-name-prefix | branch名の接頭語。 |  |
-| pr-title-prefix | PRのタイトルの接頭語。 |  |
-| pr-description-prefix | 本文の接頭語。 |  |
+${INPUTS}
 
 ## 開発
 
