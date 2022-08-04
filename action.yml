@@ -27,6 +27,7 @@ runs:
     - name: Show diff
       id: diff
       shell: bash
+      if: github.event_name != 'pull_request' || github.event.action != 'closed'
       run: |
         result=$(git diff)
         echo "::set-output name=result::$result"
@@ -36,7 +37,7 @@ runs:
         HEAD_REF: ${{github.event.pull_request.head.ref}}
       if: inputs.repo-name == github.repository
         && steps.diff.outputs.result != ''
-        && (github.event_name == 'pull_request' || github.event_name == 'schedule')
+        && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule')
       run: |
         git config user.name "github-actions[bot]"
         EMAIL="41898282+github-actions[bot]@users.noreply.github.com"
@@ -68,7 +69,7 @@ runs:
         HEAD_REF: ${{github.event.pull_request.head.ref}}
       if: inputs.repo-name == github.repository
         && steps.diff.outputs.result != ''
-        && (github.event_name == 'pull_request' || github.event_name == 'schedule')
+        && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule')
       id: get_pull_requests
       with:
         github-token: ${{inputs.github-token}}
@@ -99,7 +100,7 @@ runs:
       if: inputs.repo-name == github.repository
         && steps.diff.outputs.result != ''
         && steps.get_pull_requests.outputs.result == 0
-        && (github.event_name == 'pull_request' || github.event_name == 'schedule')
+        && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule')
       id: create_pull_request
       with:
         github-token: ${{inputs.github-token}}
@@ -139,6 +140,7 @@ runs:
         && steps.diff.outputs.result != ''
         && steps.get_pull_requests.outputs.result == 0
         && github.event_name == 'pull_request'
+        && github.event.action != 'closed'
         && github.event.pull_request.user.login != 'dependabot[bot]'
         && github.event.pull_request.user.login != 'renovate[bot]'
       with:
@@ -159,8 +161,8 @@ runs:
       env:
         HEAD_REF: ${{github.event.pull_request.head.ref}}
       if: inputs.repo-name == github.repository
-        && steps.diff.outputs.result == ''
-        && (github.event_name == 'pull_request' || github.event_name == 'schedule')
+        && ((github.event_name == 'pull_request' && (github.event.action == 'closed' || steps.diff.outputs.result == ''))
+            || (github.event_name == 'schedule' && steps.diff.outputs.result == ''))
       with:
         github-token: ${{inputs.github-token}}
         script: |
@@ -201,6 +203,6 @@ runs:
             await github.rest.git.deleteRef(git_deleteRef_params)
           }
     - name: Exit
-      if: steps.diff.outputs.result != ''
+      if: (github.event_name != 'pull_request' || github.event.action != 'closed') && steps.diff.outputs.result != ''
       run: exit 1
       shell: bash

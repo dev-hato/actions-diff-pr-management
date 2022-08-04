@@ -2,18 +2,18 @@
 
 ${DESCRIPTION}
 
-本Actionsを使わずにフォーマットを修正した場合、自動的にPRを閉じます。
-
-## 注意点
-
-元のPRを閉じた場合、本Actionsが立てたPRは残ります。  
-このような場合、 <https://github.com/dev-hato/actions-close-pr> を併用することで自動的にPRを閉じることができます。
+本Actionsを使わずにフォーマットを修正した場合や元のPRを閉じた場合、自動的にPRを閉じます。
 
 ## 使い方
 
 ```yaml
 on:
   pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
 
 jobs:
   diff-pr-management:
