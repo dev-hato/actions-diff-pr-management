@@ -42,7 +42,6 @@ runs:
         git config user.name "github-actions[bot]"
         EMAIL="41898282+github-actions[bot]@users.noreply.github.com"
         git config user.email "${EMAIL}"
-        git add -A
         git commit -m "${{inputs.pr-title-prefix}}"
         REPO_URL="https://"
         REPO_URL+="${{github.actor}}:${{inputs.github-token}}@github.com/"
