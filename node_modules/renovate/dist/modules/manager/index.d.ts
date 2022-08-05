@@ -1,0 +1,11 @@
+import type { RangeStrategy } from '../../types';
+import type { ExtractConfig, GlobalManagerConfig, ManagerApi, PackageFile, RangeConfig, Result } from './types';
+export { hashMap } from './fingerprint.generated';
+export declare function get<T extends keyof ManagerApi>(manager: string, name: T): ManagerApi[T] | undefined;
+export declare const getLanguageList: () => string[];
+export declare const getManagerList: () => string[];
+export declare const getManagers: () => Map<string, ManagerApi>;
+export declare function detectAllGlobalConfig(): Promise<GlobalManagerConfig>;
+export declare function extractAllPackageFiles(manager: string, config: ExtractConfig, files: string[]): Promise<PackageFile[] | null>;
+export declare function extractPackageFile(manager: string, content: string, fileName: string, config: ExtractConfig): Result<PackageFile | null>;
+export declare function getRangeStrategy(config: RangeConfig): RangeStrategy | null;

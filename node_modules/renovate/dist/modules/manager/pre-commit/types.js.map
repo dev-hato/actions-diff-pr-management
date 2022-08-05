@@ -1,0 +1,1 @@
+{"version":3,"file":"types.js","sourceRoot":"","sources":["../../../../lib/modules/manager/pre-commit/types.ts"],"names":[],"mappings":"","sourcesContent":["export interface PreCommitConfig {\n  repos: PreCommitDependency[];\n}\n\nexport interface PreCommitDependency {\n  repo: string;\n  rev: string;\n}\n"]}

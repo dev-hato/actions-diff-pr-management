@@ -1,0 +1,10 @@
+import type { PackageDependency } from '../types';
+import { TerraformDependencyTypes } from './common';
+import type { ProviderLock } from './lockfile/types';
+export declare const keyValueExtractionRegex: RegExp;
+export declare const resourceTypeExtractionRegex: RegExp;
+export declare function getTerraformDependencyType(value: string): TerraformDependencyTypes;
+export declare function checkFileContainsDependency(content: string, checkList: string[]): boolean;
+export declare function checkIfStringIsPath(path: string): boolean;
+export declare function massageProviderLookupName(dep: PackageDependency): void;
+export declare function getLockedVersion(dep: PackageDependency, locks: ProviderLock[]): string | undefined;

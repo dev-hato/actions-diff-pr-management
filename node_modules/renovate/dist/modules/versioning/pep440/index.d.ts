@@ -1,0 +1,15 @@
+import * as pep440 from '@renovatebot/pep440';
+import type { RangeStrategy } from '../../../types/versioning';
+import type { VersioningApi } from '../types';
+export declare const id = "pep440";
+export declare const displayName = "PEP440";
+export declare const urls: string[];
+export declare const supportsRanges = true;
+export declare const supportedRangeStrategies: RangeStrategy[];
+declare const matches: typeof pep440.satisfies;
+declare function isVersion(input: string | undefined | null): boolean;
+export declare function isValid(input: string): boolean;
+export declare function isSingleVersion(constraint: string): boolean;
+export { isVersion, matches };
+export declare const api: VersioningApi;
+export default api;

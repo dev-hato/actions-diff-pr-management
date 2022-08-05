@@ -1,0 +1,26 @@
+{
+  "name": "object_values",
+  "version": "0.1.2",
+  "description": "polyfill for es8 Object.values",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "es8",
+    "javascript",
+    "prototype",
+    "polyfill",
+    "utility"
+  ],
+  "author": "Khaled Al-Ansari <khaledelansari@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KhaledElAnsari/Object.values.git"
+  },
+  "bugs": {
+    "url": "https://github.com/KhaledElAnsari/Object.values/issues"
+  },
+  "homepage": "https://github.com/KhaledElAnsari/Object.values#readme"
+}
