@@ -24,12 +24,14 @@ runs:
   using: "composite"
   steps:
     # 差分があったときは差分を出力する
+    - name: git add
+      run: git add -A
     - name: Show diff
       id: diff
       shell: bash
       if: github.event_name != 'pull_request' || github.event.action != 'closed'
       run: |
-        result=$(git add -A && git diff --cached)
+        result=$(git diff --cached)
         echo "::set-output name=result::$result"
     # 差分があったときは、コミットを作りpushする
     - name: Push
