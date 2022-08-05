@@ -1,5 +1,5 @@
 ---
-name: update-gitleaks
+name: format-json-yml
 
 on:
   pull_request:
@@ -17,20 +17,14 @@ permissions:
   pull-requests: write
 
 jobs:
-  update-gitleaks:
+  format-json-yml:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3.0.2
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - uses: actions/setup-node@v3.4.1
-        with:
-          cache: npm
-      - name: Install packages
-        run: npm ci --prefer-offline
-      - uses: dev-hato/actions-update-gitleaks@v0.0.7
+      - uses: dev-hato/actions-format-json-yml@v0.0.4
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
-          super-linter-yml-file: .github/workflows/super-linter.yml
-          repo-name: ${{ github.event.pull_request.head.repo.full_name }}
+          repo-name: dev-hato/actions-diff-pr-management

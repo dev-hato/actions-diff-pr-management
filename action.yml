@@ -23,26 +23,27 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - shell: bash
+      if: github.event_name != 'pull_request' || github.event.action != 'closed'
+      name: git add
+      run: git add -A
     # 差分があったときは差分を出力する
     - name: Show diff
       id: diff
       shell: bash
       if: github.event_name != 'pull_request' || github.event.action != 'closed'
       run: |
-        result=$(git diff)
+        result=$(git diff --cached)
         echo "::set-output name=result::$result"
     # 差分があったときは、コミットを作りpushする
     - name: Push
       env:
         HEAD_REF: ${{github.event.pull_request.head.ref}}
-      if: inputs.repo-name == github.repository
-        && steps.diff.outputs.result != ''
-        && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule')
+      if: inputs.repo-name == github.repository && steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule')
       run: |
         git config user.name "github-actions[bot]"
         EMAIL="41898282+github-actions[bot]@users.noreply.github.com"
         git config user.email "${EMAIL}"
-        git add -u
         git commit -m "${{inputs.pr-title-prefix}}"
         REPO_URL="https://"
         REPO_URL+="${{github.actor}}:${{inputs.github-token}}@github.com/"
@@ -67,9 +68,7 @@ runs:
       uses: actions/github-script@v6.1.0
       env:
         HEAD_REF: ${{github.event.pull_request.head.ref}}
-      if: inputs.repo-name == github.repository
-        && steps.diff.outputs.result != ''
-        && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule')
+      if: inputs.repo-name == github.repository && steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule')
       id: get_pull_requests
       with:
         github-token: ${{inputs.github-token}}
@@ -97,10 +96,7 @@ runs:
       uses: actions/github-script@v6.1.0
       env:
         HEAD_REF: ${{github.event.pull_request.head.ref}}
-      if: inputs.repo-name == github.repository
-        && steps.diff.outputs.result != ''
-        && steps.get_pull_requests.outputs.result == 0
-        && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule')
+      if: inputs.repo-name == github.repository && steps.diff.outputs.result != '' && steps.get_pull_requests.outputs.result == 0 && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule')
       id: create_pull_request
       with:
         github-token: ${{inputs.github-token}}
@@ -136,13 +132,7 @@ runs:
           return create_pull_res.data.number
     - name: Assign a user
       uses: actions/github-script@v6.1.0
-      if: inputs.repo-name == github.repository
-        && steps.diff.outputs.result != ''
-        && steps.get_pull_requests.outputs.result == 0
-        && github.event_name == 'pull_request'
-        && github.event.action != 'closed'
-        && github.event.pull_request.user.login != 'dependabot[bot]'
-        && github.event.pull_request.user.login != 'renovate[bot]'
+      if: inputs.repo-name == github.repository && steps.diff.outputs.result != '' && steps.get_pull_requests.outputs.result == 0 && github.event_name == 'pull_request' && github.event.action != 'closed' && github.event.pull_request.user.login != 'dependabot[bot]' && github.event.pull_request.user.login != 'renovate[bot]'
       with:
         github-token: ${{inputs.github-token}}
         script: |
@@ -160,9 +150,7 @@ runs:
       uses: actions/github-script@v6.1.0
       env:
         HEAD_REF: ${{github.event.pull_request.head.ref}}
-      if: inputs.repo-name == github.repository
-        && ((github.event_name == 'pull_request' && (github.event.action == 'closed' || steps.diff.outputs.result == ''))
-            || (github.event_name == 'schedule' && steps.diff.outputs.result == ''))
+      if: inputs.repo-name == github.repository && ((github.event_name == 'pull_request' && (github.event.action == 'closed' || steps.diff.outputs.result == '')) || (github.event_name == 'schedule' && steps.diff.outputs.result == ''))
       with:
         github-token: ${{inputs.github-token}}
         script: |
