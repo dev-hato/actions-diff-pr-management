@@ -29,7 +29,7 @@ runs:
       shell: bash
       if: github.event_name != 'pull_request' || github.event.action != 'closed'
       run: |
-        result=$(git diff)
+        result=$(git add -A && git diff --cached)
         echo "::set-output name=result::$result"
     # 差分があったときは、コミットを作りpushする
     - name: Push
@@ -42,7 +42,7 @@ runs:
         git config user.name "github-actions[bot]"
         EMAIL="41898282+github-actions[bot]@users.noreply.github.com"
         git config user.email "${EMAIL}"
-        git add -u
+        git add -A
         git commit -m "${{inputs.pr-title-prefix}}"
         REPO_URL="https://"
         REPO_URL+="${{github.actor}}:${{inputs.github-token}}@github.com/"
