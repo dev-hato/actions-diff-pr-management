@@ -23,9 +23,9 @@ inputs:
 runs:
   using: "composite"
   steps:
-    # 差分があったときは差分を出力する
     - name: git add
       run: git add -A
+    # 差分があったときは差分を出力する
     - name: Show diff
       id: diff
       shell: bash
