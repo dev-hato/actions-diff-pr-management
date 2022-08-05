@@ -1,0 +1,1 @@
+{"version":3,"file":"types.js","sourceRoot":"","sources":["../../../../lib/modules/datasource/conan/types.ts"],"names":[],"mappings":"","sourcesContent":["export interface ConanJSON {\n  results?: Record<string, string>;\n}\n\nexport interface ConanYAML {\n  versions?: Record<string, unknown>;\n}\n"]}

@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sourceRoot":"","sources":["../../../../lib/config/presets/bitbucket/index.ts"],"names":[],"mappings":";;;AAAA,0CAAuE;AAA9D,uGAAA,aAAa,OAAA;AAAE,+GAAA,qBAAqB,OAAA","sourcesContent":["export { fetchJSONFile, getPresetFromEndpoint } from '../local/common';\n"]}

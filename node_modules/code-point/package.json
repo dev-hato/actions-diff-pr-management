@@ -1,0 +1,41 @@
+{
+  "name": "code-point",
+  "version": "1.1.0",
+  "description": "Get a UTF-16-encoded code point number of a character",
+  "jsnext:main": "index.jsnext.js",
+  "files": [
+    "index.js",
+    "index.jsnext.js",
+    "LICENSES.md"
+  ],
+  "scripts": {
+    "pretest": "eslint --fix --config @shinnn --ignore-path .gitignore .",
+    "test": "tap --node-arg=--strong_mode --coverage test.js test-es5.js"
+  },
+  "author": "Shinnosuke Watanabe (https://github.com/shinnn)",
+  "repository": "shinnn/code-point.js",
+  "license": "MIT",
+  "keywords": [
+    "code",
+    "point",
+    "code-point",
+    "string",
+    "char",
+    "character",
+    "unicode",
+    "utf16",
+    "utf-16",
+    "codepointat",
+    "surrogate",
+    "plane",
+    "browser",
+    "client-side"
+  ],
+  "devDependencies": {
+    "@shinnn/eslint-config": "^2.3.0",
+    "eslint": "^2.11.1",
+    "require-from-string": "^1.2.0",
+    "rollup": "^0.26.3",
+    "tap": "^5.7.2"
+  }
+}

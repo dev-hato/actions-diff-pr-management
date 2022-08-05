@@ -1,0 +1,1 @@
+{"version":3,"file":"types.js","sourceRoot":"","sources":["../../../../lib/modules/manager/bazel/types.ts"],"names":[],"mappings":"","sourcesContent":["export interface UrlParsedResult {\n  datasource: string;\n  repo: string;\n  currentValue: string;\n}\n\nexport interface BazelManagerData {\n  def: string;\n}\n"]}

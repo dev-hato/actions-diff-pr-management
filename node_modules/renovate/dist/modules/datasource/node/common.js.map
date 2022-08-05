@@ -1,0 +1,1 @@
+{"version":3,"file":"common.js","sourceRoot":"","sources":["../../../../lib/modules/datasource/node/common.ts"],"names":[],"mappings":";;;AAAa,QAAA,kBAAkB,GAAG,yBAAyB,CAAC;AAE/C,QAAA,UAAU,GAAG,MAAM,CAAC","sourcesContent":["export const defaultRegistryUrl = 'https://nodejs.org/dist';\n\nexport const datasource = 'node';\n"]}

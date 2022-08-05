@@ -1,0 +1,12 @@
+import * as bunyan from 'bunyan';
+import type { BunyanRecord, Logger } from './types';
+export declare const logger: Logger;
+export declare function setContext(value: string): void;
+export declare function getContext(): any;
+export declare function setMeta(obj: Record<string, unknown>): void;
+export declare function addMeta(obj: Record<string, unknown>): void;
+export declare function removeMeta(fields: string[]): void;
+export declare function addStream(stream: bunyan.Stream): void;
+export declare function levels(name: string, level: bunyan.LogLevel): void;
+export declare function getProblems(): BunyanRecord[];
+export declare function clearProblems(): void;
