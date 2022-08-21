@@ -30,7 +30,7 @@ jobs:
       - run: echo "DESCRIPTION=$(yq '.description' action.yml)" >> "${GITHUB_ENV}"
       - name: Get inputs markdown
         id: get_inputs_markdown
-        uses: actions/github-script@v6.1.0
+        uses: actions/github-script@v6.1.1
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
         with:
