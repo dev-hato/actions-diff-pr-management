@@ -57,7 +57,7 @@ runs:
         git push -f "${REPO_URL}" "${GITHUB_HEAD}"
       shell: bash
     - name: Set org name
-      uses: actions/github-script@v6.1.1
+      uses: actions/github-script@v6.2.0
       if: inputs.repo-name == github.repository && (github.event_name == 'pull_request' || github.event_name == 'schedule')
       id: set_org_name
       with:
@@ -65,7 +65,7 @@ runs:
         result-encoding: string
         script: return process.env.GITHUB_REPOSITORY.split('/')[0]
     - name: Get PullRequests
-      uses: actions/github-script@v6.1.1
+      uses: actions/github-script@v6.2.0
       env:
         HEAD_REF: ${{github.event.pull_request.head.ref}}
       if: inputs.repo-name == github.repository && steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule')
@@ -93,7 +93,7 @@ runs:
           return pulls.length
     # pushしたブランチでPRを作る
     - name: Create PullRequest
-      uses: actions/github-script@v6.1.1
+      uses: actions/github-script@v6.2.0
       env:
         HEAD_REF: ${{github.event.pull_request.head.ref}}
       if: inputs.repo-name == github.repository && steps.diff.outputs.result != '' && steps.get_pull_requests.outputs.result == 0 && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule')
@@ -131,7 +131,7 @@ runs:
                                   )
           return create_pull_res.data.number
     - name: Assign a user
-      uses: actions/github-script@v6.1.1
+      uses: actions/github-script@v6.2.0
       if: inputs.repo-name == github.repository && steps.diff.outputs.result != '' && steps.get_pull_requests.outputs.result == 0 && github.event_name == 'pull_request' && github.event.action != 'closed' && github.event.pull_request.user.login != 'dependabot[bot]' && github.event.pull_request.user.login != 'renovate[bot]'
       with:
         github-token: ${{inputs.github-token}}
@@ -147,7 +147,7 @@ runs:
           await github.rest.issues.addAssignees(issues_add_assignees_params)
     # 既にformat修正のPRがある状態で、手動でformatを修正した場合、format修正のPRを閉じる
     - name: Close PullRequest
-      uses: actions/github-script@v6.1.1
+      uses: actions/github-script@v6.2.0
       env:
         HEAD_REF: ${{github.event.pull_request.head.ref}}
       if: inputs.repo-name == github.repository && ((github.event_name == 'pull_request' && (github.event.action == 'closed' || steps.diff.outputs.result == '')) || (github.event_name == 'schedule' && steps.diff.outputs.result == ''))
