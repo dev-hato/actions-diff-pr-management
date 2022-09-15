@@ -20,6 +20,10 @@ inputs:
     description: '本文の接頭語。'
     required: true
     default: ""
+  base-branch:
+    description: 'ベースブランチ。 `pull_request` 以外のトリガーの場合は決め打ちで入力。'
+    required: false
+    default: ""
 runs:
   using: "composite"
   steps:
@@ -39,7 +43,7 @@ runs:
     - name: Push
       env:
         HEAD_REF: ${{github.event.pull_request.head.ref}}
-      if: inputs.repo-name == github.repository && steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule')
+      if: inputs.repo-name == github.repository && steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
       run: |
         git config user.name "github-actions[bot]"
         EMAIL="41898282+github-actions[bot]@users.noreply.github.com"
@@ -52,13 +56,15 @@ runs:
 
         if [ "${HEAD_REF}" != "" ]; then
           GITHUB_HEAD+="-${HEAD_REF}"
+        elif [ "${{inputs.base-branch}}" != "" ]; then
+          GITHUB_HEAD+="-${{inputs.base-branch}}"
         fi
 
         git push -f "${REPO_URL}" "${GITHUB_HEAD}"
       shell: bash
     - name: Set org name
       uses: actions/github-script@v6.2.0
-      if: inputs.repo-name == github.repository && (github.event_name == 'pull_request' || github.event_name == 'schedule')
+      if: inputs.repo-name == github.repository && (github.event_name == 'pull_request' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
       id: set_org_name
       with:
         github-token: ${{inputs.github-token}}
@@ -68,12 +74,17 @@ runs:
       uses: actions/github-script@v6.2.0
       env:
         HEAD_REF: ${{github.event.pull_request.head.ref}}
-      if: inputs.repo-name == github.repository && steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule')
+      if: inputs.repo-name == github.repository && steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
       id: get_pull_requests
       with:
         github-token: ${{inputs.github-token}}
         script: |
-          const HEAD_REF = process.env["HEAD_REF"]
+          let HEAD_REF = process.env["HEAD_REF"]
+
+          if (HEAD_REF === "" && "${{inputs.base-branch}}" !== "") {
+            HEAD_REF = "${{inputs.base-branch}}"
+          }
+
           let head = "${{steps.set_org_name.outputs.result}}:${{inputs.branch-name-prefix}}"
 
           if (HEAD_REF != "") {
@@ -96,12 +107,17 @@ runs:
       uses: actions/github-script@v6.2.0
       env:
         HEAD_REF: ${{github.event.pull_request.head.ref}}
-      if: inputs.repo-name == github.repository && steps.diff.outputs.result != '' && steps.get_pull_requests.outputs.result == 0 && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule')
+      if: inputs.repo-name == github.repository && steps.diff.outputs.result != '' && steps.get_pull_requests.outputs.result == 0 && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
       id: create_pull_request
       with:
         github-token: ${{inputs.github-token}}
         script: |
-          const HEAD_REF = process.env["HEAD_REF"]
+          let HEAD_REF = process.env["HEAD_REF"]
+
+          if (HEAD_REF === "" && "${{inputs.base-branch}}" !== "") {
+            HEAD_REF = "${{inputs.base-branch}}"
+          }
+
           let title = "${{inputs.pr-title-prefix}}"
           let body = "${{inputs.pr-description-prefix}}"
 
@@ -150,11 +166,16 @@ runs:
       uses: actions/github-script@v6.2.0
       env:
         HEAD_REF: ${{github.event.pull_request.head.ref}}
-      if: inputs.repo-name == github.repository && ((github.event_name == 'pull_request' && (github.event.action == 'closed' || steps.diff.outputs.result == '')) || (github.event_name == 'schedule' && steps.diff.outputs.result == ''))
+      if: inputs.repo-name == github.repository && ((github.event_name == 'pull_request' && (github.event.action == 'closed' || steps.diff.outputs.result == '')) || ((github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && steps.diff.outputs.result == ''))
       with:
         github-token: ${{inputs.github-token}}
         script: |
-          const HEAD_REF = process.env["HEAD_REF"]
+          let HEAD_REF = process.env["HEAD_REF"]
+
+          if (HEAD_REF === "" && "${{inputs.base-branch}}" !== "") {
+            HEAD_REF = "${{inputs.base-branch}}"
+          }
+
           let head_name = "${{inputs.branch-name-prefix}}"
 
           if (HEAD_REF != "") {
