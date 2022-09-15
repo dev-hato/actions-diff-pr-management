@@ -170,7 +170,7 @@ runs:
       with:
         github-token: ${{inputs.github-token}}
         script: |
-           let HEAD_REF = process.env["HEAD_REF"]
+          let HEAD_REF = process.env["HEAD_REF"]
 
           if (HEAD_REF === "" && "${{inputs.base-branch}}" !== "") {
             HEAD_REF = "${{inputs.base-branch}}"
