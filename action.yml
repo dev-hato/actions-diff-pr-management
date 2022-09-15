@@ -39,7 +39,7 @@ runs:
     - name: Push
       env:
         HEAD_REF: ${{github.event.pull_request.head.ref}}
-      if: inputs.repo-name == github.repository && steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule')
+      if: inputs.repo-name == github.repository && steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
       run: |
         git config user.name "github-actions[bot]"
         EMAIL="41898282+github-actions[bot]@users.noreply.github.com"
@@ -58,7 +58,7 @@ runs:
       shell: bash
     - name: Set org name
       uses: actions/github-script@v6.2.0
-      if: inputs.repo-name == github.repository && (github.event_name == 'pull_request' || github.event_name == 'schedule')
+      if: inputs.repo-name == github.repository && (github.event_name == 'pull_request' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
       id: set_org_name
       with:
         github-token: ${{inputs.github-token}}
@@ -68,7 +68,7 @@ runs:
       uses: actions/github-script@v6.2.0
       env:
         HEAD_REF: ${{github.event.pull_request.head.ref}}
-      if: inputs.repo-name == github.repository && steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule')
+      if: inputs.repo-name == github.repository && steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
       id: get_pull_requests
       with:
         github-token: ${{inputs.github-token}}
@@ -96,7 +96,7 @@ runs:
       uses: actions/github-script@v6.2.0
       env:
         HEAD_REF: ${{github.event.pull_request.head.ref}}
-      if: inputs.repo-name == github.repository && steps.diff.outputs.result != '' && steps.get_pull_requests.outputs.result == 0 && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule')
+      if: inputs.repo-name == github.repository && steps.diff.outputs.result != '' && steps.get_pull_requests.outputs.result == 0 && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
       id: create_pull_request
       with:
         github-token: ${{inputs.github-token}}
@@ -150,7 +150,7 @@ runs:
       uses: actions/github-script@v6.2.0
       env:
         HEAD_REF: ${{github.event.pull_request.head.ref}}
-      if: inputs.repo-name == github.repository && ((github.event_name == 'pull_request' && (github.event.action == 'closed' || steps.diff.outputs.result == '')) || (github.event_name == 'schedule' && steps.diff.outputs.result == ''))
+      if: inputs.repo-name == github.repository && ((github.event_name == 'pull_request' && (github.event.action == 'closed' || steps.diff.outputs.result == '')) || ((github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && steps.diff.outputs.result == ''))
       with:
         github-token: ${{inputs.github-token}}
         script: |
