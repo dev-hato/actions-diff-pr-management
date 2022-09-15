@@ -20,6 +20,10 @@ inputs:
     description: '本文の接頭語。'
     required: true
     default: ""
+  base-branch:
+    description: 'ベースブランチ。 `pull_request` 以外のトリガーの場合は決め打ちで入力。'
+    required: false
+    default: ""
 runs:
   using: "composite"
   steps:
@@ -52,6 +56,8 @@ runs:
 
         if [ "${HEAD_REF}" != "" ]; then
           GITHUB_HEAD+="-${HEAD_REF}"
+        elif [ "${{inputs.base-branch}}" != "" ]; then
+          GITHUB_HEAD+="-${{inputs.base-branch}}"
         fi
 
         git push -f "${REPO_URL}" "${GITHUB_HEAD}"
@@ -73,7 +79,12 @@ runs:
       with:
         github-token: ${{inputs.github-token}}
         script: |
-          const HEAD_REF = process.env["HEAD_REF"]
+          let HEAD_REF = process.env["HEAD_REF"]
+
+          if (HEAD_REF === "" && "${{inputs.base-branch}}" !== "") {
+            HEAD_REF = "${{inputs.base-branch}}"
+          }
+
           let head = "${{steps.set_org_name.outputs.result}}:${{inputs.branch-name-prefix}}"
 
           if (HEAD_REF != "") {
@@ -101,7 +112,12 @@ runs:
       with:
         github-token: ${{inputs.github-token}}
         script: |
-          const HEAD_REF = process.env["HEAD_REF"]
+          let HEAD_REF = process.env["HEAD_REF"]
+
+          if (HEAD_REF === "" && "${{inputs.base-branch}}" !== "") {
+            HEAD_REF = "${{inputs.base-branch}}"
+          }
+
           let title = "${{inputs.pr-title-prefix}}"
           let body = "${{inputs.pr-description-prefix}}"
 
@@ -154,7 +170,12 @@ runs:
       with:
         github-token: ${{inputs.github-token}}
         script: |
-          const HEAD_REF = process.env["HEAD_REF"]
+           let HEAD_REF = process.env["HEAD_REF"]
+
+          if (HEAD_REF === "" && "${{inputs.base-branch}}" !== "") {
+            HEAD_REF = "${{inputs.base-branch}}"
+          }
+
           let head_name = "${{inputs.branch-name-prefix}}"
 
           if (HEAD_REF != "") {
