@@ -45,6 +45,7 @@ jobs:
 | branch-name-prefix | branch名の接頭語。 |  |
 | pr-title-prefix | PRのタイトルの接頭語。 |  |
 | pr-description-prefix | 本文の接頭語。 |  |
+| base-branch | ベースブランチ。 `pull_request` 以外のトリガーの場合は決め打ちで入力。 |  |
 
 ## 開発
 
