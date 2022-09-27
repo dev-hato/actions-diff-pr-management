@@ -44,7 +44,7 @@ jobs:
           # of changed files within `super-linter`
           fetch-depth: 0
 
-      - uses: actions/setup-node@v3.4.1
+      - uses: actions/setup-node@v3.5.0
         with:
           cache: npm
       - run: npm ci --prefer-offline
