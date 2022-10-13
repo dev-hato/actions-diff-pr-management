@@ -38,7 +38,7 @@ runs:
       if: github.event_name != 'pull_request' || github.event.action != 'closed'
       run: |
         result=$(git diff --cached)
-        echo "result=$result" >> $GITHUB_OUTPUT
+        echo "result=$result" >> "${GITHUB_OUTPUT}"
     # 差分があったときは、コミットを作りpushする
     - name: Push
       env:
