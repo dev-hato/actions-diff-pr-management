@@ -38,6 +38,9 @@ runs:
       if: github.event_name != 'pull_request' || github.event.action != 'closed'
       run: |
         result=$(git diff --cached)
+        result="${result//'%'/'%25'}"
+        result="${result//$'\n'/'%0A'}"
+        result="${result//$'\r'/'%0D'}"
         echo "result=$result" >> "${GITHUB_OUTPUT}"
     # 差分があったときは、コミットを作りpushする
     - name: Push
