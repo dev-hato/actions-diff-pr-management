@@ -94,7 +94,7 @@ runs:
             HEAD_REF = "${{inputs.base-branch}}"
           }
 
-          const head = "${{steps.set_org_name.outputs.result}}:${{steps.get_head.outputs.head}}"
+          let head = "${{steps.set_org_name.outputs.result}}:${{steps.get_head.outputs.head}}"
           const pulls_list_params = {
             owner: context.repo.owner,
             repo: context.repo.repo,
@@ -122,7 +122,7 @@ runs:
             HEAD_REF = "${{inputs.base-branch}}"
           }
 
-          const head = "${{steps.get_head.outputs.head}}"
+          let head = "${{steps.get_head.outputs.head}}"
           const head_with_repo = `${{steps.set_org_name.outputs.result}}:${head}`
           let title = "${{inputs.pr-title-prefix}}"
           let body = "${{inputs.pr-description-prefix}}"
