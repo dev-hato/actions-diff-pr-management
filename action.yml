@@ -136,9 +136,13 @@ runs:
             body += "```mermaid\n"
             body += `%%{init: {'gitGraph': {'mainBranchName': '${HEAD_REF}'}}}%%\n`
             body += "gitGraph\n"
-            body += [...Array(2)].map(() => "commit\n")
-            body += "branch ${head}\n"
-            body += "checkout ${head}\n"
+
+            for (let i = 0; i < 2; i++) {
+              body += "commit\n"
+            }
+
+            body += `  branch ${head}\n`
+            body += `  checkout ${head}\n`
             let commit = "${{inputs.pr-title-prefix}}"
 
             if (6 < commit.length) {
