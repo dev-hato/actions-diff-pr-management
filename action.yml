@@ -81,6 +81,7 @@ runs:
       id: get_head_ref
       with:
         github-token: ${{inputs.github-token}}
+        result-encoding: string
         script: |
           let HEAD_REF = process.env["HEAD_REF"]
 
