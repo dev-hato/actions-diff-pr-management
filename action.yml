@@ -131,10 +131,10 @@ runs:
           let body = "${{inputs.pr-description-prefix}}"
 
           if ("${{github.event.pull_request.number}}" != "") {
-            body += "本PR ( `${head}` ) をマージすると差分が次のPRに反映されます。\n"
-            body += "* #${{github.event.pull_request.number}} ( `${HEAD_REF}` )\n"
+            body += `本PR ( \`${head}\` ) をマージすると差分が次のPRに反映されます。\n`
+            body += `* #${{github.event.pull_request.number}} ( \`${HEAD_REF}\` )\n`
             body += "```mermaid\n"
-            body += "%%{init: {'gitGraph': {'mainBranchName': '${HEAD_REF}'}}}%%\n"
+            body += `%%{init: {'gitGraph': {'mainBranchName': '${HEAD_REF}'}}}%%\n`
             body += "gitGraph\n"
             body += [...Array(2)].map(() => "commit\n")
             body += "branch ${head}\n"
@@ -145,9 +145,9 @@ runs:
               commit = commit.substring(0, 6) + '......'
             }
 
-            body += "commit id: \"" + commit + "\"\n"
-            body += "checkout ${HEAD_REF}\n"
-            body += "merge ${head}\n"
+            body += `  commit id: "${commit}"\n`
+            body += `  checkout ${HEAD_REF}\n`
+            body += `  merge ${head}\n`
             body += "```"
             title += " #${{github.event.pull_request.number}}"
           }
