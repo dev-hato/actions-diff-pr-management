@@ -196,7 +196,7 @@ runs:
             HEAD_REF = "${{inputs.base-branch}}"
           }
 
-          let head_name = "${{steps.get_head.output.head}}"
+          const head_name = "${{steps.get_head.output.head}}"
           const common_params = {
             owner: context.repo.owner,
             repo: context.repo.repo
