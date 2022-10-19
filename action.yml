@@ -42,24 +42,10 @@ runs:
         result="${result//$'\n'/'%0A'}"
         result="${result//$'\r'/'%0D'}"
         echo "result=$result" >> "${GITHUB_OUTPUT}"
-    - name: Get HEAD
-      id: get_head
-      if: inputs.repo-name == github.repository
-      env:
-        HEAD_REF: ${{github.event.pull_request.head.ref}}
-      shell: bash
-      run: |
-        HEAD="${{inputs.branch-name-prefix}}"
-
-        if [ "${HEAD_REF}" != "" ]; then
-          HEAD+="-${HEAD_REF}"
-        elif [ "${{inputs.base-branch}}" != "" ]; then
-          HEAD+="-${{inputs.base-branch}}"
-        fi
-
-        echo "head=${HEAD}" >> $GITHUB_OUTPUT
     # 差分があったときは、コミットを作りpushする
     - name: Push
+      env:
+        HEAD_REF: ${{github.event.pull_request.head.ref}}
       if: inputs.repo-name == github.repository && steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
       run: |
         git config user.name "github-actions[bot]"
@@ -69,7 +55,15 @@ runs:
         REPO_URL="https://"
         REPO_URL+="${{github.actor}}:${{inputs.github-token}}@github.com/"
         REPO_URL+="${{github.repository}}.git"
-        git push -f "${REPO_URL}" "HEAD:refs/heads/${{steps.get_head.outputs.head}}"
+        GITHUB_HEAD="HEAD:refs/heads/${{inputs.branch-name-prefix}}"
+
+        if [ "${HEAD_REF}" != "" ]; then
+          GITHUB_HEAD+="-${HEAD_REF}"
+        elif [ "${{inputs.base-branch}}" != "" ]; then
+          GITHUB_HEAD+="-${{inputs.base-branch}}"
+        fi
+
+        git push -f "${REPO_URL}" "${GITHUB_HEAD}"
       shell: bash
     - name: Set org name
       uses: actions/github-script@v6.3.3
@@ -94,7 +88,12 @@ runs:
             HEAD_REF = "${{inputs.base-branch}}"
           }
 
-          let head = "${{steps.set_org_name.outputs.result}}:${{steps.get_head.outputs.head}}"
+          let head = "${{steps.set_org_name.outputs.result}}:${{inputs.branch-name-prefix}}"
+
+          if (HEAD_REF != "") {
+            head += "-" + HEAD_REF
+          }
+
           const pulls_list_params = {
             owner: context.repo.owner,
             repo: context.repo.repo,
@@ -122,7 +121,12 @@ runs:
             HEAD_REF = "${{inputs.base-branch}}"
           }
 
-          let head = "${{steps.get_head.outputs.head}}"
+          let head = "${{inputs.branch-name-prefix}}"
+
+          if (HEAD_REF != "") {
+            head += "-" + HEAD_REF
+          }
+
           const head_with_repo = `${{steps.set_org_name.outputs.result}}:${head}`
           let title = "${{inputs.pr-title-prefix}}"
           let body = "${{inputs.pr-description-prefix}}"
@@ -196,7 +200,12 @@ runs:
             HEAD_REF = "${{inputs.base-branch}}"
           }
 
-          let head_name = "${{steps.get_head.outputs.head}}"
+          let head_name = "${{inputs.branch-name-prefix}}"
+
+          if (HEAD_REF != "") {
+            head_name += "-" + HEAD_REF
+          }
+
           const common_params = {
             owner: context.repo.owner,
             repo: context.repo.repo
