@@ -73,6 +73,22 @@ runs:
         github-token: ${{inputs.github-token}}
         result-encoding: string
         script: return process.env.GITHUB_REPOSITORY.split('/')[0]
+    - name: Get HEAD_REF
+      uses: actions/github-script@v6.3.3
+      env:
+        HEAD_REF: ${{github.event.pull_request.head.ref}}
+      if: inputs.repo-name == github.repository
+      id: get_head_ref
+      with:
+        github-token: ${{inputs.github-token}}
+        script: |
+          let HEAD_REF = process.env["HEAD_REF"]
+
+          if (HEAD_REF === "" && "${{inputs.base-branch}}" !== "") {
+            return "${{inputs.base-branch}}"
+          }
+          
+          return HEAD_REF
     - name: Get PullRequests
       uses: actions/github-script@v6.3.3
       env:
@@ -82,12 +98,7 @@ runs:
       with:
         github-token: ${{inputs.github-token}}
         script: |
-          let HEAD_REF = process.env["HEAD_REF"]
-
-          if (HEAD_REF === "" && "${{inputs.base-branch}}" !== "") {
-            HEAD_REF = "${{inputs.base-branch}}"
-          }
-
+          const HEAD_REF = "${{steps.get_head_ref.outputs.result}}"
           let head = "${{steps.set_org_name.outputs.result}}:${{inputs.branch-name-prefix}}"
 
           if (HEAD_REF != "") {
@@ -115,12 +126,7 @@ runs:
       with:
         github-token: ${{inputs.github-token}}
         script: |
-          let HEAD_REF = process.env["HEAD_REF"]
-
-          if (HEAD_REF === "" && "${{inputs.base-branch}}" !== "") {
-            HEAD_REF = "${{inputs.base-branch}}"
-          }
-
+          const HEAD_REF = "${{steps.get_head_ref.outputs.result}}"
           let head = "${{inputs.branch-name-prefix}}"
 
           if (HEAD_REF != "") {
@@ -194,12 +200,7 @@ runs:
       with:
         github-token: ${{inputs.github-token}}
         script: |
-          let HEAD_REF = process.env["HEAD_REF"]
-
-          if (HEAD_REF === "" && "${{inputs.base-branch}}" !== "") {
-            HEAD_REF = "${{inputs.base-branch}}"
-          }
-
+          const HEAD_REF = "${{steps.get_head_ref.outputs.result}}"
           let head_name = "${{inputs.branch-name-prefix}}"
 
           if (HEAD_REF != "") {
