@@ -121,12 +121,13 @@ runs:
             HEAD_REF = "${{inputs.base-branch}}"
           }
 
-          let head = "${{steps.set_org_name.outputs.result}}:${{inputs.branch-name-prefix}}"
+          let head = "${{inputs.branch-name-prefix}}"
 
           if (HEAD_REF != "") {
             head += "-" + HEAD_REF
           }
 
+          const head_with_repo = "${{steps.set_org_name.outputs.result}}:${head}"
           let title = "${{inputs.pr-title-prefix}}"
           let body = "${{inputs.pr-description-prefix}}"
 
@@ -138,7 +139,7 @@ runs:
             body += "gitGraph\n"
 
             for (let i = 0; i < 2; i++) {
-              body += "commit\n"
+              body += "  commit\n"
             }
 
             body += `  branch ${head}\n`
@@ -159,7 +160,7 @@ runs:
           const pulls_create_params = {
             owner: context.repo.owner,
             repo: context.repo.repo,
-            head,
+            head: head_with_repo,
             base: HEAD_REF,
             title,
             body
