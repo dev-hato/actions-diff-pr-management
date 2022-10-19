@@ -127,7 +127,7 @@ runs:
             head += "-" + HEAD_REF
           }
 
-          const head_with_repo = "${{steps.set_org_name.outputs.result}}:${head}"
+          const head_with_repo = `${{steps.set_org_name.outputs.result}}:${head}`
           let title = "${{inputs.pr-title-prefix}}"
           let body = "${{inputs.pr-description-prefix}}"
 
