@@ -121,19 +121,35 @@ runs:
             HEAD_REF = "${{inputs.base-branch}}"
           }
 
-          let title = "${{inputs.pr-title-prefix}}"
-          let body = "${{inputs.pr-description-prefix}}"
-
-          if ("${{github.event.pull_request.number}}" != "") {
-            body += "本PRをマージすると差分が次のPRに反映されます。\n"
-            body += "* #${{github.event.pull_request.number}}"
-            title += " #${{github.event.pull_request.number}}"
-          }
-
           let head = "${{steps.set_org_name.outputs.result}}:${{inputs.branch-name-prefix}}"
 
           if (HEAD_REF != "") {
             head += "-" + HEAD_REF
+          }
+
+          let title = "${{inputs.pr-title-prefix}}"
+          let body = "${{inputs.pr-description-prefix}}"
+
+          if ("${{github.event.pull_request.number}}" != "") {
+            body += "本PR ( `${head}` ) をマージすると差分が次のPRに反映されます。\n"
+            body += "* #${{github.event.pull_request.number}} ( `${HEAD_REF}` )\n"
+            body += "```mermaid\n"
+            body += "%%{init: {'gitGraph': {'mainBranchName': '${HEAD_REF}'}}}%%\n"
+            body += "gitGraph\n"
+            body += [...Array(2)].map(() => "commit\n")
+            body += "branch ${head}\n"
+            body += "checkout ${head}\n"
+            let commit = "${{inputs.pr-title-prefix}}"
+
+            if (6 < commit.length) {
+              commit = commit.substring(0, 6) + '......'
+            }
+
+            body += "commit id: \"" + commit + "\"\n"
+            body += "checkout ${HEAD_REF}\n"
+            body += "merge ${head}\n"
+            body += "```"
+            title += " #${{github.event.pull_request.number}}"
           }
 
           const pulls_create_params = {
