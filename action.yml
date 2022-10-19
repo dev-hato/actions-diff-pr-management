@@ -87,7 +87,7 @@ runs:
           if (HEAD_REF === "" && "${{inputs.base-branch}}" !== "") {
             return "${{inputs.base-branch}}"
           }
-          
+
           return HEAD_REF
     - name: Get PullRequests
       uses: actions/github-script@v6.3.3
