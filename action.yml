@@ -73,21 +73,31 @@ runs:
         github-token: ${{inputs.github-token}}
         result-encoding: string
         script: return process.env.GITHUB_REPOSITORY.split('/')[0]
-    - name: Get PullRequests
+    - name: Get HEAD_REF
       uses: actions/github-script@v6.3.3
       env:
         HEAD_REF: ${{github.event.pull_request.head.ref}}
+      if: inputs.repo-name == github.repository
+      id: get_head_ref
+      with:
+        github-token: ${{inputs.github-token}}
+        result-encoding: string
+        script: |
+          let HEAD_REF = process.env["HEAD_REF"]
+
+          if (HEAD_REF === "" && "${{inputs.base-branch}}" !== "") {
+            return "${{inputs.base-branch}}"
+          }
+
+          return HEAD_REF
+    - name: Get PullRequests
+      uses: actions/github-script@v6.3.3
       if: inputs.repo-name == github.repository && steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
       id: get_pull_requests
       with:
         github-token: ${{inputs.github-token}}
         script: |
-          let HEAD_REF = process.env["HEAD_REF"]
-
-          if (HEAD_REF === "" && "${{inputs.base-branch}}" !== "") {
-            HEAD_REF = "${{inputs.base-branch}}"
-          }
-
+          const HEAD_REF = "${{steps.get_head_ref.outputs.result}}"
           let head = "${{steps.set_org_name.outputs.result}}:${{inputs.branch-name-prefix}}"
 
           if (HEAD_REF != "") {
@@ -108,38 +118,52 @@ runs:
     # pushしたブランチでPRを作る
     - name: Create PullRequest
       uses: actions/github-script@v6.3.3
-      env:
-        HEAD_REF: ${{github.event.pull_request.head.ref}}
       if: inputs.repo-name == github.repository && steps.diff.outputs.result != '' && steps.get_pull_requests.outputs.result == 0 && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
       id: create_pull_request
       with:
         github-token: ${{inputs.github-token}}
         script: |
-          let HEAD_REF = process.env["HEAD_REF"]
-
-          if (HEAD_REF === "" && "${{inputs.base-branch}}" !== "") {
-            HEAD_REF = "${{inputs.base-branch}}"
-          }
-
-          let title = "${{inputs.pr-title-prefix}}"
-          let body = "${{inputs.pr-description-prefix}}"
-
-          if ("${{github.event.pull_request.number}}" != "") {
-            body += "本PRをマージすると差分が次のPRに反映されます。\n"
-            body += "* #${{github.event.pull_request.number}}"
-            title += " #${{github.event.pull_request.number}}"
-          }
-
-          let head = "${{steps.set_org_name.outputs.result}}:${{inputs.branch-name-prefix}}"
+          const HEAD_REF = "${{steps.get_head_ref.outputs.result}}"
+          let head = "${{inputs.branch-name-prefix}}"
 
           if (HEAD_REF != "") {
             head += "-" + HEAD_REF
           }
 
+          const head_with_repo = `${{steps.set_org_name.outputs.result}}:${head}`
+          let title = "${{inputs.pr-title-prefix}}"
+          let body = "${{inputs.pr-description-prefix}}"
+
+          if ("${{github.event.pull_request.number}}" != "") {
+            body += `本PR ( \`${head}\` ) をマージすると差分が次のPRに反映されます。\n`
+            body += `* #${{github.event.pull_request.number}} ( \`${HEAD_REF}\` )\n`
+            body += "```mermaid\n"
+            body += `%%{init: {'gitGraph': {'mainBranchName': '${HEAD_REF}'}}}%%\n`
+            body += "gitGraph\n"
+
+            for (let i = 0; i < 2; i++) {
+              body += "  commit\n"
+            }
+
+            body += `  branch ${head}\n`
+            body += `  checkout ${head}\n`
+            let commit = "${{inputs.pr-title-prefix}}"
+
+            if (6 < commit.length) {
+              commit = commit.substring(0, 6) + '......'
+            }
+
+            body += `  commit id: "${commit}"\n`
+            body += `  checkout ${HEAD_REF}\n`
+            body += `  merge ${head}\n`
+            body += "```"
+            title += " #${{github.event.pull_request.number}}"
+          }
+
           const pulls_create_params = {
             owner: context.repo.owner,
             repo: context.repo.repo,
-            head,
+            head: head_with_repo,
             base: HEAD_REF,
             title,
             body
@@ -167,18 +191,11 @@ runs:
     # 既にformat修正のPRがある状態で、手動でformatを修正した場合、format修正のPRを閉じる
     - name: Close PullRequest
       uses: actions/github-script@v6.3.3
-      env:
-        HEAD_REF: ${{github.event.pull_request.head.ref}}
       if: inputs.repo-name == github.repository && ((github.event_name == 'pull_request' && (github.event.action == 'closed' || steps.diff.outputs.result == '')) || ((github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && steps.diff.outputs.result == ''))
       with:
         github-token: ${{inputs.github-token}}
         script: |
-          let HEAD_REF = process.env["HEAD_REF"]
-
-          if (HEAD_REF === "" && "${{inputs.base-branch}}" !== "") {
-            HEAD_REF = "${{inputs.base-branch}}"
-          }
-
+          const HEAD_REF = "${{steps.get_head_ref.outputs.result}}"
           let head_name = "${{inputs.branch-name-prefix}}"
 
           if (HEAD_REF != "") {
