@@ -1,5 +1,5 @@
 ---
-name: renovate_config_validator
+name: renovate-config-validator
 
 on:
   push:
