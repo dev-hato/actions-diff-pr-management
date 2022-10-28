@@ -1,5 +1,5 @@
 ---
-name: update_readme
+name: update-readme
 
 on:
   pull_request:
