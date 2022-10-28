@@ -26,11 +26,6 @@ inputs:
     default: ""
 runs:
   using: "composite"
-  env:
-    HEAD_REF: ${{github.event.pull_request.head.ref}}
-    PR_TITLE_PREFIX: ${{inputs.pr-title-prefix}}
-    BRANCH_NAME_PREFIX: ${{inputs.branch-name-prefix}}
-    BASE_BRANCH: ${{inputs.base-branch}}
   steps:
     - shell: bash
       if: github.event_name != 'pull_request' || github.event.action != 'closed'
@@ -45,9 +40,13 @@ runs:
     # 差分があったときは、コミットを作りpushする
     - name: Push
       env:
+        HEAD_REF: ${{github.event.pull_request.head.ref}}
+        PR_TITLE_PREFIX: ${{inputs.pr-title-prefix}}
         AUTHOR: ${{github.actor}}
         GITHUB_TOKEN: ${{inputs.github-token}}
         REPOSITORY: ${{github.repository}}
+        BRANCH_NAME_PREFIX: ${{inputs.branch-name-prefix}}
+        BASE_BRANCH: ${{inputs.base-branch}}
       if: inputs.repo-name == github.repository && steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
       run: ./scripts/action/push.sh
       shell: bash
@@ -61,6 +60,9 @@ runs:
         script: return process.env.GITHUB_REPOSITORY.split('/')[0]
     - name: Get HEAD_REF
       uses: actions/github-script@v6.3.3
+      env:
+        HEAD_REF: ${{github.event.pull_request.head.ref}}
+        BASE_BRANCH: ${{inputs.base-branch}}
       if: inputs.repo-name == github.repository
       id: get_head_ref
       with:
@@ -76,6 +78,7 @@ runs:
       env:
         HEAD_REF: ${{steps.get_head_ref.outputs.result}}
         ORG_NAME: ${{steps.set_org_name.outputs.result}}
+        BRANCH_NAME_PREFIX: ${{inputs.branch-name-prefix}}
       with:
         github-token: ${{inputs.github-token}}
         script: |
@@ -91,6 +94,8 @@ runs:
         ORG_NAME: ${{steps.set_org_name.outputs.result}}
         PR_DESCRIPTION_PREFIX: ${{inputs.pr-description-prefix}}
         PR_NUMBER: ${{github.event.pull_request.number}}
+        PR_TITLE_PREFIX: ${{inputs.pr-title-prefix}}
+        BRANCH_NAME_PREFIX: ${{inputs.branch-name-prefix}}
       with:
         github-token: ${{inputs.github-token}}
         script: |
@@ -114,6 +119,7 @@ runs:
       env:
         HEAD_REF: ${{steps.get_head_ref.outputs.result}}
         ORG_NAME: ${{steps.set_org_name.outputs.result}}
+        BRANCH_NAME_PREFIX: ${{inputs.branch-name-prefix}}
       with:
         github-token: ${{inputs.github-token}}
         script: |
