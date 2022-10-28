@@ -30,7 +30,7 @@ runs:
     - shell: bash
       if: github.event_name != 'pull_request' || github.event.action != 'closed'
       name: git add
-      run: git add -A
+      run: ${{ github.action_path }}/scripts/action/git_add.sh
     # 差分があったときは差分を出力する
     - name: Show diff
       id: diff
@@ -57,7 +57,9 @@ runs:
       with:
         github-token: ${{inputs.github-token}}
         result-encoding: string
-        script: return process.env.GITHUB_REPOSITORY.split('/')[0]
+        script: |
+          const script = require('${{ github.action_path }}/scripts/action/set_org_name.js')
+          return script()
     - name: Get HEAD_REF
       uses: actions/github-script@v6.3.3
       env:
@@ -127,5 +129,5 @@ runs:
           await script({github, context})
     - name: Exit
       if: (github.event_name != 'pull_request' || github.event.action != 'closed') && steps.diff.outputs.result != ''
-      run: exit 1
+      run: ${{ github.action_path }}/scripts/action/exit.sh
       shell: bash

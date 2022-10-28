@@ -1,5 +1,5 @@
 ---
-name: renovate-config-validator
+name: renovate_config_validator
 
 on:
   push:
@@ -16,5 +16,5 @@ jobs:
       - uses: actions/setup-node@v3.5.1
         with:
           cache: npm
-      - run: npm ci --prefer-offline
-      - run: npx renovate-config-validator
+      - run: ./scripts/npm_ci.sh
+      - run: ./scripts/renovate_config_validator/run_renovate_config_validator.sh

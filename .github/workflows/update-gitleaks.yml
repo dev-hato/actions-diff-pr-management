@@ -28,7 +28,7 @@ jobs:
         with:
           cache: npm
       - name: Install packages
-        run: npm ci --prefer-offline
+        run: ./scripts/npm_ci.sh
       - uses: dev-hato/actions-update-gitleaks@v0.0.22
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
