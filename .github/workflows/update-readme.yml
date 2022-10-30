@@ -26,8 +26,8 @@ jobs:
       - uses: actions/setup-node@v3.5.1
         with:
           cache: npm
-      - run: ./scripts/npm_ci.sh
-      - run: ./scripts/update_readme/set_description.sh
+      - run: npm ci --prefer-offline
+      - run: echo "DESCRIPTION=$(yq '.description' action.yml)" >> "${GITHUB_ENV}"
       - name: Get inputs markdown
         id: get_inputs_markdown
         uses: actions/github-script@v6.3.3
@@ -42,7 +42,7 @@ jobs:
       - env:
           DESCRIPTION: ${{env.DESCRIPTION}}
           INPUTS: ${{steps.get_inputs_markdown.outputs.result}}
-        run: ./scripts/update_readme/create_readme.sh
+        run: envsubst < README.template.md > README.md
       - uses: ./
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}

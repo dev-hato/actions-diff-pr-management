@@ -27,7 +27,7 @@ jobs:
       - uses: actions/setup-node@v3.5.1
         with:
           cache: npm
-      - run: ./scripts/update_package/npm_install.sh
+      - run: npm install
       - uses: ./
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}

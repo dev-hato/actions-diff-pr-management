@@ -30,7 +30,7 @@ runs:
     - shell: bash
       if: github.event_name != 'pull_request' || github.event.action != 'closed'
       name: git add
-      run: ${{ github.action_path }}/scripts/action/git_add.sh
+      run: git add -A
     # 差分があったときは差分を出力する
     - name: Show diff
       id: diff
@@ -129,5 +129,5 @@ runs:
           await script({github, context})
     - name: Exit
       if: (github.event_name != 'pull_request' || github.event.action != 'closed') && steps.diff.outputs.result != ''
-      run: ${{ github.action_path }}/scripts/action/exit.sh
+      run: exit 1
       shell: bash
