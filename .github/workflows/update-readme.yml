@@ -37,7 +37,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           result-encoding: string
           script: |
-            const script = require('./scripts/update_readme/get_inputs_markdown.js')
+            const script = require('./scripts/update_readme/update_readme/get_inputs_markdown.js')
             return script()
       - env:
           DESCRIPTION: ${{env.DESCRIPTION}}
