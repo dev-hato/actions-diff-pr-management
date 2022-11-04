@@ -26,7 +26,7 @@ jobs:
       - uses: actions/setup-node@v3.5.1
         with:
           cache: npm
-      - run: npm ci --prefer-offline
+      - run: npm ci
       - run: echo "DESCRIPTION=$(yq '.description' action.yml)" >> "${GITHUB_ENV}"
       - name: Get inputs markdown
         id: get_inputs_markdown
