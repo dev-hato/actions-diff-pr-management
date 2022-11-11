@@ -35,3 +35,7 @@ jobs:
           pr-title-prefix: package.json, package-lock.json修正
           pr-description-prefix: package.jsonやpackage-lock.jsonを修正しました。
           repo-name: ${{ github.event.pull_request.head.repo.full_name }}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
