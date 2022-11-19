@@ -1,6 +1,6 @@
 # actions-diff-pr-management
 
-PRのブランチに対して、フォーマッタを実行した結果をPRにするGitHub Actionsです。
+
 
 本Actionsを使わずにフォーマットを修正した場合や元のPRを閉じた場合、自動的にPRを閉じます。
 
