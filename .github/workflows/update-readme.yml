@@ -27,7 +27,6 @@ jobs:
         with:
           cache: npm
       - run: npm ci
-      - run: echo "DESCRIPTION=$(yq '.description' action.yml)" >> "${GITHUB_ENV}"
       - name: Get inputs markdown
         id: get_inputs_markdown
         uses: actions/github-script@v6.3.3
@@ -40,9 +39,8 @@ jobs:
             const script = require('./scripts/update_readme/update_readme/get_inputs_markdown.js')
             return script()
       - env:
-          DESCRIPTION: ${{env.DESCRIPTION}}
           INPUTS: ${{steps.get_inputs_markdown.outputs.result}}
-        run: envsubst < README.template.md > README.md
+        run: bash "${GITHUB_WORKSPACE}/scripts/update_readme/update_readme/update_readme.sh"
       - uses: ./
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+git add -A
+
 result=$(git diff --cached)
 result="${result//'%'/'%25'}"
 result="${result//$'\n'/'%0A'}"
