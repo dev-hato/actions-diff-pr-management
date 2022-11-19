@@ -16,8 +16,7 @@ jobs:
       - uses: actions/setup-node@v3.5.1
         with:
           cache: npm
-      - run: npm ci
-      - run: npx renovate-config-validator
+      - run: bash "${GITHUB_WORKSPACE}/scripts/renovate_config_validator/renovate_config_validator/validate.sh"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}

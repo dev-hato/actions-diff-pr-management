@@ -27,10 +27,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - shell: bash
-      if: github.event_name != 'pull_request' || github.event.action != 'closed'
-      name: git add
-      run: git add -A
     # 差分があったときは差分を出力する
     - name: Show diff
       id: diff
