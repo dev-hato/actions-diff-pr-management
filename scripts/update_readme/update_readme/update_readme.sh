@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
-export DESCRIPTION="$(yq '.description' action.yml)"
+DESCRIPTION="$(yq '.description' action.yml)"
+export DESCRIPTION
 envsubst < README.template.md > README.md
