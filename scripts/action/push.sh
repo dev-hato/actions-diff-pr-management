@@ -7,12 +7,5 @@ git commit -m "${PR_TITLE_PREFIX}"
 REPO_URL="https://"
 REPO_URL+="${AUTHOR}:${GITHUB_TOKEN}@github.com/"
 REPO_URL+="${REPOSITORY}.git"
-GITHUB_HEAD="HEAD:refs/heads/${BRANCH_NAME_PREFIX}"
-
-if [ "${HEAD_REF}" != "" ]; then
-  GITHUB_HEAD+="-${HEAD_REF}"
-elif [ "${BASE_BRANCH}" != "" ]; then
-  GITHUB_HEAD+="-${BASE_BRANCH}"
-fi
-
+GITHUB_HEAD="HEAD:refs/heads/${BRANCH_NAME_PREFIX}-${HEAD_REF}"
 git push -f "${REPO_URL}" "${GITHUB_HEAD}"
