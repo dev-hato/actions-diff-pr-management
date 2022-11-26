@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@v3.1.0
         with:
           fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-node@v3.5.1
         with:
           cache: npm
@@ -34,7 +34,6 @@ jobs:
           branch-name-prefix: fix-package
           pr-title-prefix: package.json, package-lock.json修正
           pr-description-prefix: package.jsonやpackage-lock.jsonを修正しました。
-          repo-name: ${{ github.event.pull_request.head.repo.full_name }}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}

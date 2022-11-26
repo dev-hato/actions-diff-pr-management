@@ -5,9 +5,6 @@ inputs:
   github-token: # id of input
     description: 'GitHubのトークン。'
     required: true
-  repo-name:
-    description: 'リポジトリ名。 `pull_request` 以外のトリガーも設定している場合はリポジトリ名を決め打ちで入力。'
-    required: true
   branch-name-prefix:
     description: 'branch名の接頭語。'
     required: true
@@ -19,10 +16,6 @@ inputs:
   pr-description-prefix:
     description: '本文の接頭語。'
     required: true
-    default: ""
-  base-branch:
-    description: 'ベースブランチ。 `pull_request` 以外のトリガーの場合は決め打ちで入力。'
-    required: false
     default: ""
 runs:
   using: "composite"
@@ -36,19 +29,18 @@ runs:
     # 差分があったときは、コミットを作りpushする
     - name: Push
       env:
-        HEAD_REF: ${{github.event.pull_request.head.ref}}
+        HEAD_REF: ${{github.event.pull_request.head.ref || github.ref_name}}
         PR_TITLE_PREFIX: ${{inputs.pr-title-prefix}}
         AUTHOR: ${{github.actor}}
         GITHUB_TOKEN: ${{inputs.github-token}}
         REPOSITORY: ${{github.repository}}
         BRANCH_NAME_PREFIX: ${{inputs.branch-name-prefix}}
-        BASE_BRANCH: ${{inputs.base-branch}}
-      if: inputs.repo-name == github.repository && steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
+      if: steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
       run: ${{ github.action_path }}/scripts/action/push.sh
       shell: bash
     - name: Set org name
       uses: actions/github-script@v6.3.3
-      if: inputs.repo-name == github.repository && (github.event_name == 'pull_request' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
+      if: github.event_name == 'pull_request' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
       id: set_org_name
       with:
         github-token: ${{inputs.github-token}}
@@ -56,25 +48,11 @@ runs:
         script: |
           const script = require('${{ github.action_path }}/scripts/action/set_org_name.js')
           return script()
-    - name: Get HEAD_REF
-      uses: actions/github-script@v6.3.3
-      env:
-        HEAD_REF: ${{github.event.pull_request.head.ref}}
-        BASE_BRANCH: ${{inputs.base-branch}}
-      if: inputs.repo-name == github.repository
-      id: get_head_ref
-      with:
-        github-token: ${{inputs.github-token}}
-        result-encoding: string
-        script: |
-          const script = require('${{ github.action_path }}/scripts/action/get_head_ref.js')
-          return script()
     - name: Get PullRequests
       uses: actions/github-script@v6.3.3
-      if: inputs.repo-name == github.repository && steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
+      if: steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
       id: get_pull_requests
       env:
-        HEAD_REF: ${{steps.get_head_ref.outputs.result}}
         ORG_NAME: ${{steps.set_org_name.outputs.result}}
         BRANCH_NAME_PREFIX: ${{inputs.branch-name-prefix}}
       with:
@@ -85,10 +63,9 @@ runs:
     # pushしたブランチでPRを作る
     - name: Create PullRequest
       uses: actions/github-script@v6.3.3
-      if: inputs.repo-name == github.repository && steps.diff.outputs.result != '' && steps.get_pull_requests.outputs.result == 0 && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
+      if: steps.diff.outputs.result != '' && steps.get_pull_requests.outputs.result == 0 && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
       id: create_pull_request
       env:
-        HEAD_REF: ${{steps.get_head_ref.outputs.result}}
         ORG_NAME: ${{steps.set_org_name.outputs.result}}
         PR_DESCRIPTION_PREFIX: ${{inputs.pr-description-prefix}}
         PR_NUMBER: ${{github.event.pull_request.number}}
@@ -101,7 +78,7 @@ runs:
           return await script({github, context})
     - name: Assign a user
       uses: actions/github-script@v6.3.3
-      if: inputs.repo-name == github.repository && steps.diff.outputs.result != '' && steps.get_pull_requests.outputs.result == 0 && github.event_name == 'pull_request' && github.event.action != 'closed' && github.event.pull_request.user.login != 'dependabot[bot]' && github.event.pull_request.user.login != 'renovate[bot]'
+      if: steps.diff.outputs.result != '' && steps.get_pull_requests.outputs.result == 0 && github.event_name == 'pull_request' && github.event.action != 'closed' && github.event.pull_request.user.login != 'dependabot[bot]' && github.event.pull_request.user.login != 'renovate[bot]'
       env:
         PR_NUMBER: ${{steps.create_pull_request.outputs.result}}
         ASSIGN_USER: ${{github.event.pull_request.user.login}}
@@ -113,9 +90,8 @@ runs:
     # 既にformat修正のPRがある状態で、手動でformatを修正した場合、format修正のPRを閉じる
     - name: Close PullRequest
       uses: actions/github-script@v6.3.3
-      if: inputs.repo-name == github.repository && ((github.event_name == 'pull_request' && (github.event.action == 'closed' || steps.diff.outputs.result == '')) || ((github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && steps.diff.outputs.result == ''))
+      if: (github.event_name == 'pull_request' && (github.event.action == 'closed' || steps.diff.outputs.result == '')) || ((github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && steps.diff.outputs.result == '')
       env:
-        HEAD_REF: ${{steps.get_head_ref.outputs.result}}
         ORG_NAME: ${{steps.set_org_name.outputs.result}}
         BRANCH_NAME_PREFIX: ${{inputs.branch-name-prefix}}
       with:

@@ -23,12 +23,11 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - run: hoge fmt # FIXME フォーマッタを走らせる
       - uses: dev-hato/actions-diff-pr-management@v1
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
-          repo-name: ${{ github.event.pull_request.head.repo.full_name }}
 ```
 
 ## 例
