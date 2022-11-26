@@ -26,6 +26,11 @@ runs:
       shell: bash
       if: github.event_name != 'pull_request' || github.event.action != 'closed'
       run: ${{ github.action_path }}/scripts/action/show_diff.sh
+    - shell: bash
+      run: |
+        echo "${{ github.event.pull_request.head.sha }}"
+        echo "${{ github.sha }}"
+        echo "${{ github.event.pull_request.head.sha || github.sha }}"
     # 差分があったときは、コミットを作りpushする
     - name: Push
       env:
