@@ -53,7 +53,6 @@ runs:
       if: steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
       id: get_pull_requests
       env:
-        HEAD_REF: ${{github.event.pull_request.head.ref || github.ref_name}}
         ORG_NAME: ${{steps.set_org_name.outputs.result}}
         BRANCH_NAME_PREFIX: ${{inputs.branch-name-prefix}}
       with:
@@ -67,7 +66,6 @@ runs:
       if: steps.diff.outputs.result != '' && steps.get_pull_requests.outputs.result == 0 && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
       id: create_pull_request
       env:
-        HEAD_REF: ${{github.event.pull_request.head.ref || github.ref_name}}
         ORG_NAME: ${{steps.set_org_name.outputs.result}}
         PR_DESCRIPTION_PREFIX: ${{inputs.pr-description-prefix}}
         PR_NUMBER: ${{github.event.pull_request.number}}
@@ -94,7 +92,6 @@ runs:
       uses: actions/github-script@v6.3.3
       if: (github.event_name == 'pull_request' && (github.event.action == 'closed' || steps.diff.outputs.result == '')) || ((github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && steps.diff.outputs.result == '')
       env:
-        HEAD_REF: ${{github.event.pull_request.head.ref || github.ref_name}}
         ORG_NAME: ${{steps.set_org_name.outputs.result}}
         BRANCH_NAME_PREFIX: ${{inputs.branch-name-prefix}}
       with:
