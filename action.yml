@@ -48,11 +48,6 @@ runs:
         script: |
           const script = require('${{ github.action_path }}/scripts/action/set_org_name.js')
           return script()
-    - shell: bash
-      run: |
-        echo "${{github.event.pull_request.head.ref}}"
-        echo "${{github.ref_name}}"
-        echo "${{github.event.pull_request.head.ref || github.ref_name}}"
     - name: Get PullRequests
       uses: actions/github-script@v6.3.3
       if: steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
