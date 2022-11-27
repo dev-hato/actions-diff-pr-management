@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-echo "HEAD_REF=${HEAD_REF}" >>"${GITHUB_ENV}"
 git config user.name "github-actions[bot]"
 EMAIL="41898282+github-actions[bot]@users.noreply.github.com"
 git config user.email "${EMAIL}"

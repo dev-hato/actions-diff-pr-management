@@ -26,10 +26,12 @@ runs:
       shell: bash
       if: github.event_name != 'pull_request' || github.event.action != 'closed'
       run: ${{ github.action_path }}/scripts/action/show_diff.sh
+    - name: Set HEAD_REF
+      shell: bash
+      run: echo "HEAD_REF=${{github.event.pull_request.head.ref || github.ref_name}}" >>"${GITHUB_ENV}"
     # 差分があったときは、コミットを作りpushする
     - name: Push
       env:
-        HEAD_REF: ${{github.event.pull_request.head.ref || github.ref_name}}
         PR_TITLE_PREFIX: ${{inputs.pr-title-prefix}}
         AUTHOR: ${{github.actor}}
         GITHUB_TOKEN: ${{inputs.github-token}}
