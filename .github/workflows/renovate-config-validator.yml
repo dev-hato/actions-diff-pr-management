@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3.3.0
-      - uses: actions/setup-node@v3.5.1
+      - uses: actions/setup-node@v3.6.0
         with:
           cache: npm
       - run: bash "${GITHUB_WORKSPACE}/scripts/renovate_config_validator/renovate_config_validator/validate.sh"
