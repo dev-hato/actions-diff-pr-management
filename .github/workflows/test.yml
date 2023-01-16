@@ -4,7 +4,7 @@ name: test
 on:
   push:
     branches:
-      - main
+      - add_push_trigger
 
 jobs:
   update-readme:
