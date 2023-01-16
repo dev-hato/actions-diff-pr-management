@@ -44,6 +44,12 @@ jobs:
 | pr-title-prefix | PRのタイトルの接頭語。 |  |
 | pr-description-prefix | 本文の接頭語。 |  |
 
+## 対応しているトリガー
+* pull_request
+* push
+* schedule
+* workflow_dispatch
+
 ## 開発
 
 ### 設定
