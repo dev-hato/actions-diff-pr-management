@@ -39,6 +39,12 @@ jobs:
 
 ${INPUTS}
 
+## 対応しているトリガー
+* pull_request
+* push
+* schedule
+* workflow_dispatch
+
 ## 開発
 
 ### 設定
