@@ -29,7 +29,7 @@ jobs:
       - run: npm ci
       - name: Get inputs markdown
         id: get_inputs_markdown
-        uses: actions/github-script@v6.3.3
+        uses: actions/github-script@v6.4.0
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref || github.head_ref}}
         with:
