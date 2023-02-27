@@ -12,6 +12,7 @@ on:
 jobs:
   add-to-task-list:
     runs-on: ubuntu-latest
+    if: github.repository == github.event.pull_request.head.repo.full_name
     steps:
       - uses: dev-hato/actions-add-to-projects@v0.0.25
         with:
