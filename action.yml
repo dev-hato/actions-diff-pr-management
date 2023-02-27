@@ -34,7 +34,7 @@ runs:
       env:
         PR_TITLE_PREFIX: ${{inputs.pr-title-prefix}}
         AUTHOR: ${{github.actor}}
-        GITHUB_TOKEN: ${{inputs.github-token}}
+        TOKEN: ${{inputs.github-token}}
         REPOSITORY: ${{github.repository}}
         BRANCH_NAME_PREFIX: ${{inputs.branch-name-prefix}}
       if: steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
