@@ -18,13 +18,14 @@ on:
 jobs:
   diff-pr-management:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@v3
+        if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
-      - run: hoge fmt # FIXME フォーマッタを走らせる
+      - if: github.event_name != 'pull_request' || github.event.action != 'closed'
+        run: hoge fmt # FIXME フォーマッタを走らせる
       - uses: dev-hato/actions-diff-pr-management@v1
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}

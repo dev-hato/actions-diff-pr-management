@@ -24,12 +24,15 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-node@v3.6.0
+        if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           cache: npm
-      - run: npm ci
+      - if: github.event_name != 'pull_request' || github.event.action != 'closed'
+        run: npm ci
       - name: Get inputs markdown
         id: get_inputs_markdown
         uses: actions/github-script@v6.4.0
+        if: github.event_name != 'pull_request' || github.event.action != 'closed'
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref || github.head_ref}}
         with:
@@ -40,6 +43,7 @@ jobs:
             return script()
       - env:
           INPUTS: ${{steps.get_inputs_markdown.outputs.result}}
+        if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: bash "${GITHUB_WORKSPACE}/scripts/update_readme/update_readme/update_readme.sh"
       - uses: ./
         with:
