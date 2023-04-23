@@ -27,7 +27,6 @@ jobs:
       - uses: dev-hato/actions-format-json-yml@v0.0.39
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
-          repo-name: dev-hato/actions-diff-pr-management
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
