@@ -32,7 +32,6 @@ jobs:
       - uses: dev-hato/actions-update-gitleaks@v0.0.43
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
-          repo-name: ${{ github.event.pull_request.head.repo.full_name }}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
