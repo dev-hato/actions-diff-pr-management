@@ -13,7 +13,13 @@ module.exports = () => {
       row += 'O'
     }
 
-    row += ` | ${inputs[inputName].default} |`
+    row += ' | '
+
+    if (inputs[inputName].default !== undefined) {
+      row += inputs[inputName].default
+    }
+
+    row += ' |'
     rows.push(row)
   }
 
