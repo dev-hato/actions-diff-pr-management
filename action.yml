@@ -17,6 +17,10 @@ inputs:
     description: '本文の接頭語。'
     required: true
     default: ""
+  exit-failure:
+    description: '実行完了時にCIを失敗させるかどうか。'
+    required: false
+    default: "true"
 runs:
   using: "composite"
   steps:
@@ -102,6 +106,6 @@ runs:
           const script = require('${{ github.action_path }}/scripts/action/close_pull_request.js')
           await script({github, context})
     - name: Exit
-      if: (github.event_name != 'pull_request' || github.event.action != 'closed') && steps.diff.outputs.result != ''
+      if: (github.event_name != 'pull_request' || github.event.action != 'closed') && steps.diff.outputs.result != '' && inputs.exit-failure == 'true'
       run: exit 1
       shell: bash
