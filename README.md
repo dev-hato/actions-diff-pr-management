@@ -44,6 +44,7 @@ jobs:
 | branch-name-prefix | branch名の接頭語。 |  |
 | pr-title-prefix | PRのタイトルの接頭語。 |  |
 | pr-description-prefix | 本文の接頭語。 |  |
+| exit-failure | 実行完了時にCIを失敗させるかどうか。 |  |
 
 ## 対応しているトリガー
 * pull_request
