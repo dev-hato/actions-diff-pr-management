@@ -52,6 +52,7 @@ jobs:
 * push
 * schedule
 * workflow_dispatch
+* repository_dispatch
 
 ## 開発
 
