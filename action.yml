@@ -21,6 +21,10 @@ inputs:
     description: '実行完了時にCIを失敗させるかどうか。'
     required: false
     default: "true"
+  working-directory:
+    description: '実行対象のディレクトリ'
+    required: false
+    default: ""
 runs:
   using: "composite"
   steps:
@@ -29,6 +33,7 @@ runs:
       id: diff
       shell: bash
       if: github.event_name != 'pull_request' || github.event.action != 'closed'
+      working-directory: ${{inputs.working-directory}}
       run: ${{ github.action_path }}/scripts/action/show_diff.sh
     - name: Set HEAD_REF
       shell: bash
@@ -42,6 +47,7 @@ runs:
         REPOSITORY: ${{github.repository}}
         BRANCH_NAME_PREFIX: ${{inputs.branch-name-prefix}}
       if: steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
+      working-directory: ${{inputs.working-directory}}
       run: ${{ github.action_path }}/scripts/action/push.sh
       shell: bash
     - name: Set org name
