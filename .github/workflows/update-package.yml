@@ -1,6 +1,5 @@
 ---
 name: update-package
-
 on:
   pull_request:
     types:
@@ -11,7 +10,6 @@ on:
   push:
     branches:
       - main
-
 jobs:
   # npm installを実行し、package.jsonやpackage-lock.jsonに差分があればPRを作る
   update-package:
@@ -36,7 +34,6 @@ jobs:
           branch-name-prefix: fix-package
           pr-title-prefix: package.json, package-lock.json修正
           pr-description-prefix: package.jsonやpackage-lock.jsonを修正しました。
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
