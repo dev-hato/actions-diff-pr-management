@@ -1,23 +1,19 @@
 ---
 name: renovate-config-validator
-
 on:
   push:
     branches:
       - main
   pull_request:
-
 jobs:
   renovate-config-validator:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3.6.0
       - uses: actions/setup-node@v3.8.1
         with:
           cache: npm
       - run: bash "${GITHUB_WORKSPACE}/scripts/renovate_config_validator/renovate_config_validator/validate.sh"
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true

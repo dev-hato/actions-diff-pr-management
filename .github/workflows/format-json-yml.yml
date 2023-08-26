@@ -1,6 +1,5 @@
 ---
 name: format-json-yml
-
 on:
   pull_request:
     types:
@@ -11,11 +10,9 @@ on:
   push:
     branches:
       - main
-
 permissions:
   contents: write
   pull-requests: write
-
 jobs:
   format-json-yml:
     runs-on: ubuntu-latest
@@ -29,7 +26,6 @@ jobs:
       - uses: dev-hato/actions-format-json-yml@v0.0.46
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
