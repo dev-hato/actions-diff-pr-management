@@ -40,7 +40,7 @@ jobs:
           # Full git history is needed to get a proper list
           # of changed files within `super-linter`
           fetch-depth: 0
-      - uses: actions/setup-node@v3.8.1
+      - uses: actions/setup-node@v3.8.2
         with:
           cache: npm
       - run: bash "${GITHUB_WORKSPACE}/scripts/super_linter/build/set_path.sh"
