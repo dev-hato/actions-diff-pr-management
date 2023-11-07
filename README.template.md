@@ -13,7 +13,7 @@ on:
       - opened
       - synchronize
       - reopened
-      - closed
+      - closed # 本Actionsを使わずに元のPRを閉じた際に自動的にPRを閉じるために必要 (このtypeの場合は本Actionsのstepのみ実行する)
 
 jobs:
   diff-pr-management:
