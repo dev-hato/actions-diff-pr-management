@@ -11,7 +11,6 @@ fi
 
 GIT_COMMIT_COMMAND="$GIT_COMMIT_COMMAND -m \"${PR_TITLE_PREFIX}\""
 eval "$GIT_COMMIT_COMMAND"
-git commit -m "${PR_TITLE_PREFIX}"
 REPO_URL="https://"
 REPO_URL+="${AUTHOR}:${TOKEN}@github.com/"
 REPO_URL+="${REPOSITORY}.git"
