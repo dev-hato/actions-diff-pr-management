@@ -27,6 +27,7 @@ jobs:
       - if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: hoge fmt # FIXME フォーマッタを走らせる
       - uses: dev-hato/actions-diff-pr-management@v1
+        if: success() || failure()
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
 ```
