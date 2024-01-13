@@ -1,12 +1,14 @@
 module.exports = async ({ github, context }) => {
-  const HEAD_REF = process.env.HEAD_REF
+  const head_ref = process.env.HEAD_REF.replace("#", "")
   const PR_NUMBER = process.env.PR_NUMBER
   const PR_TITLE_PREFIX = process.env.PR_TITLE_PREFIX
   let head = process.env.BRANCH_NAME_PREFIX
 
-  if (HEAD_REF !== '') {
-    head += '-' + HEAD_REF
+  if (head_ref !== '') {
+    head += '-' + head_ref
   }
+
+  head = head.replace("#", "")
 
   const headWithRepo = process.env.ORG_NAME + ':' + head
   let title = PR_TITLE_PREFIX
@@ -19,7 +21,7 @@ module.exports = async ({ github, context }) => {
     body += `#${PR_NUMBER} ( `
   }
 
-  body += `\`${HEAD_REF}\``
+  body += `\`${head_ref}\``
 
   if (PR_NUMBER !== '') {
     body += ' )'
@@ -27,7 +29,7 @@ module.exports = async ({ github, context }) => {
 
   body += '\n'
   body += '```mermaid\n'
-  body += `%%{init: {'gitGraph': {'mainBranchName': '${HEAD_REF}'}}}%%\n`
+  body += `%%{init: {'gitGraph': {'mainBranchName': '${head_ref}'}}}%%\n`
   body += 'gitGraph\n'
 
   for (let i = 0; i < 2; i++) {
@@ -43,7 +45,7 @@ module.exports = async ({ github, context }) => {
   }
 
   body += `  commit id: "${commit}"\n`
-  body += `  checkout ${HEAD_REF}\n`
+  body += `  checkout ${head_ref}\n`
   body += `  merge ${head}\n`
   body += '```'
 
@@ -55,7 +57,7 @@ module.exports = async ({ github, context }) => {
     owner: context.repo.owner,
     repo: context.repo.repo,
     head: headWithRepo,
-    base: HEAD_REF,
+    base: head_ref,
     title,
     body
   }
