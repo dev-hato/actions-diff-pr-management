@@ -10,7 +10,6 @@ module.exports = async ({ github, context }) => {
   }
 
   const escapedHead = head.replaceAll('#', '')
-
   const headWithRepo = process.env.ORG_NAME + ':' + head
   let title = PR_TITLE_PREFIX
   let body = process.env.PR_DESCRIPTION_PREFIX
