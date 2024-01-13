@@ -1,5 +1,6 @@
 module.exports = async ({ github, context }) => {
-  const headRef = process.env.HEAD_REF.replaceAll('#', '')
+  const HEAD_REF = process.env.HEAD_REF
+  const headRef = HEAD_REF.replaceAll('#', '')
   const PR_NUMBER = process.env.PR_NUMBER
   const PR_TITLE_PREFIX = process.env.PR_TITLE_PREFIX
   let head = process.env.BRANCH_NAME_PREFIX
@@ -57,7 +58,7 @@ module.exports = async ({ github, context }) => {
     owner: context.repo.owner,
     repo: context.repo.repo,
     head: headWithRepo,
-    base: headRef,
+    base: HEAD_REF,
     title,
     body
   }
