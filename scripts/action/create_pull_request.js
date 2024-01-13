@@ -5,8 +5,8 @@ module.exports = async ({ github, context }) => {
   const PR_TITLE_PREFIX = process.env.PR_TITLE_PREFIX
   let head = process.env.BRANCH_NAME_PREFIX
 
-  if (escapedHeadRef !== '') {
-    head += '-' + escapedHeadRef
+  if (HEAD_REF !== '') {
+    head += '-' + HEAD_REF
   }
 
   const escapedHead = head.replaceAll('#', '')
