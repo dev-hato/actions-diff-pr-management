@@ -12,7 +12,6 @@ module.exports = async ({ github, context }) => {
   }
   const pullsListParams = {
     head: process.env.ORG_NAME + ':' + headName,
-    base: HEAD_REF,
     state: 'open',
     ...commonParams
   }
