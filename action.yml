@@ -1,4 +1,4 @@
-name: 'diff-pr-management'
+name: 'diff-pr-managementt'
 author: 'dev-hato Development Team'
 description: 'PRのブランチに対して、フォーマッタを実行した結果をPRにするGitHub Actionsです。'
 inputs:
