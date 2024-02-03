@@ -2,7 +2,7 @@
 
 ${DESCRIPTION}
 
-本Actionsを使ったCIを再度実行すると修正PRにforce pushされます。
+本Actionsを使ったCIが再度実行されると修正PRにforce pushされます。
 
 また、本Actionsを使わずにフォーマットを修正した場合や元のPRを閉じた場合、自動的にPRを閉じます。
 
