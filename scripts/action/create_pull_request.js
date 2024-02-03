@@ -28,6 +28,7 @@ module.exports = async ({ github, context }) => {
   }
 
   body += '\n'
+  body += `CIが再度実行されると本PR ( \`${escapedHead}\` ) にforce pushされます。\n`
   body += '```mermaid\n'
   body += `%%{init: {'gitGraph': {'mainBranchName': '${escapedHeadRef}'}}}%%\n`
   body += 'gitGraph\n'
