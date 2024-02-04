@@ -51,6 +51,7 @@ jobs:
         uses: super-linter/super-linter/slim@v6.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BRANCH: main
           LINTER_RULES_PATH: .
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
