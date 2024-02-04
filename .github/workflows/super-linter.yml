@@ -18,6 +18,10 @@ on:
     branches:
       - main
   pull_request:
+permissions:
+  contents: read
+  packages: read
+  statuses: write
 ###############
 # Set the Job #
 ###############

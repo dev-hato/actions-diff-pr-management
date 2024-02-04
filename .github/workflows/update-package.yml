@@ -10,13 +10,13 @@ on:
   push:
     branches:
       - main
+permissions:
+  contents: write
+  pull-requests: write
 jobs:
   # npm installを実行し、package.jsonやpackage-lock.jsonに差分があればPRを作る
   update-package:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
     steps:
       - uses: actions/checkout@v4.1.1
         with:
