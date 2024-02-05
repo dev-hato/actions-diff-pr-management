@@ -2,4 +2,4 @@
 
 DESCRIPTION="$(yq '.description' action.yml)"
 export DESCRIPTION
-envsubst < README.template.md > README.md
+envsubst <README.template.md >README.md

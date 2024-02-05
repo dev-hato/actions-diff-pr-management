@@ -6,7 +6,7 @@ git config user.email "${EMAIL}"
 GIT_COMMIT_COMMAND="git commit"
 
 if [ "$NO_VERIFY" = "true" ]; then
-  GIT_COMMIT_COMMAND="$GIT_COMMIT_COMMAND --no-verify"
+	GIT_COMMIT_COMMAND="$GIT_COMMIT_COMMAND --no-verify"
 fi
 
 GIT_COMMIT_COMMAND="$GIT_COMMIT_COMMAND -m \"${PR_TITLE_PREFIX}\""
@@ -18,7 +18,7 @@ GITHUB_HEAD="HEAD:refs/heads/${BRANCH_NAME_PREFIX}-${HEAD_REF}"
 GIT_PUSH_COMMAND="git push"
 
 if [ "$NO_VERIFY" = "true" ]; then
-  GIT_PUSH_COMMAND="$GIT_PUSH_COMMAND --no-verify"
+	GIT_PUSH_COMMAND="$GIT_PUSH_COMMAND --no-verify"
 fi
 
 GIT_PUSH_COMMAND="$GIT_PUSH_COMMAND -f \"${REPO_URL}\" \"${GITHUB_HEAD}\""
