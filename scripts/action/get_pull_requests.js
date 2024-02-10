@@ -1,6 +1,6 @@
 module.exports = async ({ github, context }) => {
   const HEAD_REF = process.env.HEAD_REF
-  let head = process.env.ORG_NAME + ':' + process.env.BRANCH_NAME_PREFIX
+  let head = context.repo.owner + ':' + process.env.BRANCH_NAME_PREFIX
 
   if (HEAD_REF !== '') {
     head += '-' + HEAD_REF

@@ -1,7 +1,7 @@
 module.exports = async ({ github, context }) => {
   const HEAD_REF = process.env.HEAD_REF
   const escapedHeadRef = HEAD_REF.replaceAll('#', '')
-  const PR_NUMBER = process.env.PR_NUMBER
+  const PR_NUMBER = context.payload.number
   const PR_TITLE_PREFIX = process.env.PR_TITLE_PREFIX
   let head = process.env.BRANCH_NAME_PREFIX
 
@@ -10,7 +10,7 @@ module.exports = async ({ github, context }) => {
   }
 
   const escapedHead = head.replaceAll('#', '')
-  const headWithRepo = process.env.ORG_NAME + ':' + head
+  const headWithRepo = context.repo.owner + ':' + head
   let title = PR_TITLE_PREFIX
   let body = process.env.PR_DESCRIPTION_PREFIX
 
