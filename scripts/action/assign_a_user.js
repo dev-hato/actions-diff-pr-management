@@ -3,7 +3,7 @@ module.exports = async ({ github, context }) => {
     owner: context.repo.owner,
     repo: context.repo.repo,
     issue_number: process.env.PR_NUMBER,
-    assignees: [process.env.ASSIGN_USER]
+    assignees: [context.actor]
   }
   console.log('call issues.addAssignees:')
   console.log(issuesAddAssigneesParams)
