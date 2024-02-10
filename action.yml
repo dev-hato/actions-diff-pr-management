@@ -71,6 +71,7 @@ runs:
       id: create_pull_request
       env:
         PR_DESCRIPTION_PREFIX: ${{inputs.pr-description-prefix}}
+        PR_NUMBER: ${{github.event.pull_request.number}}
         PR_TITLE_PREFIX: ${{inputs.pr-title-prefix}}
         BRANCH_NAME_PREFIX: ${{inputs.branch-name-prefix}}
       with:
