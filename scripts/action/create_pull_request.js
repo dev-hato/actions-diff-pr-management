@@ -67,5 +67,20 @@ module.exports = async ({ github, context }) => {
   const createPullRes = await github.rest.pulls.create(
     pullsCreateParams
   )
+
+  await github.rest.pulls.requestReviewers({
+    owner: context.repo.owner,
+    repo: rcontext.repo.repo,
+    pull_number: createPullRes.data.number,
+    reviewers: [context.actor],
+  })
+
+  await github.rest.pulls.update({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      pull_number: createPullRes.data.number,
+      draft: false,
+  })
+
   return createPullRes.data.number
 }
