@@ -66,13 +66,34 @@ module.exports = async ({ github, context }) => {
   const createPullRes = await github.rest.pulls.create(
     pullsCreateParams
   )
+    console.log(createPullRes)
 
-  await github.rest.pulls.requestReviewers({
+    const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+    await sleep(10000);
+
+    const p = await github.rest.pulls.get({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        pull_number: createPullRes.data.number,
+    });
+  console.log(p)
+
+  const result0 = await github.rest.pulls.removeRequestedReviewers({
+    owner: context.repo.owner,
+    repo: context.repo.repo,
+    pull_number: createPullRes.data.number,
+    reviewers: createPullRes.data.requested_reviewers.map(i=>i.login),
+    team_reviewers: createPullRes.data.requested_teams.map(i=>i.slug),
+  })
+  console.log(result0)
+
+  const result1 = await github.rest.pulls.requestReviewers({
     owner: context.repo.owner,
     repo: context.repo.repo,
     pull_number: createPullRes.data.number,
     reviewers: [context.actor],
   })
+  console.log(result1)
 
   return createPullRes.data.number
 }
