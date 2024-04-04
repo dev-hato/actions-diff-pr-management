@@ -70,7 +70,7 @@ module.exports = async ({ github, context }) => {
 
   await github.rest.pulls.requestReviewers({
     owner: context.repo.owner,
-    repo: rcontext.repo.repo,
+    repo: context.repo.repo,
     pull_number: createPullRes.data.number,
     reviewers: [context.actor],
   })
