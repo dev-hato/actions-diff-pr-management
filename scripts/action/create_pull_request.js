@@ -66,6 +66,14 @@ module.exports = async ({ github, context }) => {
   const createPullRes = await github.rest.pulls.create(
     pullsCreateParams
   )
+    console.log(createPullRes)
+
+    const p = await github.rest.pulls.get({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        pull_number: createPullRes.data.number,
+    });
+  console.log(p)
 
   const result0 = await github.rest.pulls.removeRequestedReviewers({
     owner: context.repo.owner,
