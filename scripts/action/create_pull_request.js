@@ -59,7 +59,6 @@ module.exports = async ({ github, context }) => {
     repo: context.repo.repo,
     head: headWithRepo,
     base: HEAD_REF,
-    draft: true,
     title,
     body
   }
