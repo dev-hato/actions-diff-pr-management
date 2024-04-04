@@ -88,7 +88,7 @@ module.exports = async ({ github, context }) => {
       owner: context.repo.owner,
       repo: context.repo.repo,
       pull_number: createPullRes.data.number,
-      draft: false,
+      state: 'open',
   })
   console.log(result2)
 
