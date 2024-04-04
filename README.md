@@ -60,6 +60,12 @@ jobs:
 
 ## 開発
 
+
+
+
+
+
+
 ### 設定
 
 <https://pre-commit.com/> の手順に従って `pre-commit` をインストールします。  
