@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Generate a token
         id: generate_token
-        uses: actions/create-github-app-token@v1.9.2
+        uses: actions/create-github-app-token@v1.9.3
         with:
           app-id: ${{ secrets.PROJECT_AUTOMATION_APP_ID }}
           private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
