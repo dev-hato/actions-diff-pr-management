@@ -68,6 +68,8 @@ module.exports = async ({ github, context }) => {
   )
     console.log(createPullRes)
 
+    await sleep(10000);
+
     const p = await github.rest.pulls.get({
         owner: context.repo.owner,
         repo: context.repo.repo,
