@@ -16,6 +16,7 @@ permissions:
 jobs:
   # npm installを実行し、package.jsonやpackage-lock.jsonに差分があればPRを作る
   update-package:
+    # jscpd:ignore-start
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.1.2
@@ -26,6 +27,7 @@ jobs:
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           cache: npm
+      # jscpd:ignore-end
       - if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: npm install
       - uses: ./
