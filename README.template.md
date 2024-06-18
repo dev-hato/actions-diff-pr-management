@@ -17,6 +17,10 @@ on:
       - reopened
       - closed # 本Actionsを使わずに元のPRを閉じた際に自動的にPRを閉じるために必要 (このtypeの場合は本Actionsのstepのみ実行する)
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   diff-pr-management:
     runs-on: ubuntu-latest
