@@ -15,7 +15,7 @@ on:
       - opened
       - synchronize
       - reopened
-      - closed # 本Actionsを使わずに元のPRを閉じた際に自動的にPRを閉じるために必要 (このtypeの場合は本Actionsのstepのみ実行する)
+      - closed # 元のPRを閉じた際に本Actionsが出したPRを自動的に閉じるために必要 (このtypeの場合は本Actionsのstepのみ実行する)
 
 permissions:
   contents: write
