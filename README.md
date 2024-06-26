@@ -53,7 +53,7 @@ jobs:
 | pr-description-prefix | 本文の接頭語。 |  |  |
 | exit-failure | 実行完了時にCIを失敗させるかどうか。 |  | true |
 | working-directory | 実行対象のディレクトリ |  |  |
-| no-verify | git commit, push時のフックを無効化する |  | false |
+| no-verify | `git commit`, `git push` 時のフックを無効化する |  | false |
 
 ## 対応しているトリガー
 * pull_request
