@@ -59,6 +59,9 @@ jobs:
           LINTER_RULES_PATH: .
           JAVASCRIPT_DEFAULT_STYLE: prettier
           VALIDATE_JAVASCRIPT_STANDARD: false
+          VALIDATE_YAML_PRETTIER: false
+          VALIDATE_MARKDOWN_PRETTIER: false
+          VALIDATE_JSON_PRETTIER: false
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
