@@ -5,7 +5,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '0 21 * * *' # 06:00 JST
+    - cron: "0 21 * * *" # 06:00 JST
   workflow_dispatch:
 permissions: read-all
 jobs:
