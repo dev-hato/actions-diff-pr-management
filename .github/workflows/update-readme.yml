@@ -45,6 +45,7 @@ jobs:
           INPUTS: ${{steps.get_inputs_markdown.outputs.result}}
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: bash "${GITHUB_WORKSPACE}/scripts/update_readme/update_readme/update_readme.sh"
+      - run: npx prettier --write .
       - uses: ./
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
