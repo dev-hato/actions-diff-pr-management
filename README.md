@@ -40,8 +40,8 @@ jobs:
 
 ## 例
 
-* 元のPR: <https://github.com/dev-hato/actions-diff-pr-management/pull/96>
-* 本Actionsによって作成されたPR: <https://github.com/dev-hato/actions-diff-pr-management/pull/98>
+- 元のPR: <https://github.com/dev-hato/actions-diff-pr-management/pull/96>
+- 本Actionsによって作成されたPR: <https://github.com/dev-hato/actions-diff-pr-management/pull/98>
 
 ## 引数
 
@@ -56,11 +56,12 @@ jobs:
 | no-verify | `git commit`, `git push` 時のフックを無効化する |  | false |
 
 ## 対応しているトリガー
-* pull_request
-* push
-* schedule
-* workflow_dispatch
-* repository_dispatch
+
+- pull_request
+- push
+- schedule
+- workflow_dispatch
+- repository_dispatch
 
 ## 開発
 
