@@ -1,32 +1,32 @@
-name: 'diff-pr-management'
-author: 'dev-hato Development Team'
-description: 'PRのブランチに対して、フォーマッタを実行した結果をPRにするGitHub Actionsです。'
+name: "diff-pr-management"
+author: "dev-hato Development Team"
+description: "PRのブランチに対して、フォーマッタを実行した結果をPRにするGitHub Actionsです。"
 inputs:
   github-token: # id of input
-    description: 'GitHubのトークン。'
+    description: "GitHubのトークン。"
     required: true
   branch-name-prefix:
-    description: 'branch名の接頭語。'
+    description: "branch名の接頭語。"
     required: true
     default: fix
   pr-title-prefix:
-    description: 'PRのタイトルの接頭語。'
+    description: "PRのタイトルの接頭語。"
     required: true
     default: fix
   pr-description-prefix:
-    description: '本文の接頭語。'
+    description: "本文の接頭語。"
     required: true
     default: ""
   exit-failure:
-    description: '実行完了時にCIを失敗させるかどうか。'
+    description: "実行完了時にCIを失敗させるかどうか。"
     required: false
     default: "true"
   working-directory:
-    description: '実行対象のディレクトリ'
+    description: "実行対象のディレクトリ"
     required: false
     default: ""
   no-verify:
-    description: '`git commit`, `git push` 時のフックを無効化する'
+    description: "`git commit`, `git push` 時のフックを無効化する"
     required: false
     default: "false"
 runs:
