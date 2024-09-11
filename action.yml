@@ -64,7 +64,7 @@ runs:
         script: |
           const script = require('${{ github.action_path }}/scripts/action/get_pull_requests.js')
           return await script({github, context})
-    # pushしたブランチでPRを作る
+    # pushしたブランチでformat修正のPRを作る
     - name: Create PullRequest
       uses: actions/github-script@v7.0.1
       if: steps.diff.outputs.result != '' && steps.get_pull_requests.outputs.result == 0 && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch')
@@ -79,6 +79,7 @@ runs:
         script: |
           const script = require('${{ github.action_path }}/scripts/action/create_pull_request.js')
           return await script({github, context})
+    # 元のPRを出したユーザーをformat修正のPRにアサインする
     - name: Assign a user
       uses: actions/github-script@v7.0.1
       if: steps.diff.outputs.result != '' && steps.get_pull_requests.outputs.result == 0 && github.event_name == 'pull_request' && github.event.action != 'closed' && github.event.pull_request.user.login != 'dependabot[bot]' && github.event.pull_request.user.login != 'renovate[bot]'
@@ -100,6 +101,7 @@ runs:
         script: |
           const script = require('${{ github.action_path }}/scripts/action/close_pull_request.js')
           await script({github, context})
+    # exit-failureがtrueで差分がある場合は異常終了する
     - name: Exit
       if: (github.event_name != 'pull_request' || github.event.action != 'closed') && steps.diff.outputs.result != '' && inputs.exit-failure == 'true'
       run: exit 1
