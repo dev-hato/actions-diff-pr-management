@@ -11,7 +11,7 @@ module.exports = async ({ github, context }) => {
     repo: context.repo.repo,
   };
 
-  // format修正のPRの情報を取得する
+  // 修正PRの情報を取得する
   const pullsListParams = {
     head: context.repo.owner + ":" + headName,
     state: "open",
@@ -21,7 +21,7 @@ module.exports = async ({ github, context }) => {
   const pulls = await github.paginate(github.rest.pulls.list, pullsListParams);
 
   for (const pull of pulls) {
-    // format修正のPRをcloseする (format修正のPRのstateをclosedに更新する)
+    // 修正PRをcloseする (修正PRのstateをclosedに更新する)
     const pullsUpdateParams = {
       pull_number: pull.number,
       state: "closed",
@@ -30,7 +30,7 @@ module.exports = async ({ github, context }) => {
     console.log("call pulls.update:", pullsUpdateParams);
     await github.rest.pulls.update(pullsUpdateParams);
 
-    // format修正のブランチを削除する
+    // 修正PRのブランチを削除する
     const gitDeleteRefParams = {
       ref: "heads/" + headName,
       ...commonParams,
