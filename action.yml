@@ -7,15 +7,15 @@ inputs:
     required: true
   branch-name-prefix:
     description: "branch名の接頭語。"
-    required: true
+    required: false
     default: fix
   pr-title-prefix:
     description: "PRのタイトルの接頭語。"
-    required: true
+    required: false
     default: fix
   pr-description-prefix:
     description: "本文の接頭語。"
-    required: true
+    required: false
     default: ""
   exit-failure:
     description: "実行完了時にCIを失敗させるかどうか。"
