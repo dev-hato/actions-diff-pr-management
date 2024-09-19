@@ -1,10 +1,10 @@
 const generateTitleDescription = require("./generate_title_description.js");
-const getPullRequests = require('./get_pull_requests.js');
+const getPullRequests = require("./get_pull_requests.js");
 
 module.exports = async ({ github, context }) => {
   const { title, body } = generateTitleDescription();
 
-  for (const pull of await getPullRequests({github, context})) {
+  for (const pull of await getPullRequests({ github, context })) {
     if (pull.title === title && pull.body === body) {
       continue;
     }

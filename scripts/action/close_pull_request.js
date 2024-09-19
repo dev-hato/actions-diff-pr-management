@@ -1,4 +1,4 @@
-const getPullRequests = require('./get_pull_requests.js');
+const getPullRequests = require("./get_pull_requests.js");
 
 module.exports = async ({ github, context }) => {
   const HEAD_REF = process.env.HEAD_REF;
@@ -13,7 +13,7 @@ module.exports = async ({ github, context }) => {
     repo: context.repo.repo,
   };
 
-  for (const pull of await getPullRequests({github, context})) {
+  for (const pull of await getPullRequests({ github, context })) {
     // 修正PRをcloseする (修正PRのstateをclosedに更新する)
     const pullsUpdateParams = {
       pull_number: pull.number,
