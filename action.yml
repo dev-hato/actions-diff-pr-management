@@ -69,6 +69,7 @@ runs:
       uses: actions/github-script@v7.0.1
       if: steps.diff.outputs.result != '' && steps.get_pull_requests.outputs.result == 0 && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch')
       id: create_pull_request
+      # jscpd:ignore-start
       env:
         PR_DESCRIPTION_PREFIX: ${{inputs.pr-description-prefix}}
         PR_NUMBER: ${{github.event.pull_request.number}}
@@ -79,6 +80,7 @@ runs:
         script: |
           const script = require('${{ github.action_path }}/scripts/action/create_pull_request.js')
           return await script({github, context})
+      # jscpd:ignore-end
     # 元のPRを出したユーザーを修正PRにアサインする
     - name: Assign a user
       uses: actions/github-script@v7.0.1
@@ -94,6 +96,7 @@ runs:
       uses: actions/github-script@v7.0.1
       if: steps.diff.outputs.result != '' && 0 < steps.get_pull_requests.outputs.result && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch')
       id: update_pull_request
+      # jscpd:ignore-start
       env:
         PR_DESCRIPTION_PREFIX: ${{inputs.pr-description-prefix}}
         PR_NUMBER: ${{github.event.pull_request.number}}
@@ -104,6 +107,7 @@ runs:
         script: |
           const script = require('${{ github.action_path }}/scripts/action/update_pull_request.js')
           return await script({github, context})
+      # jscpd:ignore-end
     # 既に修正PRがある状態で、手動でformatを修正した場合、修正PRを閉じる
     - name: Close PullRequest
       uses: actions/github-script@v7.0.1
