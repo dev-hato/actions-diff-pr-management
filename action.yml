@@ -62,7 +62,7 @@ runs:
       with:
         github-token: ${{inputs.github-token}}
         script: |
-          const script = require('${{ github.action_path }}/scripts/action/get_pull_requests.js')
+          const script = require('${{ github.action_path }}/scripts/action/get_pull_requests_with_base.js')
           return await script({github, context})
     # pushしたブランチで修正PRを作る
     - name: Create PullRequest
