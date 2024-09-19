@@ -11,7 +11,7 @@ module.exports = async ({ github, context, additionalParams }) => {
     repo: context.repo.repo,
     head,
     state: "open",
-    ...additionalParams
+    ...additionalParams,
   };
   console.log("call pulls.list:", pullsListParams);
   return await github.paginate(github.rest.pulls.list, pullsListParams);
