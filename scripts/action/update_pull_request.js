@@ -68,6 +68,10 @@ module.exports = async ({ github, context }) => {
   const pulls = await github.paginate(github.rest.pulls.list, pullsListParams);
 
   for (const pull of pulls) {
+    if (pull.title === title && pull.body === body) {
+      continue;
+    }
+
     // PRのタイトルやDescriptionを更新する
     const pullsUpdateParams = {
       pull_number: pull.number,
