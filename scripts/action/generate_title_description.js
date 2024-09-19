@@ -55,6 +55,6 @@ module.exports = () => {
 
   return {
     title,
-    body
+    body,
   };
 };

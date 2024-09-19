@@ -1,4 +1,4 @@
-const generateTitleDescription=require('./generate_title_description.js');
+const generateTitleDescription = require("./generate_title_description.js");
 
 module.exports = async ({ github, context }) => {
   const HEAD_REF = process.env.HEAD_REF;
@@ -8,8 +8,7 @@ module.exports = async ({ github, context }) => {
     headName += "-" + HEAD_REF;
   }
 
-
-  const { title,body } = generateTitleDescription();
+  const { title, body } = generateTitleDescription();
   const commonParams = {
     owner: context.repo.owner,
     repo: context.repo.repo,
