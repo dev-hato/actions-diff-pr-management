@@ -52,7 +52,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-readme
           pr-title-prefix: README修正
-          pr-description-prefix: READMEを修正しました。
+          pr-description-prefix: READMEを修正しましたaaaaaa。
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
