@@ -39,7 +39,7 @@ jobs:
       # Checkout the code base #
       ##########################
       - name: Checkout Code
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.1
         with:
           # Full git history is needed to get a proper list
           # of changed files within `super-linter`
@@ -47,6 +47,7 @@ jobs:
       - uses: actions/setup-node@v4.0.4
         with:
           cache: npm
+          node-version-file: .node-version
       - run: bash "${GITHUB_WORKSPACE}/scripts/super_linter/build/set_path.sh"
       ################################
       # Run Linter against code base #

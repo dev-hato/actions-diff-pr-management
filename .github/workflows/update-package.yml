@@ -19,7 +19,7 @@ jobs:
     # jscpd:ignore-start
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v4.2.1
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
@@ -27,6 +27,7 @@ jobs:
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           cache: npm
+          node-version-file: .node-version
       # jscpd:ignore-end
       - if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: npm install

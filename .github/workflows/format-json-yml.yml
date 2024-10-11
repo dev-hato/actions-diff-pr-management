@@ -23,13 +23,13 @@ jobs:
         with:
           app-id: ${{ secrets.PROJECT_AUTOMATION_APP_ID }}
           private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v4.2.1
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           token: ${{steps.generate_token.outputs.token}}
-      - uses: dev-hato/actions-format-json-yml@v0.0.71
+      - uses: dev-hato/actions-format-json-yml@v0.0.73
         with:
           github-token: ${{steps.generate_token.outputs.token}}
 concurrency:

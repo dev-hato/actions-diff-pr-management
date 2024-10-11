@@ -17,7 +17,7 @@ jobs:
   update-gitleaks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v4.2.1
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           fetch-depth: 0
@@ -26,10 +26,11 @@ jobs:
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           cache: npm
+          node-version-file: .node-version
       - name: Install packages
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: npm ci
-      - uses: dev-hato/actions-update-gitleaks@v0.0.76
+      - uses: dev-hato/actions-update-gitleaks@v0.0.78
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
 concurrency:
