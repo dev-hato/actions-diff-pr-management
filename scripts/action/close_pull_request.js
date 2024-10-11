@@ -1,3 +1,5 @@
+const getPullRequests = require("./get_pull_requests.js");
+
 module.exports = async ({ github, context }) => {
   const HEAD_REF = process.env.HEAD_REF;
   let headName = process.env.BRANCH_NAME_PREFIX;
@@ -11,16 +13,7 @@ module.exports = async ({ github, context }) => {
     repo: context.repo.repo,
   };
 
-  // 修正PRの情報を取得する
-  const pullsListParams = {
-    head: context.repo.owner + ":" + headName,
-    state: "open",
-    ...commonParams,
-  };
-  console.log("call pulls.list:", pullsListParams);
-  const pulls = await github.paginate(github.rest.pulls.list, pullsListParams);
-
-  for (const pull of pulls) {
+  for (const pull of await getPullRequests({ github, context })) {
     // 修正PRをcloseする (修正PRのstateをclosedに更新する)
     const pullsUpdateParams = {
       pull_number: pull.number,

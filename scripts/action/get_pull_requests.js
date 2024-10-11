@@ -1,4 +1,4 @@
-module.exports = async ({ github, context }) => {
+module.exports = async ({ github, context, additionalParams }) => {
   const HEAD_REF = process.env.HEAD_REF;
   let head = context.repo.owner + ":" + process.env.BRANCH_NAME_PREFIX;
 
@@ -10,10 +10,9 @@ module.exports = async ({ github, context }) => {
     owner: context.repo.owner,
     repo: context.repo.repo,
     head,
-    base: HEAD_REF,
     state: "open",
+    ...additionalParams,
   };
   console.log("call pulls.list:", pullsListParams);
-  const pulls = await github.paginate(github.rest.pulls.list, pullsListParams);
-  return pulls.length;
+  return await github.paginate(github.rest.pulls.list, pullsListParams);
 };
