@@ -19,17 +19,17 @@ jobs:
     steps:
       - name: Generate a token
         id: generate_token
-        uses: actions/create-github-app-token@v1.11.0
+        uses: actions/create-github-app-token@5d869da34e18e7287c1daad50e0b8ea0f506ce69 # v1.11.0
         with:
           app-id: ${{ secrets.PROJECT_AUTOMATION_APP_ID }}
           private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
-      - uses: actions/checkout@v4.2.1
+      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           token: ${{steps.generate_token.outputs.token}}
-      - uses: dev-hato/actions-format-json-yml@v0.0.74
+      - uses: dev-hato/actions-format-json-yml@fb4529a3bce610d82460527c56ff354ed545d1a1 # v0.0.74
         with:
           github-token: ${{steps.generate_token.outputs.token}}
 concurrency:
