@@ -30,7 +30,7 @@ jobs:
       - if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: npm ci
       - if: github.event_name != 'pull_request' || github.event.action != 'closed'
-        run: tsc --outDir dist/ scripts/action/*.ts
+        run: tsc
       - uses: ./
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}

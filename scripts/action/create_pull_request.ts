@@ -7,7 +7,7 @@ export async function script(
   github: InstanceType<typeof GitHub>,
   context: Context,
 ): Promise<number> {
-  const HEAD_REF = process.env.HEAD_REF;
+  const HEAD_REF = process.env.HEAD_REF || "";
   let head = process.env.BRANCH_NAME_PREFIX;
 
   if (HEAD_REF !== "") {
