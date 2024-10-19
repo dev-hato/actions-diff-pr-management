@@ -66,7 +66,7 @@ runs:
       with:
         github-token: ${{inputs.github-token}}
         script: |
-          const script = require('${{ github.action_path }}/dist/get_number_of_pull_requests.js')
+          const {script} = require('${{ github.action_path }}/dist/get_number_of_pull_requests.js')
           return await script(github, context)
     # pushしたブランチで修正PRを作る
     - name: Create PullRequest
@@ -76,7 +76,7 @@ runs:
       with:
         github-token: ${{inputs.github-token}}
         script: |
-          const script = require('${{ github.action_path }}/dist/create_pull_request.js')
+          const {script} = require('${{ github.action_path }}/dist/create_pull_request.js')
           return await script(github, context)
     # 元のPRを出したユーザーを修正PRにアサインする
     - name: Assign a user
@@ -87,7 +87,7 @@ runs:
       with:
         github-token: ${{inputs.github-token}}
         script: |
-          const script = require('${{ github.action_path }}/dist/assign_a_user.js')
+          const {script} = require('${{ github.action_path }}/dist/assign_a_user.js')
           await script(github, context)
     # 修正PRのタイトルやDescriptionを更新する
     - name: Update PullRequest
@@ -97,7 +97,7 @@ runs:
       with:
         github-token: ${{inputs.github-token}}
         script: |
-          const script = require('${{ github.action_path }}/dist/update_pull_request.js')
+          const {script} = require('${{ github.action_path }}/dist/update_pull_request.js')
           return await script(github, context)
     # 既に修正PRがある状態で、手動でformatを修正した場合、修正PRを閉じる
     - name: Close PullRequest
@@ -106,7 +106,7 @@ runs:
       with:
         github-token: ${{inputs.github-token}}
         script: |
-          const script = require('${{ github.action_path }}/dist/close_pull_request.js')
+          const {script} = require('${{ github.action_path }}/dist/close_pull_request.js')
           await script(github, context)
     # exit-failureがtrueで差分がある場合は異常終了する
     - name: Exit
