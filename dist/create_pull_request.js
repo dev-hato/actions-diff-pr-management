@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.script = void 0;
+exports.script = script;
 const generate_title_description_1 = require("./generate_title_description");
 function script(github, context) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -33,4 +33,3 @@ function script(github, context) {
         return createPullRes.data.number;
     });
 }
-exports.script = script;
