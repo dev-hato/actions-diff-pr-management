@@ -1,5 +1,5 @@
 ---
-name: update-gitleaks
+name: update-package
 on:
   pull_request:
     types:
@@ -14,11 +14,12 @@ permissions:
   contents: write
   pull-requests: write
 jobs:
-  update-gitleaks:
+  # npm installを実行し、package.jsonやpackage-lock.jsonに差分があればPRを作る
+  update-package:
+    # jscpd:ignore-start
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
-        if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
@@ -27,12 +28,15 @@ jobs:
         with:
           cache: npm
           node-version-file: .node-version
-      - name: Install packages
-        if: github.event_name != 'pull_request' || github.event.action != 'closed'
-        run: npm ci
-      - uses: dev-hato/actions-update-gitleaks@f2dfdc44ba854cf22f8c0041b60aca707347d1ca # v0.0.80
+      # jscpd:ignore-end
+      - if: github.event_name != 'pull_request' || github.event.action != 'closed'
+        run: npm install
+      - uses: ./
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
+          branch-name-prefix: fix-package
+          pr-title-prefix: package.json, package-lock.json修正
+          pr-description-prefix: package.jsonやpackage-lock.jsonを修正しました。
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
