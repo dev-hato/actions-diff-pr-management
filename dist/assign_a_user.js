@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.script = void 0;
+exports.script = script;
 function script(github, context) {
     return __awaiter(this, void 0, void 0, function* () {
         const issuesAddAssigneesParams = {
@@ -23,4 +23,3 @@ function script(github, context) {
         yield github.rest.issues.addAssignees(issuesAddAssigneesParams);
     });
 }
-exports.script = script;
