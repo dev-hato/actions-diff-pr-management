@@ -1,6 +1,6 @@
-export function generateTitleDescription():{
-  title:string
-  body:string
+export function generateTitleDescription(): {
+  title: string;
+  body: string;
 } {
   const HEAD_REF = process.env.HEAD_REF;
   const escapedHeadRef = HEAD_REF.replace(/#/g, "");
