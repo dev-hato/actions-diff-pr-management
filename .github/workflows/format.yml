@@ -1,5 +1,5 @@
 ---
-name: update-readme
+name: format
 on:
   pull_request:
     types:
@@ -14,7 +14,7 @@ permissions:
   contents: write
   pull-requests: write
 jobs:
-  update-readme:
+  format:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
@@ -38,20 +38,26 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           result-encoding: string
           script: |
-            const script = require('./scripts/update_readme/update_readme/get_inputs_markdown.js')
+            const {tsImport} = require('tsx/esm/api')
+            const {script} = await tsImport(
+              './scripts/format/format/get_inputs_markdown.ts',
+              process.env.GITHUB_WORKSPACE + '/'
+            )
             return script()
       - env:
           INPUTS: ${{steps.get_inputs_markdown.outputs.result}}
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
-        run: bash "${GITHUB_WORKSPACE}/scripts/update_readme/update_readme/update_readme.sh"
+        run: bash "${GITHUB_WORKSPACE}/scripts/format/format/update_readme.sh"
       - run: npx prettier --write .
+        if: github.event_name != 'pull_request' || github.event.action != 'closed'
+      - run: tsc
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
       - uses: ./
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
-          branch-name-prefix: fix-readme
-          pr-title-prefix: README修正
-          pr-description-prefix: READMEを修正しました。
+          branch-name-prefix: fix-format
+          pr-title-prefix: format修正
+          pr-description-prefix: formatを修正しました。
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true

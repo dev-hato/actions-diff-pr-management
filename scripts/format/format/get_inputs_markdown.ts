@@ -1,8 +1,16 @@
-const fs = require("fs");
-const yaml = require("js-yaml");
+import {readFileSync} from "fs";
+import * as yaml from "js-yaml";
 
-module.exports = () => {
-  const ymlFile = yaml.load(fs.readFileSync("action.yml", "utf8"));
+export function script(): string {
+  const ymlFile = yaml.load(readFileSync("action.yml", "utf8")) as {
+      inputs: {
+          [p: string]: {
+              description: string
+              default: string
+              required: "true" | "false"
+          }
+      }
+  };
   const inputs = ymlFile.inputs;
   const rows = [
     "| 引数名 | 説明 | 必須 | デフォルト値 |",
@@ -27,4 +35,4 @@ module.exports = () => {
   }
 
   return rows.join("\n");
-};
+}
