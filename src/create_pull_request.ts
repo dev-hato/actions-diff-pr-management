@@ -1,4 +1,4 @@
-const generateTitleDescription = require("./generate_title_description.js");
+const generateTitleDescription = require("../scripts/action/generate_title_description.js");
 
 module.exports = async ({ github, context }) => {
   const HEAD_REF = process.env.HEAD_REF;
