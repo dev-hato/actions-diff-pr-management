@@ -1,11 +1,16 @@
-const getPullRequests = require("./get_pull_requests");
+import type { Context } from "@actions/github/lib/context";
+import type { GitHub } from "@actions/github/lib/utils";
+import {getPullRequests} from "./get_pull_requests";
 
-module.exports = async ({ github, context }) => {
+export async function script(
+    github: InstanceType<typeof GitHub>,
+    context: Context,
+):Promise<number> {
   const HEAD_REF = process.env.HEAD_REF;
-  const pulls = await getPullRequests({
+  const pulls = await getPullRequests(
     github,
     context,
-    additionalParams: { base: HEAD_REF },
-  });
+    HEAD_REF,
+  );
   return pulls.length;
-};
+}
