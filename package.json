@@ -28,5 +28,10 @@
   },
   "engines": {
     "node": "^22.8.0"
+  },
+  "standard": {
+    "ignore": [
+      "dist/"
+    ]
   }
 }
