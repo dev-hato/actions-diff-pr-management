@@ -1,17 +1,20 @@
-module.exports = () => {
-  const HEAD_REF = process.env.HEAD_REF;
-  const escapedHeadRef = HEAD_REF.replaceAll("#", "");
+export function generateTitleDescription():{
+  title:string
+  body:string
+} {
+  const HEAD_REF = process.env.HEAD_REF||"";
+  const escapedHeadRef = HEAD_REF.replace(/#/g, "");
   const PR_NUMBER = process.env.PR_NUMBER;
-  const PR_TITLE_PREFIX = process.env.PR_TITLE_PREFIX;
-  let head = process.env.BRANCH_NAME_PREFIX;
+  const PR_TITLE_PREFIX = process.env.PR_TITLE_PREFIX||"";
+  let head = process.env.BRANCH_NAME_PREFIX||"";
 
   if (HEAD_REF !== "") {
     head += "-" + HEAD_REF;
   }
 
-  const escapedHead = head.replaceAll("#", "");
+  const escapedHead = head.replace(/#/g, "");
   let title = PR_TITLE_PREFIX;
-  let body = process.env.PR_DESCRIPTION_PREFIX;
+  let body = process.env.PR_DESCRIPTION_PREFIX||"";
 
   body += `本PR ( \`${escapedHead}\` ) をマージすると差分が次のPRに反映されます。\n`;
   body += "* ";
@@ -57,4 +60,4 @@ module.exports = () => {
     title,
     body,
   };
-};
+}
