@@ -3,14 +3,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateTitleDescription = generateTitleDescription;
 function generateTitleDescription() {
     const HEAD_REF = process.env.HEAD_REF || "";
-    const escapedHeadRef = HEAD_REF.replace(/#/g, "");
+    const escapedHeadRef = HEAD_REF.replaceAll("#", "");
     const PR_NUMBER = process.env.PR_NUMBER;
     const PR_TITLE_PREFIX = process.env.PR_TITLE_PREFIX || "";
     let head = process.env.BRANCH_NAME_PREFIX || "";
     if (HEAD_REF !== "") {
         head += "-" + HEAD_REF;
     }
-    const escapedHead = head.replace(/#/g, "");
+    const escapedHead = head.replaceAll("#", "");
     let title = PR_TITLE_PREFIX;
     let body = process.env.PR_DESCRIPTION_PREFIX || "";
     body += `本PR ( \`${escapedHead}\` ) をマージすると差分が次のPRに反映されます。\n`;
