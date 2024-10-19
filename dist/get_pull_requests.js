@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPullRequests = void 0;
+exports.getPullRequests = getPullRequests;
 function getPullRequests(github, context, base) {
     return __awaiter(this, void 0, void 0, function* () {
         const HEAD_REF = process.env.HEAD_REF;
@@ -28,4 +28,3 @@ function getPullRequests(github, context, base) {
         return yield github.paginate(github.rest.pulls.list, pullsListParams);
     });
 }
-exports.getPullRequests = getPullRequests;

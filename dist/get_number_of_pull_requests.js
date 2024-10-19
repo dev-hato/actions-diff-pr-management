@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.script = void 0;
+exports.script = script;
 const get_pull_requests_1 = require("./get_pull_requests");
 function script(github, context) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -18,4 +18,3 @@ function script(github, context) {
         return pulls.length;
     });
 }
-exports.script = script;

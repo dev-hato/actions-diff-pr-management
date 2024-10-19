@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.script = void 0;
+exports.script = script;
 const generate_title_description_1 = require("./generate_title_description");
 const get_pull_requests_1 = require("./get_pull_requests");
 function script(github, context) {
@@ -32,4 +32,3 @@ function script(github, context) {
         }
     });
 }
-exports.script = script;
