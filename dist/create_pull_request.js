@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.script = script;
+exports.script = void 0;
 const generate_title_description_1 = require("./generate_title_description");
 async function script(github, context) {
     const HEAD_REF = process.env.HEAD_REF || "";
@@ -22,3 +22,4 @@ async function script(github, context) {
     const createPullRes = await github.rest.pulls.create(pullsCreateParams);
     return createPullRes.data.number;
 }
+exports.script = script;

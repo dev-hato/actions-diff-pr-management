@@ -3,7 +3,7 @@ export function generateTitleDescription(): {
   body: string;
 } {
   const HEAD_REF = process.env.HEAD_REF || "";
-  const escapedHeadRef = HEAD_REF.replaceAll("#", "");
+  const escapedHeadRef = HEAD_REF.replace(/#/g, "");
   const PR_NUMBER = process.env.PR_NUMBER;
   const PR_TITLE_PREFIX = process.env.PR_TITLE_PREFIX || "";
   let head = process.env.BRANCH_NAME_PREFIX || "";
@@ -12,7 +12,7 @@ export function generateTitleDescription(): {
     head += "-" + HEAD_REF;
   }
 
-  const escapedHead = head.replaceAll("#", "");
+  const escapedHead = head.replace(/#/g, "");
   let title = PR_TITLE_PREFIX;
   let body = process.env.PR_DESCRIPTION_PREFIX || "";
 

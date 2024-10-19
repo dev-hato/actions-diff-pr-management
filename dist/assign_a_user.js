@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.script = script;
+exports.script = void 0;
 async function script(github, context) {
     const issuesAddAssigneesParams = {
         owner: context.repo.owner,
@@ -12,3 +12,4 @@ async function script(github, context) {
     console.log(issuesAddAssigneesParams);
     await github.rest.issues.addAssignees(issuesAddAssigneesParams);
 }
+exports.script = script;
