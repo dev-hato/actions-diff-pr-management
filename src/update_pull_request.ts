@@ -1,5 +1,5 @@
-const generateTitleDescription = require("./generate_title_description.js");
-const getPullRequests = require("./get_pull_requests.js");
+const generateTitleDescription = require("../scripts/action/generate_title_description.js");
+const getPullRequests = require("./get_pull_requests");
 
 module.exports = async ({ github, context }) => {
   const { title, body } = generateTitleDescription();

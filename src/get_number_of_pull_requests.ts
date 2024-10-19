@@ -1,4 +1,4 @@
-const getPullRequests = require("./get_pull_requests.js");
+const getPullRequests = require("./get_pull_requests");
 
 module.exports = async ({ github, context }) => {
   const HEAD_REF = process.env.HEAD_REF;
