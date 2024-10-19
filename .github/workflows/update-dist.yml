@@ -23,8 +23,16 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4.0.4
+        if: github.event_name != 'pull_request' || github.event.action != 'closed'
+        with:
+          cache: npm
+          node-version-file: .node-version
+      # jscpd:ignore-end
       - if: github.event_name != 'pull_request' || github.event.action != 'closed'
-        run: bash "${GITHUB_WORKSPACE}/scripts/update_dist/update_dist/update_dist.sh"
+        run: npm ci
+      - if: github.event_name != 'pull_request' || github.event.action != 'closed'
+        run: tsc --outDir dist/ scripts/action/*.ts
       - uses: ./
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
