@@ -8,13 +8,14 @@ export async function script(
   context: Context,
 ): Promise<number> {
   const HEAD_REF = process.env.HEAD_REF || "";
-  const HEAD_NAME_WITH_REPO = process.env.HEAD_NAME_WITH_REPO || "";
+  const HEAD_NAME = process.env.HEAD_NAME;
+  const headWithRepo = context.repo.owner + ":" + HEAD_NAME;
   const { title, body } = generateTitleDescription();
   const pullsCreateParams: RestEndpointMethodTypes["pulls"]["create"]["parameters"] =
     {
       owner: context.repo.owner,
       repo: context.repo.repo,
-      head: HEAD_NAME_WITH_REPO,
+      head: headWithRepo,
       base: HEAD_REF,
       title,
       body,
