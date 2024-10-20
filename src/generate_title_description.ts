@@ -2,7 +2,8 @@ export function generateTitleDescription(): {
   title: string;
   body: string;
 } {
-  const ESCAPED_HEAD_REF = process.env.ESCAPED_HEAD_REF || "";
+  const HEAD_REF = process.env.HEAD_REF || "";
+  const escapedHeadRef = HEAD_REF.replace(/#/g, "");
   const PR_NUMBER = process.env.PR_NUMBER;
   const PR_TITLE_PREFIX = process.env.PR_TITLE_PREFIX || "";
   const HEAD_NAME = process.env.HEAD_NAME || "";
@@ -17,7 +18,7 @@ export function generateTitleDescription(): {
     body += `#${PR_NUMBER} ( `;
   }
 
-  body += `\`${ESCAPED_HEAD_REF}\``;
+  body += `\`${escapedHeadRef}\``;
 
   if (PR_NUMBER !== "") {
     body += " )";
@@ -26,7 +27,7 @@ export function generateTitleDescription(): {
   body += "\n\n";
   body += `CIが再度実行されると本PR ( \`${escapedHead}\` ) にforce pushされます。\n`;
   body += "```mermaid\n";
-  body += `%%{init: {'gitGraph': {'mainBranchName': '${ESCAPED_HEAD_REF}'}}}%%\n`;
+  body += `%%{init: {'gitGraph': {'mainBranchName': '${escapedHeadRef}'}}}%%\n`;
   body += "gitGraph\n";
 
   for (let i = 0; i < 2; i++) {
@@ -42,7 +43,7 @@ export function generateTitleDescription(): {
   }
 
   body += `  commit id: "${commit}"\n`;
-  body += `  checkout ${ESCAPED_HEAD_REF}\n`;
+  body += `  checkout ${escapedHeadRef}\n`;
   body += `  merge ${escapedHead}\n`;
   body += "```";
 
