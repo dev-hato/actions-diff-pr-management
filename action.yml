@@ -39,13 +39,11 @@ runs:
       if: github.event_name != 'pull_request' || github.event.action != 'closed'
       working-directory: ${{inputs.working-directory}}
       run: ${{ github.action_path }}/scripts/action/show_diff.sh
-    - name: Set HEAD_REF
-      shell: bash
-      run: echo "HEAD_REF=${{github.event.pull_request.head.ref || github.ref_name}}" >>"${GITHUB_ENV}"
     - name: Set env
       id: set-env
       shell: bash
       run: |
+        echo "HEAD_REF=${{github.event.pull_request.head.ref || github.ref_name}}" >>"${GITHUB_ENV}"
         echo "PR_DESCRIPTION_PREFIX=${{inputs.pr-description-prefix}}" >> "$GITHUB_ENV"
         echo "PR_NUMBER=${{github.event.pull_request.number}}" >> "$GITHUB_ENV"
         echo "PR_TITLE_PREFIX=${{inputs.pr-title-prefix}}" >> "$GITHUB_ENV"
