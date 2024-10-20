@@ -42,17 +42,26 @@ runs:
     - name: Set env
       id: set-env
       shell: bash
-      run: |
-        echo "HEAD_REF=${{github.event.pull_request.head.ref || github.ref_name}}" >>"${GITHUB_ENV}"
-        echo "PR_DESCRIPTION_PREFIX=${{inputs.pr-description-prefix}}" >> "$GITHUB_ENV"
-        echo "PR_NUMBER=${{github.event.pull_request.number}}" >> "$GITHUB_ENV"
-        echo "PR_TITLE_PREFIX=${{inputs.pr-title-prefix}}" >> "$GITHUB_ENV"
-        echo "BRANCH_NAME_PREFIX=${{inputs.branch-name-prefix}}" >> "$GITHUB_ENV"
+      env:
+        HEAD_REF: ${{github.event.pull_request.head.ref || github.ref_name}}
+        PR_DESCRIPTION_PREFIX: ${{inputs.pr-description-prefix}}
+        PR_NUMBER: ${{github.event.pull_request.number}}
+        PR_TITLE_PREFIX: ${{inputs.pr-title-prefix}}
+        BRANCH_NAME_PREFIX: ${{inputs.branch-name-prefix}}
+      run: ${{ github.action_path }}/src/set_env.sh
+    - name: Set env (HEAD_NAME)
+      if: env.HEAD_REF != ''
+      shell: bash
+      run: echo "HEAD_NAME=${HEAD_NAME}-${HEAD_REF}" >> "$GITHUB_ENV"
+    - name: Set Git command
+      if: steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch') && inputs.no-verify == 'true'
+      working-directory: ${{inputs.working-directory}}
+      run: ${{ github.action_path }}/src/set_git_command.sh
+      shell: bash
     # 差分があったときは、コミットを作りpushする
     - name: Push
       env:
         TOKEN: ${{inputs.github-token}}
-        NO_VERIFY: ${{inputs.no-verify}}
       if: steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch')
       working-directory: ${{inputs.working-directory}}
       run: ${{ github.action_path }}/src/push.sh
