@@ -56,7 +56,7 @@ runs:
     - name: Set env (PR_TITLE)
       if: env.PR_NUMBER != ''
       shell: bash
-      run: echo "PR_TITLE=$PR_TITLE #$PR_NUMBER" >> "$GITHUB_ENV"
+      run: echo "PR_TITLE=$PR_TITLE \#$PR_NUMBER" >> "$GITHUB_ENV"
     - name: Set Git command
       if: steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch') && inputs.no-verify == 'true'
       working-directory: ${{inputs.working-directory}}
