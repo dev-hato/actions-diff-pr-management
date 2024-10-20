@@ -11,5 +11,4 @@
   echo "PR_TITLE=$PR_TITLE_PREFIX"
   echo "GIT_COMMIT_COMMAND=git commit"
   echo "GIT_PUSH_COMMAND=git push"
-  echo "BODY_PR_NUMBER=* "
 } >> "$GITHUB_ENV"

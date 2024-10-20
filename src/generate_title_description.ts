@@ -3,15 +3,27 @@ export function generateTitleDescription(): {
   body: string;
 } {
   const ESCAPED_HEAD_REF = process.env.ESCAPED_HEAD_REF || "";
+  const PR_NUMBER = process.env.PR_NUMBER;
   const PR_TITLE_PREFIX = process.env.PR_TITLE_PREFIX || "";
   const HEAD_NAME = process.env.HEAD_NAME || "";
-  const BODY_PR_NUMBER = process.env.BODY_PR_NUMBER || "";
   const PR_TITLE = process.env.PR_TITLE || "";
   const escapedHead = HEAD_NAME.replace(/#/g, "");
   let body = process.env.PR_DESCRIPTION_PREFIX || "";
 
   body += `本PR ( \`${escapedHead}\` ) をマージすると差分が次のPRに反映されます。\n`;
-  body += `${BODY_PR_NUMBER}\n\n`;
+  body += "* ";
+
+  if (PR_NUMBER !== "") {
+    body += `#${PR_NUMBER} ( `;
+  }
+
+  body += `\`${ESCAPED_HEAD_REF}\``;
+
+  if (PR_NUMBER !== "") {
+    body += " )";
+  }
+
+  body += "\n\n";
   body += `CIが再度実行されると本PR ( \`${escapedHead}\` ) にforce pushされます。\n`;
   body += "```mermaid\n";
   body += `%%{init: {'gitGraph': {'mainBranchName': '${ESCAPED_HEAD_REF}'}}}%%\n`;
