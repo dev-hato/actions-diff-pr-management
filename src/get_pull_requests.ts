@@ -11,7 +11,7 @@ export async function getPullRequests(
   PaginatingEndpoints["GET /repos/{owner}/{repo}/pulls"]["response"]["data"]
 > {
   const HEAD_NAME = process.env.HEAD_NAME;
-  let head = context.repo.owner + ":" + HEAD_NAME;
+  const head = context.repo.owner + ":" + HEAD_NAME;
   const pullsListParams: RestEndpointMethodTypes["pulls"]["list"]["parameters"] =
     {
       owner: context.repo.owner,

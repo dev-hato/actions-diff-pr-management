@@ -6,8 +6,8 @@ export function generateTitleDescription(): {
   const PR_TITLE_PREFIX = process.env.PR_TITLE_PREFIX || "";
   const HEAD_NAME = process.env.HEAD_NAME || "";
   const BODY_PR_NUMBER = process.env.BODY_PR_NUMBER || "";
+  const PR_TITLE = process.env.PR_TITLE || "";
   const escapedHead = HEAD_NAME.replace(/#/g, "");
-  let PR_TITLE = process.env.PR_TITLE || "";
   let body = process.env.PR_DESCRIPTION_PREFIX || "";
 
   body += `本PR ( \`${escapedHead}\` ) をマージすると差分が次のPRに反映されます。\n`;
