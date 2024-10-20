@@ -8,13 +8,8 @@ export async function script(
   context: Context,
 ): Promise<number> {
   const HEAD_REF = process.env.HEAD_REF || "";
-  let head = process.env.BRANCH_NAME_PREFIX;
-
-  if (HEAD_REF !== "") {
-    head += "-" + HEAD_REF;
-  }
-
-  const headWithRepo = context.repo.owner + ":" + head;
+  const HEAD_NAME = process.env.HEAD_NAME;
+  const headWithRepo = context.repo.owner + ":" + HEAD_NAME;
   const { title, body } = generateTitleDescription();
   const pullsCreateParams: RestEndpointMethodTypes["pulls"]["create"]["parameters"] =
     {
