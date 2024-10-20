@@ -7,8 +7,8 @@ export function generateTitleDescription(): {
   const PR_NUMBER = process.env.PR_NUMBER;
   const PR_TITLE_PREFIX = process.env.PR_TITLE_PREFIX || "";
   const HEAD_NAME = process.env.HEAD_NAME || "";
-  const PR_TITLE = process.env.PR_TITLE || "";
   const escapedHead = HEAD_NAME.replace(/#/g, "");
+  let title = PR_TITLE_PREFIX;
   let body = process.env.PR_DESCRIPTION_PREFIX || "";
 
   body += `本PR ( \`${escapedHead}\` ) をマージすると差分が次のPRに反映されます。\n`;
@@ -47,8 +47,12 @@ export function generateTitleDescription(): {
   body += `  merge ${escapedHead}\n`;
   body += "```";
 
+  if (PR_NUMBER !== "") {
+    title += " #" + PR_NUMBER;
+  }
+
   return {
-    title: PR_TITLE,
+    title,
     body,
   };
 }
