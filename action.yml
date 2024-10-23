@@ -44,7 +44,12 @@ runs:
       shell: bash
       run: |
         echo "HEAD_REF=${{github.event.pull_request.head.ref || github.ref_name}}" >>"${GITHUB_ENV}"
-        echo "PR_DESCRIPTION_PREFIX=${{inputs.pr-description-prefix}}" >> "$GITHUB_ENV"
+
+        delimiter="$(openssl rand -hex 8)"
+        echo "PR_DESCRIPTION_PREFIX<<${delimiter}" >> "$GITHUB_ENV"
+        echo "${{inputs.pr-description-prefix}}" >> "$GITHUB_ENV"
+        echo "${delimiter}" >> "$GITHUB_ENV"
+
         echo "PR_NUMBER=${{github.event.pull_request.number}}" >> "$GITHUB_ENV"
         echo "PR_TITLE_PREFIX=${{inputs.pr-title-prefix}}" >> "$GITHUB_ENV"
         echo "BRANCH_NAME_PREFIX=${{inputs.branch-name-prefix}}" >> "$GITHUB_ENV"
