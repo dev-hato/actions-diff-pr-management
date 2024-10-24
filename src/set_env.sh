@@ -4,9 +4,9 @@ delimiter="$(openssl rand -hex 8)"
 {
 	echo "HEAD_REF=$HEAD_REF"
 
-  echo "PR_DESCRIPTION_PREFIX<<${delimiter}"
-  echo "${PR_DESCRIPTION_PREFIX}"
-  echo "${delimiter}"
+	echo "PR_DESCRIPTION_PREFIX<<${delimiter}"
+	echo "${PR_DESCRIPTION_PREFIX}"
+	echo "${delimiter}"
 
 	echo "PR_NUMBER=$PR_NUMBER"
 	echo "PR_TITLE_PREFIX=$PR_TITLE_PREFIX"
