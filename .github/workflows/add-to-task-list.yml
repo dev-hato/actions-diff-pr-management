@@ -19,7 +19,7 @@ jobs:
         with:
           app-id: ${{ secrets.PROJECT_AUTOMATION_APP_ID }}
           private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
-      - uses: dev-hato/actions-add-to-projects@a4d48173f8614772501aa42b0db42ca2ffc309fd # v0.0.85
+      - uses: dev-hato/actions-add-to-projects@17aad01fd46cba53af2c7258b6ca2a89bb46dfbb # v0.0.87
         with:
           github-token: ${{steps.generate_token.outputs.token}}
           project-url: https://github.com/orgs/dev-hato/projects/1
