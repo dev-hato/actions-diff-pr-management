@@ -7,14 +7,9 @@ export async function script(
   github: InstanceType<typeof GitHub>,
   context: Context,
 ) {
-  const HEAD_REF = process.env.HEAD_REF;
-  let headName = process.env.BRANCH_NAME_PREFIX;
-
-  if (HEAD_REF !== "") {
-    headName += "-" + HEAD_REF;
-  }
-
   for (const pull of await getPullRequests(github, context)) {
+    const HEAD_NAME = process.env.HEAD_NAME;
+
     // 修正PRをcloseする (修正PRのstateをclosedに更新する)
     const pullsUpdateParams: RestEndpointMethodTypes["pulls"]["update"]["parameters"] =
       {
@@ -31,7 +26,7 @@ export async function script(
       {
         owner: context.repo.owner,
         repo: context.repo.repo,
-        ref: "heads/" + headName,
+        ref: "heads/" + HEAD_NAME,
       };
     console.log("call git.deleteRef:", gitDeleteRefParams);
     await github.rest.git.deleteRef(gitDeleteRefParams);

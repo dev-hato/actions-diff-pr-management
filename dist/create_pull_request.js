@@ -4,11 +4,8 @@ exports.script = script;
 const generate_title_description_1 = require("./generate_title_description");
 async function script(github, context) {
     const HEAD_REF = process.env.HEAD_REF || "";
-    let head = process.env.BRANCH_NAME_PREFIX;
-    if (HEAD_REF !== "") {
-        head += "-" + HEAD_REF;
-    }
-    const headWithRepo = context.repo.owner + ":" + head;
+    const HEAD_NAME = process.env.HEAD_NAME;
+    const headWithRepo = context.repo.owner + ":" + HEAD_NAME;
     const { title, body } = (0, generate_title_description_1.generateTitleDescription)();
     const pullsCreateParams = {
         owner: context.repo.owner,
