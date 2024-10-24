@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateTitleDescription = void 0;
+exports.generateTitleDescription = generateTitleDescription;
 function generateTitleDescription() {
     const HEAD_REF = process.env.HEAD_REF || "";
     const escapedHeadRef = HEAD_REF.replace(/#/g, "");
@@ -48,4 +48,3 @@ function generateTitleDescription() {
         body,
     };
 }
-exports.generateTitleDescription = generateTitleDescription;
