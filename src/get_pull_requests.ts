@@ -1,3 +1,4 @@
+import 'source-map-support/register';
 import type { GitHub } from "@actions/github/lib/utils";
 import type { Context } from "@actions/github/lib/context";
 import type { PaginatingEndpoints } from "@octokit/plugin-paginate-rest";
@@ -10,6 +11,7 @@ export async function getPullRequests(
 ): Promise<
   PaginatingEndpoints["GET /repos/{owner}/{repo}/pulls"]["response"]["data"]
 > {
+  throw new Error("aaaa");
   const HEAD_REF = process.env.HEAD_REF;
   let head = context.repo.owner + ":" + process.env.BRANCH_NAME_PREFIX;
 
