@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.script = script;
+require("source-map-support/register");
 const get_pull_requests_1 = require("./get_pull_requests");
 async function script(github, context) {
     const HEAD_REF = process.env.HEAD_REF;
@@ -28,3 +29,4 @@ async function script(github, context) {
         await github.rest.git.deleteRef(gitDeleteRefParams);
     }
 }
+//# sourceMappingURL=close_pull_request.js.map

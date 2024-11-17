@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.script = script;
+require("source-map-support/register");
 async function script(github, context) {
     const issuesAddAssigneesParams = {
         owner: context.repo.owner,
@@ -12,3 +13,4 @@ async function script(github, context) {
     console.log(issuesAddAssigneesParams);
     await github.rest.issues.addAssignees(issuesAddAssigneesParams);
 }
+//# sourceMappingURL=assign_a_user.js.map
