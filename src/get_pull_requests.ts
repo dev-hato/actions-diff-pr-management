@@ -1,3 +1,4 @@
+import 'source-map-support/register';
 import type { GitHub } from "@actions/github/lib/utils";
 import type { Context } from "@actions/github/lib/context";
 import type { PaginatingEndpoints } from "@octokit/plugin-paginate-rest";
