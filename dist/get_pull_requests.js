@@ -2,11 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPullRequests = getPullRequests;
 async function getPullRequests(github, context, base) {
-    const HEAD_REF = process.env.HEAD_REF;
-    let head = context.repo.owner + ":" + process.env.BRANCH_NAME_PREFIX;
-    if (HEAD_REF !== "") {
-        head += "-" + HEAD_REF;
-    }
+    const HEAD_NAME = process.env.HEAD_NAME;
+    const head = context.repo.owner + ":" + HEAD_NAME;
     const pullsListParams = {
         owner: context.repo.owner,
         repo: context.repo.repo,
