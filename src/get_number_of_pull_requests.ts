@@ -1,3 +1,4 @@
+import 'source-map-support/register';
 import type { Context } from "@actions/github/lib/context";
 import type { GitHub } from "@actions/github/lib/utils";
 import { getPullRequests } from "./get_pull_requests";

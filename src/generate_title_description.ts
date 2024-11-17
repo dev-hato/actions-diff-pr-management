@@ -1,3 +1,5 @@
+import 'source-map-support/register';
+
 export function generateTitleDescription(): {
   title: string;
   body: string;
