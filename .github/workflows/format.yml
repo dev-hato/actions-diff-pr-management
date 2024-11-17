@@ -50,7 +50,7 @@ jobs:
         run: bash "${GITHUB_WORKSPACE}/scripts/format/format/update_readme.sh"
       - run: npx prettier --write .
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
-      - run: tsc
+      - run: bash "${GITHUB_WORKSPACE}/scripts/format/format/build.sh"
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
       - uses: ./
         with:
