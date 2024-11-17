@@ -11,7 +11,6 @@ export async function getPullRequests(
 ): Promise<
   PaginatingEndpoints["GET /repos/{owner}/{repo}/pulls"]["response"]["data"]
 > {
-  throw new Error("aaaa");
   const HEAD_REF = process.env.HEAD_REF;
   let head = context.repo.owner + ":" + process.env.BRANCH_NAME_PREFIX;
 
