@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPullRequests = getPullRequests;
+require("source-map-support/register");
 async function getPullRequests(github, context, base) {
     const HEAD_REF = process.env.HEAD_REF;
     let head = context.repo.owner + ":" + process.env.BRANCH_NAME_PREFIX;
@@ -17,3 +18,4 @@ async function getPullRequests(github, context, base) {
     console.log("call pulls.list:", pullsListParams);
     return await github.paginate(github.rest.pulls.list, pullsListParams);
 }
+//# sourceMappingURL=get_pull_requests.js.map

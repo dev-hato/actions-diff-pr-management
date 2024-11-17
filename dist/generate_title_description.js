@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateTitleDescription = generateTitleDescription;
+require("source-map-support/register");
 function generateTitleDescription() {
     const HEAD_REF = process.env.HEAD_REF || "";
     const escapedHeadRef = HEAD_REF.replace(/#/g, "");
@@ -48,3 +49,4 @@ function generateTitleDescription() {
         body,
     };
 }
+//# sourceMappingURL=generate_title_description.js.map
