@@ -2,7 +2,7 @@
 
 git add -A
 
-result=$(git diff --cached)
+result=$(git diff --cached --name-only)
 echo "${result}"
 result="${result//'%'/'%25'}"
 result="${result//$'\n'/'%0A'}"
