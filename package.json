@@ -24,7 +24,7 @@
     "textlint-rule-terminology": "5.2.12",
     "tsc": "2.0.4",
     "tsx": "4.19.1",
-    "typescript": "5.4.5"
+    "typescript": "5.7.2"
   },
   "engines": {
     "node": "^22.8.0"
