@@ -44,7 +44,7 @@ jobs:
           # Full git history is needed to get a proper list
           # of changed files within `super-linter`
           fetch-depth: 0
-      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+      - uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4.2.0
         with:
           cache: npm
           node-version-file: .node-version
@@ -53,13 +53,13 @@ jobs:
       # Run Linter against code base #
       ################################
       - name: Lint Code Base
-        uses: super-linter/super-linter/slim@b92721f792f381cedc002ecdbb9847a15ece5bb8 # v7.1.0
+        uses: super-linter/super-linter/slim@85f7611e0f7b53c8573cca84aa0ed4344f6f6a4d # v7.2.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BRANCH: main
           LINTER_RULES_PATH: .
-          JAVASCRIPT_DEFAULT_STYLE: prettier
-          VALIDATE_JAVASCRIPT_STANDARD: false
+          TYPESCRIPT_DEFAULT_STYLE: prettier
+          VALIDATE_TYPESCRIPT_STANDARD: false
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
