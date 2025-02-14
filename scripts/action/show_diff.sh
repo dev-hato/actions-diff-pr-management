@@ -2,9 +2,10 @@
 
 git add -A
 
-result=$(git diff --cached --name-only)
-echo "${result}"
-result="${result//'%'/'%25'}"
-result="${result//$'\n'/'%0A'}"
-result="${result//$'\r'/'%0D'}"
+if git diff --cached --quiet; then
+    result=""
+else
+    result="差分あり"
+fi
+
 echo "result=$result" >>"${GITHUB_OUTPUT}"
