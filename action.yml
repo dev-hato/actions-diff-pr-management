@@ -32,13 +32,13 @@ inputs:
 runs:
   using: "composite"
   steps:
-    # 差分があったときは差分を出力する
-    - name: Show diff
+    # 差分があったときに検知する
+    - name: Detect diff
       id: diff
       shell: bash
       if: github.event_name != 'pull_request' || github.event.action != 'closed'
       working-directory: ${{inputs.working-directory}}
-      run: ${{ github.action_path }}/src/show_diff.sh
+      run: ${{ github.action_path }}/src/detect_diff.sh
     - name: Set env
       id: set-env
       shell: bash
