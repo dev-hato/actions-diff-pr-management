@@ -3,9 +3,9 @@
 git add -A
 
 if git diff --cached --quiet; then
-    result=""
+	result=""
 else
-    result="差分あり"
+	result="差分あり"
 fi
 
 echo "result=$result" >>"${GITHUB_OUTPUT}"
