@@ -1,7 +1,7 @@
 {
   "devDependencies": {
     "@actions/github": "6.0.0",
-    "@octokit/plugin-paginate-rest": "11.4.2",
+    "@octokit/plugin-paginate-rest": "11.4.3",
     "@octokit/plugin-rest-endpoint-methods": "13.3.1",
     "@proofdict/textlint-rule-proofdict": "3.1.2",
     "@textlint-ja/textlint-rule-no-insert-dropping-sa": "2.0.1",
