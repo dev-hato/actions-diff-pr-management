@@ -13,8 +13,6 @@ ignorePatterns:
 plugins:
   - n
   - prettier
-resolvePaths:
-  - /github/workspace/node_modules/
 overrides:
   # JSON files
   - files:
@@ -68,6 +66,11 @@ overrides:
     parser: "@typescript-eslint/parser"
     plugins:
       - "@typescript-eslint"
+    rules:
+      n/no-missing-import:
+        - error
+        - resolvePaths:
+            - /github/workspace/node_modules/
     parserOptions:
       ecmaVersion: latest
       sourceType: module
