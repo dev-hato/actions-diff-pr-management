@@ -1,4 +1,5 @@
 ---
+# https://github.com/super-linter/super-linter/blob/d0b304a6a58b560749c679157953fec8ba7206df/TEMPLATES/.eslintrc.yml
 env:
   browser: true
   es6: true
