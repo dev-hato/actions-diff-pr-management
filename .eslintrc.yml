@@ -67,10 +67,9 @@ overrides:
     plugins:
       - "@typescript-eslint"
     rules:
-      n/no-missing-import:
+      "n/no-missing-import":
         - error
-        - resolvePaths:
-            - /github/workspace/node_modules/
+        - resolvePaths: /github/workspace/node_modules/
     parserOptions:
       ecmaVersion: latest
       sourceType: module
