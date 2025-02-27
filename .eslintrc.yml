@@ -70,7 +70,7 @@ overrides:
       "n/no-missing-import":
         - error
         - resolvePaths:
-            - /github/workspace/
+            - /home/runner/work/actions-diff-pr-management/actions-diff-pr-management/
     parserOptions:
       ecmaVersion: latest
       sourceType: module
