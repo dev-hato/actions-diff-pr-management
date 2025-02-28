@@ -1,22 +1,18 @@
 ---
-# https://github.com/super-linter/super-linter/blob/d0b304a6a58b560749c679157953fec8ba7206df/TEMPLATES/.eslintrc.yml
 env:
   browser: true
   es6: true
   jest: true
-  node: true
-extends:
-  - "eslint:recommended"
+
 ignorePatterns:
   - "!.*"
   - "**/node_modules/.*"
+
+parser: "@typescript-eslint/parser"
+
 plugins:
-  - n
-  - prettier
-rules:
-  "n/no-missing-import":
-    - error
-    - ignoreTypeImport: true
+  - "@typescript-eslint"
+
 overrides:
   # JSON files
   - files:
@@ -26,6 +22,7 @@ overrides:
     parser: jsonc-eslint-parser
     parserOptions:
       jsonSyntax: JSON
+
   # JSONC files
   - files:
       - "*.jsonc"
@@ -34,6 +31,7 @@ overrides:
     parser: jsonc-eslint-parser
     parserOptions:
       jsonSyntax: JSONC
+
   # JSON5 files
   - files:
       - "*.json5"
@@ -42,34 +40,3 @@ overrides:
     parser: jsonc-eslint-parser
     parserOptions:
       jsonSyntax: JSON5
-  # Javascript files
-  - files:
-      - "**/*.js"
-      - "**/*.mjs"
-      - "**/*.cjs"
-      - "**/*.jsx"
-    extends:
-      - "plugin:react/recommended"
-    parserOptions:
-      sourceType: module
-      ecmaVersion: latest
-      ecmaFeatures:
-        jsx: true
-        modules: true
-  # TypeScript files
-  - files:
-      - "**/*.ts"
-      - "**/*.cts"
-      - "**/*.mts"
-      - "**/*.tsx"
-    extends:
-      - "plugin:@typescript-eslint/recommended"
-      - plugin:n/recommended
-      - plugin:react/recommended
-      - prettier
-    parser: "@typescript-eslint/parser"
-    plugins:
-      - "@typescript-eslint"
-    parserOptions:
-      ecmaVersion: latest
-      sourceType: module
