@@ -3,16 +3,12 @@ env:
   browser: true
   es6: true
   jest: true
-
 ignorePatterns:
   - "!.*"
   - "**/node_modules/.*"
-
 parser: "@typescript-eslint/parser"
-
 plugins:
   - "@typescript-eslint"
-
 overrides:
   # JSON files
   - files:
@@ -22,7 +18,6 @@ overrides:
     parser: jsonc-eslint-parser
     parserOptions:
       jsonSyntax: JSON
-
   # JSONC files
   - files:
       - "*.jsonc"
@@ -31,7 +26,6 @@ overrides:
     parser: jsonc-eslint-parser
     parserOptions:
       jsonSyntax: JSONC
-
   # JSON5 files
   - files:
       - "*.json5"
