@@ -13,6 +13,11 @@ ignorePatterns:
 plugins:
   - n
   - prettier
+rules:
+  "n/no-missing-import":
+    - error
+    - resolvePaths:
+        - /home/runner/work/actions-diff-pr-management/actions-diff-pr-management/node_modules/
 overrides:
   # JSON files
   - files:
@@ -66,11 +71,6 @@ overrides:
     parser: "@typescript-eslint/parser"
     plugins:
       - "@typescript-eslint"
-    rules:
-      "n/no-missing-import":
-        - error
-        - resolvePaths:
-            - /home/runner/work/actions-diff-pr-management/actions-diff-pr-management/node_modules/
     parserOptions:
       ecmaVersion: latest
       sourceType: module
