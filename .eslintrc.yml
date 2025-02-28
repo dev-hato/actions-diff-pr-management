@@ -16,8 +16,7 @@ plugins:
 rules:
   "n/no-missing-import":
     - error
-    - resolvePaths:
-        - /home/runner/work/actions-diff-pr-management/actions-diff-pr-management/node_modules/
+    - ignoreTypeImport: true
 overrides:
   # JSON files
   - files:
