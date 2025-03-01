@@ -8,9 +8,6 @@ extends:
   - "eslint:recommended"
 ignorePatterns:
   - "!.*"
-settings:
-  allowModules:
-    - "@actions/github"
 plugins:
   - n
   - prettier
