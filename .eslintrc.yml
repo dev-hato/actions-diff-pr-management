@@ -9,8 +9,8 @@ extends:
 ignorePatterns:
   - "!.*"
 settings:
-  allowModules:
-    - "js-yaml"
+  resolvePaths:
+    - "/github/workspace/node_modules/"
 plugins:
   - n
   - prettier
