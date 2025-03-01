@@ -9,7 +9,8 @@ extends:
 ignorePatterns:
   - "!.*"
 settings:
-  ignoreTypeImport: true
+  allowModules:
+    - "js-yaml"
 plugins:
   - n
   - prettier
