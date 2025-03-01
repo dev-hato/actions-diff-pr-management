@@ -8,8 +8,9 @@ extends:
   - "eslint:recommended"
 ignorePatterns:
   - "!.*"
-resolvePaths:
-  - "/home/runner/work/actions-diff-pr-management/actions-diff-pr-management"
+settings:
+  resolvePaths:
+    - "/home/runner/work/actions-diff-pr-management/actions-diff-pr-management"
 plugins:
   - n
   - prettier
