@@ -12,7 +12,7 @@ settings:
   tsconfigPath:
     - "/github/workspace/tsconfig.json"
   typescriptExtensionMap:
-    - [ "", ".ts" ]
+    - ["", ".ts"]
 plugins:
   - n
   - prettier
