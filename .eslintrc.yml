@@ -11,10 +11,6 @@ ignorePatterns:
 settings:
   tsconfigPath:
     - "/github/workspace/tsconfig.json"
-  typescriptExtensionMap:
-    - ["", ".ts"]
-  import/resolver:
-    typescript: {}
 plugins:
   - n
   - prettier
