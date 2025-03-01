@@ -9,8 +9,8 @@ extends:
 ignorePatterns:
   - "!.*"
 settings:
-  resolvePaths:
-    - "/github/workspace/src/"
+  tsconfigPath:
+    - "/github/workspace/tsconfig.json"
 plugins:
   - n
   - prettier
