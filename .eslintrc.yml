@@ -10,7 +10,7 @@ ignorePatterns:
   - "!.*"
 settings:
   resolvePaths:
-    - "/github/workspace/"
+    - "/github/workspace/src/"
 plugins:
   - n
   - prettier
