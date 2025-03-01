@@ -9,9 +9,7 @@ extends:
 ignorePatterns:
   - "!.*"
 settings:
-  resolverConfig:
-    modules:
-      - "/home/runner/work/actions-diff-pr-management/actions-diff-pr-management/node_modules"
+  ignoreTypeImport: true
 plugins:
   - n
   - prettier
