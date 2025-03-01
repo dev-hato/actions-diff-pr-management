@@ -8,6 +8,9 @@ extends:
   - "eslint:recommended"
 ignorePatterns:
   - "!.*"
+settings:
+  resolvePaths:
+    - "/github/workspace/"
 plugins:
   - n
   - prettier
