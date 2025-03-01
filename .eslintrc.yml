@@ -59,7 +59,6 @@ overrides:
       - "**/*.tsx"
     extends:
       - "plugin:@typescript-eslint/recommended"
-      - plugin:n/recommended
       - plugin:react/recommended
       - prettier
     parser: "@typescript-eslint/parser"
