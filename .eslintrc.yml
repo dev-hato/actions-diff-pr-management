@@ -11,6 +11,9 @@ ignorePatterns:
 settings:
   resolvePaths:
     - "/home/runner/work/actions-diff-pr-management/actions-diff-pr-management/node_modules/"
+  resolverConfig:
+    modules:
+      - "node_modules"
 plugins:
   - n
   - prettier
