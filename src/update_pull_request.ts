@@ -6,7 +6,10 @@ import { getPullRequests } from "./get_pull_requests";
 export async function script({ github, context }: AsyncFunctionArguments) {
   const { title, body } = generateTitleDescription();
 
-  for (const pull of await getPullRequests(<AsyncFunctionArguments>{ github, context })) {
+  for (const pull of await getPullRequests(<AsyncFunctionArguments>{
+    github,
+    context,
+  })) {
     if (pull.title === title && pull.body === body) {
       continue;
     }

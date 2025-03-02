@@ -6,6 +6,9 @@ export async function script({
   context,
 }: AsyncFunctionArguments): Promise<number> {
   const HEAD_REF = process.env.HEAD_REF;
-  const pulls = await getPullRequests(<AsyncFunctionArguments>{github, context}, HEAD_REF);
+  const pulls = await getPullRequests(
+    <AsyncFunctionArguments>{ github, context },
+    HEAD_REF,
+  );
   return pulls.length;
 }
