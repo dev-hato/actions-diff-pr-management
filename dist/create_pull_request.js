@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.script = script;
 const generate_title_description_1 = require("./generate_title_description");
-async function script(github, context) {
+async function script({ github, context, }) {
     const HEAD_REF = process.env.HEAD_REF || "";
     let head = process.env.BRANCH_NAME_PREFIX;
     if (HEAD_REF !== "") {

@@ -3,9 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.script = script;
 const generate_title_description_1 = require("./generate_title_description");
 const get_pull_requests_1 = require("./get_pull_requests");
-async function script(github, context) {
+async function script({ github, context }) {
     const { title, body } = (0, generate_title_description_1.generateTitleDescription)();
-    for (const pull of await (0, get_pull_requests_1.getPullRequests)(github, context)) {
+    for (const pull of await (0, get_pull_requests_1.getPullRequests)({
+        github,
+        context,
+    })) {
         if (pull.title === title && pull.body === body) {
             continue;
         }
