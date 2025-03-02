@@ -13,8 +13,9 @@ plugins:
   - n
   - prettier
 settings:
-  typescriptExtensionMap:
-    - ["", ".ts"]
+  resolverConfig:
+    modules:
+      - "./src/"
 overrides:
   # JSON files
   - files:
