@@ -10,7 +10,10 @@ export async function script({ github, context }: AsyncFunctionArguments) {
     headName += "-" + HEAD_REF;
   }
 
-  for (const pull of await getPullRequests(<AsyncFunctionArguments>{ github, context })) {
+  for (const pull of await getPullRequests(<AsyncFunctionArguments>{
+    github,
+    context,
+  })) {
     // 修正PRをcloseする (修正PRのstateをclosedに更新する)
     const pullsUpdateParams: RestEndpointMethodTypes["pulls"]["update"]["parameters"] =
       {
