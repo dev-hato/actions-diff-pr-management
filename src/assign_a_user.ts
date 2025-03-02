@@ -1,11 +1,7 @@
-import type { Context } from "@actions/github/lib/context";
-import type { GitHub } from "@actions/github/lib/utils";
+import type { AsyncFunctionArguments } from "@actions/github-script";
 import type { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods";
 
-export async function script(
-  github: InstanceType<typeof GitHub>,
-  context: Context,
-) {
+export async function script({ github, context }: AsyncFunctionArguments) {
   const issuesAddAssigneesParams: RestEndpointMethodTypes["issues"]["addAssignees"]["parameters"] =
     {
       owner: context.repo.owner,
