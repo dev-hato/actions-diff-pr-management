@@ -8,9 +8,9 @@
     "strict": true,
     "skipLibCheck": true,
     "moduleResolution": "node",
-    "baseUrl": "./",
+    "baseUrl": "/github/workspace/",
     "paths": {
-      "@actions/github/*": ["./node_modules/@actions/github/*"]
+      "@actions/github/*": ["/github/workspace/node_modules/@actions/github/*"]
     }
   },
   "include": ["src/*.ts"]
