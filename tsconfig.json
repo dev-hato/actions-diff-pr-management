@@ -10,7 +10,7 @@
     "moduleResolution": "node",
     "baseUrl": "./",
     "paths": {
-      "@actions/github/*": ["node_modules/@actions/github/*"]
+      "@actions/github/*": ["./node_modules/@actions/github/*"]
     }
   },
   "include": ["src/*.ts"]
