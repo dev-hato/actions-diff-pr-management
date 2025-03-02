@@ -4,20 +4,17 @@ env:
   es6: true
   jest: true
   node: true
-
 extends:
   - "eslint:recommended"
-
 ignorePatterns:
   - "!.*"
   - "**/node_modules/.*"
-
 plugins:
   - n
   - prettier
 settings:
   typescriptExtensionMap:
-    - [ "", ".ts" ]
+    - ["", ".ts"]
 overrides:
   # JSON files
   - files:
@@ -27,7 +24,6 @@ overrides:
     parser: jsonc-eslint-parser
     parserOptions:
       jsonSyntax: JSON
-
   # JSONC files
   - files:
       - "*.jsonc"
@@ -36,7 +32,6 @@ overrides:
     parser: jsonc-eslint-parser
     parserOptions:
       jsonSyntax: JSONC
-
   # JSON5 files
   - files:
       - "*.json5"
@@ -45,7 +40,6 @@ overrides:
     parser: jsonc-eslint-parser
     parserOptions:
       jsonSyntax: JSON5
-
   # Javascript files
   - files:
       - "**/*.js"
@@ -60,7 +54,6 @@ overrides:
       ecmaFeatures:
         jsx: true
         modules: true
-
   # TypeScript files
   - files:
       - "**/*.ts"
