@@ -1,5 +1,5 @@
 import type { AsyncFunctionArguments } from "@actions/github-script";
-import { getPullRequests } from "@/get_pull_requests";
+import { getPullRequests } from "./get_pull_requests";
 
 export async function script({
   github,

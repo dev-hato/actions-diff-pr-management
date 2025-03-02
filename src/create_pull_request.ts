@@ -1,6 +1,6 @@
 import type { AsyncFunctionArguments } from "@actions/github-script";
 import type { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods";
-import { generateTitleDescription } from "@/generate_title_description";
+import { generateTitleDescription } from "./generate_title_description";
 
 export async function script({
   github,
