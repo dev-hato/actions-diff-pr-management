@@ -1,5 +1,5 @@
-import type { Context } from "../node_modules/@actions/github/lib/context";
-import type { GitHub } from "../node_modules/@actions/github/lib/utils";
+import type { Context } from "../node_modules/@actions/github/lib/context.js";
+import type { GitHub } from "../node_modules/@actions/github/lib/utils.js";
 import type { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods";
 
 export async function script(
