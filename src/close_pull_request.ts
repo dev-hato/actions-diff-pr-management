@@ -1,6 +1,6 @@
 import type { AsyncFunctionArguments } from "@actions/github-script";
 import type { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods";
-import { getPullRequests } from "./get_pull_requests";
+import { getPullRequests } from "./get_pull_requests.ts";
 
 export async function script({ github, context }: AsyncFunctionArguments) {
   const HEAD_REF = process.env.HEAD_REF;
