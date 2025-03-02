@@ -1,12 +1,11 @@
-import type { Context } from "@actions/github/lib/context";
-import type { GitHub } from "@actions/github/lib/utils";
+import type { AsyncFunctionArguments } from "@actions/github-script";
 import type { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods";
 import { generateTitleDescription } from "./generate_title_description";
 
-export async function script(
-  github: InstanceType<typeof GitHub>,
-  context: Context,
-): Promise<number> {
+export async function script({
+  github,
+  context,
+}: AsyncFunctionArguments): Promise<number> {
   const HEAD_REF = process.env.HEAD_REF || "";
   let head = process.env.BRANCH_NAME_PREFIX;
 

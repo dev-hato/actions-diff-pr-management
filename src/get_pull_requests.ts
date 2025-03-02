@@ -1,11 +1,9 @@
-import type { GitHub } from "@actions/github/lib/utils";
-import type { Context } from "@actions/github/lib/context";
+import type { AsyncFunctionArguments } from "@actions/github-script";
 import type { PaginatingEndpoints } from "@octokit/plugin-paginate-rest";
 import type { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods";
 
 export async function getPullRequests(
-  github: InstanceType<typeof GitHub>,
-  context: Context,
+  { github, context }: AsyncFunctionArguments,
   base?: string,
 ): Promise<
   PaginatingEndpoints["GET /repos/{owner}/{repo}/pulls"]["response"]["data"]

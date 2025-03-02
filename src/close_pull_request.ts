@@ -1,12 +1,8 @@
-import type { Context } from "@actions/github/lib/context";
-import type { GitHub } from "@actions/github/lib/utils";
+import type { AsyncFunctionArguments } from "@actions/github-script";
 import type { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods";
 import { getPullRequests } from "./get_pull_requests";
 
-export async function script(
-  github: InstanceType<typeof GitHub>,
-  context: Context,
-) {
+export async function script({ github, context }: AsyncFunctionArguments) {
   const HEAD_REF = process.env.HEAD_REF;
   let headName = process.env.BRANCH_NAME_PREFIX;
 
@@ -14,7 +10,7 @@ export async function script(
     headName += "-" + HEAD_REF;
   }
 
-  for (const pull of await getPullRequests(github, context)) {
+  for (const pull of await getPullRequests(<AsyncFunctionArguments>{ github, context })) {
     // 修正PRをcloseする (修正PRのstateをclosedに更新する)
     const pullsUpdateParams: RestEndpointMethodTypes["pulls"]["update"]["parameters"] =
       {
