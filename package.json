@@ -1,7 +1,9 @@
 {
+  "dependencies": {
+    "@actions/github-script": "github:actions/github-script"
+  },
   "devDependencies": {
     "@actions/github": "6.0.0",
-    "@actions/github-script": "github:actions/github-script",
     "@octokit/plugin-paginate-rest": "11.4.3",
     "@octokit/plugin-rest-endpoint-methods": "13.3.1",
     "@proofdict/textlint-rule-proofdict": "3.1.2",
