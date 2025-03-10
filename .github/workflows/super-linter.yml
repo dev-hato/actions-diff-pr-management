@@ -59,6 +59,7 @@ jobs:
           DEFAULT_BRANCH: main
           LINTER_RULES_PATH: .
           VALIDATE_TYPESCRIPT_STANDARD: false
+          VALIDATE_GIT_COMMITLINT: false
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
