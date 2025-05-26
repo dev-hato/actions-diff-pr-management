@@ -2,7 +2,7 @@
   "dependencies": {
     "@actions/github": "6.0.1",
     "@octokit/plugin-paginate-rest": "13.0.1",
-    "@octokit/plugin-rest-endpoint-methods": "15.0.0",
+    "@octokit/plugin-rest-endpoint-methods": "16.0.0",
     "js-yaml": "4.1.0"
   },
   "devDependencies": {
