@@ -9,6 +9,7 @@
     "@proofdict/textlint-rule-proofdict": "3.1.2",
     "@textlint-ja/textlint-rule-no-insert-dropping-sa": "2.0.1",
     "@types/js-yaml": "4.0.9",
+    "node-fetch": "2.6.12",
     "prettier": "3.6.2",
     "textlint": "15.1.0",
     "textlint-filter-rule-comments": "1.2.2",
