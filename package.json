@@ -11,7 +11,7 @@
     "@types/js-yaml": "4.0.9",
     "node-fetch": "2.6.12",
     "prettier": "3.6.2",
-    "textlint": "15.1.0",
+    "textlint": "15.2.0",
     "textlint-filter-rule-comments": "1.2.2",
     "textlint-rule-abbr-within-parentheses": "1.0.2",
     "textlint-rule-footnote-order": "1.0.3",
