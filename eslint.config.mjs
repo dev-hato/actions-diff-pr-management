@@ -81,7 +81,7 @@ export default defineConfig([
   },
   {
     files: ["**/*.js", "**/*.mjs", "**/*.cjs", "**/*.jsx"],
-    extends: compat.extends("plugin:react/recommended"),
+    // extends: compat.extends("plugin:react/recommended"),
 
     languageOptions: {
       ecmaVersion: "latest",
@@ -101,7 +101,7 @@ export default defineConfig([
     extends: compat.extends(
       "plugin:@typescript-eslint/recommended",
       "plugin:n/recommended",
-      "plugin:react/recommended",
+      // "plugin:react/recommended",
       "prettier",
     ),
 
