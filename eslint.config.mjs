@@ -1,3 +1,4 @@
+// https://github.com/super-linter/super-linter/blob/0d8f7aad449c1dc8ecaf2362684de5d379d2cd7d/TEMPLATES/eslint.config.mjs
 import { defineConfig, globalIgnores } from "eslint/config";
 import n from "eslint-plugin-n";
 import prettier from "eslint-plugin-prettier";
