@@ -11,20 +11,35 @@ export async function script(
   const { title, body } = generateTitleDescription();
 
   for (const pull of await getPullRequests(github, context)) {
-    if (pull.title === title && pull.body === body) {
+    // PRのタイトルやDescriptionを更新する
+    if (pull.title !== title || pull.body !== body) {
+      const pullsUpdateParams: RestEndpointMethodTypes["pulls"]["update"]["parameters"] =
+        {
+          owner: context.repo.owner,
+          repo: context.repo.repo,
+          pull_number: pull.number,
+          title,
+          body,
+        };
+      console.log("call pulls.update:", pullsUpdateParams);
+      await github.rest.pulls.update(pullsUpdateParams);
+    }
+
+    const labels: string[] | undefined = process.env.PR_LABELS?.split(",");
+
+    if (labels === undefined || labels.length === 0) {
       continue;
     }
 
-    // PRのタイトルやDescriptionを更新する
-    const pullsUpdateParams: RestEndpointMethodTypes["pulls"]["update"]["parameters"] =
+    // ラベルを付与する
+    const issuesAddLabelsParams: RestEndpointMethodTypes["issues"]["addLabels"]["parameters"] =
       {
         owner: context.repo.owner,
         repo: context.repo.repo,
-        pull_number: pull.number,
-        title,
-        body,
+        issue_number: pull.number,
+        labels,
       };
-    console.log("call pulls.update:", pullsUpdateParams);
-    await github.rest.pulls.update(pullsUpdateParams);
+    console.log("call issues.addLabels:", issuesAddLabelsParams);
+    await github.rest.issues.addLabels(issuesAddLabelsParams);
   }
 }
