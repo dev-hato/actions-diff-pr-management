@@ -58,6 +58,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-format
           pr-title-prefix: format修正
+          pr-labels: bug
           pr-description-prefix: formatを修正しました。
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
