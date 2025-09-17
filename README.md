@@ -1,4 +1,4 @@
-# aaaaaactions-diff-pr-managementtttt
+# actions-diff-pr-management
 
 PRのブランチに対して、フォーマッタを実行した結果をPRにするGitHub Actionsです。
 
