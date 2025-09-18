@@ -51,6 +51,7 @@ jobs:
 |  branch-name-prefix   |               branch名の接頭語。                |      |     fix      |
 |    pr-title-prefix    |             PRのタイトルの接頭語。              |      |     fix      |
 | pr-description-prefix |                 本文の接頭語。                  |      |              |
+|       pr-labels       |  PRに付与するラベル。カンマ区切りで指定する。   |      |              |
 |     exit-failure      |      実行完了時にCIを失敗させるかどうか。       |      |     true     |
 |   working-directory   |             実行対象のディレクトリ              |      |              |
 |       no-verify       | `git commit`, `git push` 時のフックを無効化する |      |    false     |
