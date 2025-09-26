@@ -19,7 +19,7 @@ async function script(github, context) {
             console.log("call pulls.update:", pullsUpdateParams);
             await github.rest.pulls.update(pullsUpdateParams);
         }
-        const labels = (_a = process.env.PR_LABELS) === null || _a === void 0 ? void 0 : _a.split(",");
+        const labels = (_a = process.env.PR_LABELS) === null || _a === void 0 ? void 0 : _a.split(",").filter((l) => l !== "");
         if (labels === undefined || labels.length === 0) {
             continue;
         }
