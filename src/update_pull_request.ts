@@ -25,7 +25,9 @@ export async function script(
       await github.rest.pulls.update(pullsUpdateParams);
     }
 
-    const labels: string[] | undefined = process.env.PR_LABELS?.split(",");
+    const labels: string[] | undefined = process.env.PR_LABELS?.split(
+      ",",
+    ).filter((l) => l !== "");
 
     if (labels === undefined || labels.length === 0) {
       continue;
