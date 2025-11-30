@@ -46,18 +46,25 @@ runs:
     - name: Set env
       id: set-env
       shell: bash
+      env:
+        HEAD_REF: ${{github.event.pull_request.head.ref || github.ref_name}}
+        PR_DESCRIPTION_PREFIX_VALUE: ${{inputs.pr-description-prefix}}
+        PR_NUMBER: ${{github.event.pull_request.number}}
+        PR_TITLE_PREFIX: ${{inputs.pr-title-prefix}}
+        PR_LABELS: ${{inputs.pr-labels}}
+        BRANCH_NAME_PREFIX: ${{inputs.branch-name-prefix}}
       run: |
-        echo "HEAD_REF=${{github.event.pull_request.head.ref || github.ref_name}}" >>"${GITHUB_ENV}"
+        echo "HEAD_REF=${HEAD_REF}" >>"${GITHUB_ENV}"
 
         delimiter="$(openssl rand -hex 8)"
         echo "PR_DESCRIPTION_PREFIX<<${delimiter}" >> "$GITHUB_ENV"
-        echo "${{inputs.pr-description-prefix}}" >> "$GITHUB_ENV"
+        echo "${PR_DESCRIPTION_PREFIX_VALUE}" >> "$GITHUB_ENV"
         echo "${delimiter}" >> "$GITHUB_ENV"
 
-        echo "PR_NUMBER=${{github.event.pull_request.number}}" >> "$GITHUB_ENV"
-        echo "PR_TITLE_PREFIX=${{inputs.pr-title-prefix}}" >> "$GITHUB_ENV"
-        echo "PR_LABELS=${{inputs.pr-labels}}" >> "$GITHUB_ENV"
-        echo "BRANCH_NAME_PREFIX=${{inputs.branch-name-prefix}}" >> "$GITHUB_ENV"
+        echo "PR_NUMBER=${PR_NUMBER}" >> "$GITHUB_ENV"
+        echo "PR_TITLE_PREFIX=${PR_TITLE_PREFIX}" >> "$GITHUB_ENV"
+        echo "PR_LABELS=${PR_LABELS}" >> "$GITHUB_ENV"
+        echo "BRANCH_NAME_PREFIX=${BRANCH_NAME_PREFIX}" >> "$GITHUB_ENV"
     # 差分があったときは、コミットを作りpushする
     - name: Push
       env:
