@@ -53,7 +53,7 @@ runs:
         PR_TITLE_PREFIX: ${{inputs.pr-title-prefix}}
         PR_LABELS: ${{inputs.pr-labels}}
         BRANCH_NAME_PREFIX: ${{inputs.branch-name-prefix}}
-      run: |
+      run: | # zizmor: ignore[github-env]
         echo "HEAD_REF=${HEAD_REF}" >>"${GITHUB_ENV}"
 
         delimiter="$(openssl rand -hex 8)"
