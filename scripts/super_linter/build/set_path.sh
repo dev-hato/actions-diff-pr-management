@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 npm ci
 tag_name="$(yq '.jobs.build.steps[-1].uses' .github/workflows/super-linter.yml | sed -e 's;/slim@.*;:slim;g')"
