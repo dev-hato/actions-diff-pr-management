@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 git config user.name "github-actions[bot]"
 EMAIL="41898282+github-actions[bot]@users.noreply.github.com"

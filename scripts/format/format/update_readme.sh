@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 DESCRIPTION="$(yq '.description' action.yml)"
 export DESCRIPTION
