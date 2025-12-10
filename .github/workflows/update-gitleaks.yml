@@ -23,7 +23,7 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
-      - uses: dev-hato/actions-update-gitleaks@b6790d4d1b6b50a659a680b92ddf6f072cc03993 # v0.0.99
+      - uses: dev-hato/actions-update-gitleaks@add7d5dccd75b8db56ef5e55f1184594b7b8c13c # v0.0.100
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
 concurrency:
