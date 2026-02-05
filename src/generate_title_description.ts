@@ -39,8 +39,8 @@ export function generateTitleDescription(): {
     body += "  commit\n";
   }
 
-  body += `  branch ${escapedHead}\n`;
-  body += `  checkout ${escapedHead}\n`;
+  body += `  branch "${escapedHead}"\n`;
+  body += `  checkout "${escapedHead}"\n`;
   let commit = PR_TITLE_PREFIX;
 
   if (commit.length > 6) {
@@ -48,8 +48,8 @@ export function generateTitleDescription(): {
   }
 
   body += `  commit id: "${commit}"\n`;
-  body += `  checkout ${escapedHeadRef}\n`;
-  body += `  merge ${escapedHead}\n`;
+  body += `  checkout "${escapedHeadRef}"\n`;
+  body += `  merge "${escapedHead}"\n`;
   body += "```";
 
   if (PR_NUMBER !== "") {
