@@ -30,15 +30,15 @@ function generateTitleDescription() {
     for (let i = 0; i < 2; i++) {
         body += "  commit\n";
     }
-    body += `  branch ${escapedHead}\n`;
-    body += `  checkout ${escapedHead}\n`;
+    body += `  branch "${escapedHead}"\n`;
+    body += `  checkout "${escapedHead}"\n`;
     let commit = PR_TITLE_PREFIX;
     if (commit.length > 6) {
         commit = commit.substring(0, 6) + "......";
     }
     body += `  commit id: "${commit}"\n`;
-    body += `  checkout ${escapedHeadRef}\n`;
-    body += `  merge ${escapedHead}\n`;
+    body += `  checkout "${escapedHeadRef}"\n`;
+    body += `  merge "${escapedHead}"\n`;
     body += "```";
     if (PR_NUMBER !== "") {
         title += " #" + PR_NUMBER;
