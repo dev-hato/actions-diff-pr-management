@@ -1,5 +1,4 @@
-# actions-diff-pr-management
-
+# actions-diff-pr-managementtest
 PRのブランチに対して、フォーマッタを実行した結果をPRにするGitHub Actionsです。
 
 本Actionsを使ったCIが再度実行されると修正PRにforce pushされます。
@@ -7,7 +6,6 @@ PRのブランチに対して、フォーマッタを実行した結果をPRに�
 また、本Actionsを使わずにフォーマットを修正した場合や元のPRを閉じた場合、自動的にPRを閉じます。
 
 ## 使い方
-
 ```yaml
 on:
   pull_request:
