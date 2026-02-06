@@ -16,8 +16,6 @@ async function script(github, context) {
                 title,
                 body,
             };
-
-            
             console.log("call pulls.update:", pullsUpdateParams);
             await github.rest.pulls.update(pullsUpdateParams);
         }
