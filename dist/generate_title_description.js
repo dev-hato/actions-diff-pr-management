@@ -14,7 +14,7 @@ function generateTitleDescription() {
     let title = PR_TITLE_PREFIX;
     let body = process.env.PR_DESCRIPTION_PREFIX || "";
     if (body !== "" && !body.endsWith("\n")) {
-        body += "\n";
+        body += "\n\n";
     }
     body += `本PR ( \`${escapedHead}\` ) をマージすると差分が次のPRに反映されます。\n`;
     body += "* ";
