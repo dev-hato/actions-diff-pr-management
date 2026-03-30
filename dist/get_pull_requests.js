@@ -1,15 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPullRequests = getPullRequests;
-async function getPullRequests(github, context, base) {
+async function getPullRequests(github, ctx, base) {
     const HEAD_REF = process.env.HEAD_REF;
-    let head = context.repo.owner + ":" + process.env.BRANCH_NAME_PREFIX;
+    let head = ctx.repo.owner + ":" + process.env.BRANCH_NAME_PREFIX;
     if (HEAD_REF !== "") {
         head += "-" + HEAD_REF;
     }
     const pullsListParams = {
-        owner: context.repo.owner,
-        repo: context.repo.repo,
+        owner: ctx.repo.owner,
+        repo: ctx.repo.repo,
         head,
         state: "open",
         base,
