@@ -1,11 +1,11 @@
-import type { Context } from "@actions/github/lib/context";
+import type { context } from "@actions/github";
 import type { GitHub } from "@actions/github/lib/utils";
 import type { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods";
 import { generateTitleDescription } from "./generate_title_description";
 
 export async function script(
   github: InstanceType<typeof GitHub>,
-  context: Context,
+  ctx: typeof context,
 ): Promise<number> {
   const HEAD_REF = process.env.HEAD_REF || "";
   let head = process.env.BRANCH_NAME_PREFIX;
@@ -14,12 +14,12 @@ export async function script(
     head += "-" + HEAD_REF;
   }
 
-  const headWithRepo = context.repo.owner + ":" + head;
+  const headWithRepo = ctx.repo.owner + ":" + head;
   const { title, body } = generateTitleDescription();
   const pullsCreateParams: RestEndpointMethodTypes["pulls"]["create"]["parameters"] =
     {
-      owner: context.repo.owner,
-      repo: context.repo.repo,
+      owner: ctx.repo.owner,
+      repo: ctx.repo.repo,
       head: headWithRepo,
       base: HEAD_REF,
       title,

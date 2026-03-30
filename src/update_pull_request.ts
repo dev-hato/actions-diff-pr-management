@@ -1,4 +1,4 @@
-import type { Context } from "@actions/github/lib/context";
+import type { context } from "@actions/github";
 import type { GitHub } from "@actions/github/lib/utils";
 import type { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods";
 import { generateTitleDescription } from "./generate_title_description";
@@ -6,17 +6,17 @@ import { getPullRequests } from "./get_pull_requests";
 
 export async function script(
   github: InstanceType<typeof GitHub>,
-  context: Context,
+  ctx: typeof context,
 ) {
   const { title, body } = generateTitleDescription();
 
-  for (const pull of await getPullRequests(github, context)) {
+  for (const pull of await getPullRequests(github, ctx)) {
     // PRのタイトルやDescriptionを更新する
     if (pull.title !== title || pull.body !== body) {
       const pullsUpdateParams: RestEndpointMethodTypes["pulls"]["update"]["parameters"] =
         {
-          owner: context.repo.owner,
-          repo: context.repo.repo,
+          owner: ctx.repo.owner,
+          repo: ctx.repo.repo,
           pull_number: pull.number,
           title,
           body,
@@ -36,8 +36,8 @@ export async function script(
     // ラベルを付与する
     const issuesAddLabelsParams: RestEndpointMethodTypes["issues"]["addLabels"]["parameters"] =
       {
-        owner: context.repo.owner,
-        repo: context.repo.repo,
+        owner: ctx.repo.owner,
+        repo: ctx.repo.repo,
         issue_number: pull.number,
         labels,
       };
