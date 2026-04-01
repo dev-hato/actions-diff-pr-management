@@ -2,17 +2,17 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.script = script;
 const generate_title_description_1 = require("./generate_title_description");
-async function script(github, context) {
+async function script(github, ctx) {
     const HEAD_REF = process.env.HEAD_REF || "";
     let head = process.env.BRANCH_NAME_PREFIX;
     if (HEAD_REF !== "") {
         head += "-" + HEAD_REF;
     }
-    const headWithRepo = context.repo.owner + ":" + head;
+    const headWithRepo = ctx.repo.owner + ":" + head;
     const { title, body } = (0, generate_title_description_1.generateTitleDescription)();
     const pullsCreateParams = {
-        owner: context.repo.owner,
-        repo: context.repo.repo,
+        owner: ctx.repo.owner,
+        repo: ctx.repo.repo,
         head: headWithRepo,
         base: HEAD_REF,
         title,

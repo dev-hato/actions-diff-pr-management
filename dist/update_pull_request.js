@@ -3,15 +3,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.script = script;
 const generate_title_description_1 = require("./generate_title_description");
 const get_pull_requests_1 = require("./get_pull_requests");
-async function script(github, context) {
+async function script(github, ctx) {
     var _a;
     const { title, body } = (0, generate_title_description_1.generateTitleDescription)();
-    for (const pull of await (0, get_pull_requests_1.getPullRequests)(github, context)) {
+    for (const pull of await (0, get_pull_requests_1.getPullRequests)(github, ctx)) {
         // PRのタイトルやDescriptionを更新する
         if (pull.title !== title || pull.body !== body) {
             const pullsUpdateParams = {
-                owner: context.repo.owner,
-                repo: context.repo.repo,
+                owner: ctx.repo.owner,
+                repo: ctx.repo.repo,
                 pull_number: pull.number,
                 title,
                 body,
@@ -25,8 +25,8 @@ async function script(github, context) {
         }
         // ラベルを付与する
         const issuesAddLabelsParams = {
-            owner: context.repo.owner,
-            repo: context.repo.repo,
+            owner: ctx.repo.owner,
+            repo: ctx.repo.repo,
             issue_number: pull.number,
             labels,
         };
