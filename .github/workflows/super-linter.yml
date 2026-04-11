@@ -21,6 +21,7 @@ on:
 permissions:
   contents: read
   packages: read
+  pull-requests: write
   statuses: write
 ###############
 # Set the Job #
