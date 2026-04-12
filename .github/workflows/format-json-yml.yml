@@ -27,8 +27,8 @@ jobs:
         id: generate_token
         uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3.0.0
         with:
-          app-id: ${{ secrets.PROJECT_AUTOMATION_APP_ID }}
-          private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
+          app-id: ${{ secrets.PROJECT_AUTOMATION_APP_ID }} # zizmor: ignore[secrets-outside-env]
+          private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }} # zizmor: ignore[secrets-outside-env]
       - uses: dev-hato/actions-format-json-yml@e26bb75bab9841682281db76bb3f11b9f29a29f0 # v0.0.100
         with:
           github-token: ${{steps.generate_token.outputs.token}}
