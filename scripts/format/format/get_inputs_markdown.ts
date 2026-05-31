@@ -1,7 +1,5 @@
-import { createRequire } from "module";
 import { readFileSync } from "fs";
 
-const require = createRequire(import.meta.url);
 const yaml = require("js-yaml") as typeof import("js-yaml");
 
 export function script(): string {
