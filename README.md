@@ -54,7 +54,7 @@ jobs:
 |       pr-labels       |  PRに付与するラベル。カンマ区切りで指定する。   |      |              |
 |     exit-failure      |      実行完了時にCIを失敗させるかどうか。       |      |     true     |
 |   working-directory   |             実行対象のディレクトリ              |      |              |
-|       no-verify       | `git commit`, `git push` 時のフックを無効化する |      |    false     |
+|       no-verify       | `git commit`, `git push`時のフックを無効化する |      |    false     |
 
 ## 対応しているトリガー
 
@@ -68,5 +68,5 @@ jobs:
 
 ### 設定
 
-<https://pre-commit.com/> の手順に従って `pre-commit` をインストールします。  
+<https://pre-commit.com/>の手順に従って`pre-commit`をインストールします。  
 これにより、コミット時にクレデンシャルが含まれていないかの検査が行われるようになります。
