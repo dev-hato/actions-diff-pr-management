@@ -30,7 +30,7 @@ inputs:
     required: false
     default: ""
   no-verify:
-    description: "`git commit`, `git push` 時のフックを無効化する"
+    description: "`git commit`, `git push`時のフックを無効化する"
     required: false
     default: "false"
 runs:
