@@ -8,6 +8,8 @@ ${DESCRIPTION}
 
 ## 使い方
 
+<!-- jscpd:ignore-start -->
+
 ```yaml
 on:
   pull_request:
@@ -37,6 +39,8 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
 ```
+
+<!-- jscpd:ignore-end -->
 
 ## 例
 
