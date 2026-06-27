@@ -33,10 +33,10 @@ jobs:
           permission-contents: write
           permission-pull-requests: write
           permission-workflows: write
+      # jscpd:ignore-end
       - uses: dev-hato/actions-format-json-yml@251638e8f9b506b75637531801c20baec9077ec5 # v0.0.103
         with:
           github-token: ${{steps.generate_token.outputs.token}}
-          # jscpd:ignore-end
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
