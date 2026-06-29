@@ -27,6 +27,9 @@ function generateTitleDescription() {
     }
     body += "\n\n";
     body += `CIが再度実行されると本PR ( \`${escapedHead}\` ) にforce pushされます。\n`;
+    body += `> [!WARNING]\n`;
+    body += `> 本PR ( \`${escapedHead}\` ) にコミットを追加すると、CIが再度実行された際にコミットが消える場合があります。\n`;
+    body += `> コミットを追加したい場合は本PR ( \`${escapedHead}\` ) を起点に別途PRを立てることをおすすめします。\n`;
     body += "```mermaid\n";
     body += `%%{init: {'gitGraph': {'mainBranchName': '${escapedHeadRef}'}}}%%\n`;
     body += "gitGraph\n";
