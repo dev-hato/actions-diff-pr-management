@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "test": "node --test"
+  },
   "dependencies": {
     "@actions/github": "9.1.1",
     "@octokit/plugin-paginate-rest": "13.2.1",

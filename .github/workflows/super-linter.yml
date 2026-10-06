@@ -51,6 +51,8 @@ jobs:
           cache: npm
           node-version-file: .node-version
       - uses: flatt-security/setup-takumi-guard-npm@14f07d0cbc739b42a1b7c70a04c2b84cd1318ddd # v1.4.0
+      - name: Test shell scripts
+        run: npm test
       - run: bash "${GITHUB_WORKSPACE}/scripts/super_linter/build/set_path.sh"
       ################################
       # Run Linter against code base #
