@@ -59,7 +59,9 @@ function runPush(
     ...overrides,
   };
   for (const key of Object.keys(env)) {
-    if (env[key] === undefined) delete env[key];
+    if (env[key] === undefined) {
+      delete env[key];
+    }
   }
   const result: SpawnSyncReturns<string> = spawnSync("bash", [script], {
     cwd: directory,
