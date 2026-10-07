@@ -28,6 +28,9 @@ const marker: string = "injection-marker";
 const mockGit: string = fileURLToPath(
   new URL("./mock_git.mts", import.meta.url),
 );
+const mockGitWrapper: string = fileURLToPath(
+  new URL("./mock_git.sh", import.meta.url),
+);
 
 function isStringArray(value: any): value is string[] {
   return (
@@ -45,10 +48,11 @@ function runPush(
   const bin: string = join(directory, "bin");
   const log: string = join(directory, "git.jsonl");
   mkdirSync(bin);
-  copyFileSync(mockGit, join(bin, "git"));
+  copyFileSync(mockGitWrapper, join(bin, "git"));
   const env: NodeJS.ProcessEnv = {
     PATH: [bin, dirname(process.execPath), "/usr/bin", "/bin"].join(delimiter),
     MOCK_GIT_LOG: log,
+    MOCK_GIT_SCRIPT: mockGit,
     GITHUB_ACTOR: "test-actor",
     TOKEN: "dummy-token",
     GITHUB_REPOSITORY: "test-owner/test-repo",
