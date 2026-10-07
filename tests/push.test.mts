@@ -3,12 +3,12 @@ import type { TestContext } from "node:test";
 import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
 import {
+  copyFileSync,
   existsSync,
   mkdirSync,
   mkdtempSync,
   readFileSync,
   rmSync,
-  writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { delimiter, dirname, join } from "node:path";
@@ -25,14 +25,9 @@ const script: string = fileURLToPath(
   new URL("../src/push.sh", import.meta.url),
 );
 const marker: string = "injection-marker";
-const mockGit: string = `#!/usr/bin/env node
-const fs = require("node:fs");
-const args = process.argv.slice(2);
-fs.appendFileSync(process.env.MOCK_GIT_LOG, JSON.stringify(args) + "\\n");
-const status = args[0] === "commit" ? process.env.MOCK_COMMIT_STATUS
-  : args[0] === "push" ? process.env.MOCK_PUSH_STATUS : 0;
-process.exit(Number(status || 0));
-`;
+const mockGit: string = fileURLToPath(
+  new URL("./mock_git.cjs", import.meta.url),
+);
 
 function isStringArray(value: any): value is string[] {
   return (
@@ -50,7 +45,7 @@ function runPush(
   const bin: string = join(directory, "bin");
   const log: string = join(directory, "git.jsonl");
   mkdirSync(bin);
-  writeFileSync(join(bin, "git"), mockGit, { mode: 0o755 });
+  copyFileSync(mockGit, join(bin, "git"));
   const env: NodeJS.ProcessEnv = {
     PATH: [bin, dirname(process.execPath), "/usr/bin", "/bin"].join(delimiter),
     MOCK_GIT_LOG: log,
