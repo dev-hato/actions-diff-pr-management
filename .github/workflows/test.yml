@@ -10,6 +10,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      # jscpd:ignore-start
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
@@ -19,6 +20,7 @@ jobs:
           node-version-file: .node-version
       - uses: flatt-security/setup-takumi-guard-npm@14f07d0cbc739b42a1b7c70a04c2b84cd1318ddd # v1.4.0
       - run: npm ci
+      # jscpd:ignore-end
       - run: npm test
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
