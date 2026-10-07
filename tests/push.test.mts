@@ -26,7 +26,7 @@ const script: string = fileURLToPath(
 );
 const marker: string = "injection-marker";
 const mockGit: string = fileURLToPath(
-  new URL("./mock_git.cjs", import.meta.url),
+  new URL("./mock_git.mts", import.meta.url),
 );
 
 function isStringArray(value: any): value is string[] {
