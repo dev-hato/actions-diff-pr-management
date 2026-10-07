@@ -1,3 +1,5 @@
+import type { SpawnSyncReturns } from "node:child_process";
+import type { TestContext } from "node:test";
 import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
 import {
@@ -13,9 +15,17 @@ import { delimiter, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
 
-const script = fileURLToPath(new URL("../src/push.sh", import.meta.url));
-const marker = "injection-marker";
-const mockGit = `#!/usr/bin/env node
+type PushResult = SpawnSyncReturns<string> & {
+  calls: string[][];
+  env: NodeJS.ProcessEnv;
+  markerExists: boolean;
+};
+
+const script: string = fileURLToPath(
+  new URL("../src/push.sh", import.meta.url),
+);
+const marker: string = "injection-marker";
+const mockGit: string = `#!/usr/bin/env node
 const fs = require("node:fs");
 const args = process.argv.slice(2);
 fs.appendFileSync(process.env.MOCK_GIT_LOG, JSON.stringify(args) + "\\n");
@@ -24,14 +34,24 @@ const status = args[0] === "commit" ? process.env.MOCK_COMMIT_STATUS
 process.exit(Number(status || 0));
 `;
 
-function runPush(t, overrides = {}) {
-  const directory = mkdtempSync(join(tmpdir(), "diff-pr-push-test-"));
+function isStringArray(value: any): value is string[] {
+  return (
+    Array.isArray(value) &&
+    value.every((item): boolean => typeof item === "string")
+  );
+}
+
+function runPush(
+  t: TestContext,
+  overrides: NodeJS.ProcessEnv = {},
+): PushResult {
+  const directory: string = mkdtempSync(join(tmpdir(), "diff-pr-push-test-"));
   t.after(() => rmSync(directory, { recursive: true, force: true }));
-  const bin = join(directory, "bin");
-  const log = join(directory, "git.jsonl");
+  const bin: string = join(directory, "bin");
+  const log: string = join(directory, "git.jsonl");
   mkdirSync(bin);
   writeFileSync(join(bin, "git"), mockGit, { mode: 0o755 });
-  const env = {
+  const env: NodeJS.ProcessEnv = {
     PATH: [bin, dirname(process.execPath), "/usr/bin", "/bin"].join(delimiter),
     MOCK_GIT_LOG: log,
     GITHUB_ACTOR: "test-actor",
@@ -46,16 +66,20 @@ function runPush(t, overrides = {}) {
   for (const key of Object.keys(env)) {
     if (env[key] === undefined) delete env[key];
   }
-  const result = spawnSync("bash", [script], {
+  const result: SpawnSyncReturns<string> = spawnSync("bash", [script], {
     cwd: directory,
     env,
     encoding: "utf8",
   });
   assert.ifError(result.error);
-  const calls = readFileSync(log, "utf8")
+  const calls: string[][] = readFileSync(log, "utf8")
     .trim()
     .split("\n")
-    .map((line) => JSON.parse(line));
+    .map((line: string): string[] => {
+      const call = JSON.parse(line);
+      assert.ok(isStringArray(call), `unexpected git log line: ${line}`);
+      return call;
+    });
   return {
     ...result,
     calls,
@@ -64,8 +88,9 @@ function runPush(t, overrides = {}) {
   };
 }
 
-function expectedCalls(env) {
-  const options = env.NO_VERIFY === "true" ? ["--no-verify"] : [];
+function expectedCalls(env: NodeJS.ProcessEnv): string[][] {
+  const options: string[] = env.NO_VERIFY === "true" ? ["--no-verify"] : [];
+  assert.ok(env.PR_TITLE_PREFIX !== undefined, "PR_TITLE_PREFIX must be set");
   return [
     ["config", "user.name", "github-actions[bot]"],
     [
@@ -85,14 +110,14 @@ function expectedCalls(env) {
 }
 
 for (const value of ["false", "true", undefined, "TRUE"]) {
-  test(`preserves git arguments with NO_VERIFY=${value}`, (t) => {
-    const result = runPush(t, { NO_VERIFY: value });
+  test(`preserves git arguments with NO_VERIFY=${value}`, (t: TestContext) => {
+    const result: PushResult = runPush(t, { NO_VERIFY: value });
     assert.equal(result.status, 0, result.stderr);
     assert.deepEqual(result.calls, expectedCalls(result.env));
   });
 }
 
-const payloads = [
+const payloads: string[] = [
   `poc-$(printf\${IFS}PROOF>${marker})`,
   `poc-\`printf\${IFS}PROOF>${marker}\``,
   `poc";printf\${IFS}PROOF>${marker};#`,
@@ -101,11 +126,11 @@ const payloads = [
 for (const field of ["HEAD_REF", "BRANCH_NAME_PREFIX", "PR_TITLE_PREFIX"]) {
   for (const [index, payload] of payloads.entries()) {
     for (const noVerify of ["false", "true"]) {
-      test(`${field} payload ${index + 1} stays literal with NO_VERIFY=${noVerify}`, (t) => {
+      test(`${field} payload ${index + 1} stays literal with NO_VERIFY=${noVerify}`, (t: TestContext) => {
         execFileSync("git", ["check-ref-format", "--branch", payload], {
           encoding: "utf8",
         });
-        const result = runPush(t, {
+        const result: PushResult = runPush(t, {
           [field]: payload,
           NO_VERIFY: noVerify,
         });
@@ -118,21 +143,21 @@ for (const field of ["HEAD_REF", "BRANCH_NAME_PREFIX", "PR_TITLE_PREFIX"]) {
 }
 
 for (const title of ["", 'A "quoted" title with spaces\nand a newline']) {
-  test(`preserves the commit title ${JSON.stringify(title)}`, (t) => {
-    const result = runPush(t, { PR_TITLE_PREFIX: title });
+  test(`preserves the commit title ${JSON.stringify(title)}`, (t: TestContext) => {
+    const result: PushResult = runPush(t, { PR_TITLE_PREFIX: title });
     assert.equal(result.status, 0, result.stderr);
     assert.deepEqual(result.calls, expectedCalls(result.env));
   });
 }
 
-test("does not push after a failed commit", (t) => {
-  const result = runPush(t, { MOCK_COMMIT_STATUS: "17" });
+test("does not push after a failed commit", (t: TestContext) => {
+  const result: PushResult = runPush(t, { MOCK_COMMIT_STATUS: "17" });
   assert.equal(result.status, 17);
   assert.deepEqual(result.calls, expectedCalls(result.env).slice(0, 3));
 });
 
-test("propagates push failure without executing the branch name", (t) => {
-  const result = runPush(t, {
+test("propagates push failure without executing the branch name", (t: TestContext) => {
+  const result: PushResult = runPush(t, {
     HEAD_REF: payloads[0],
     MOCK_PUSH_STATUS: "23",
   });
