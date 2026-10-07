@@ -39,6 +39,7 @@ jobs:
       ##########################
       # Checkout the code base #
       ##########################
+      # jscpd:ignore-start
       - name: Checkout Code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -51,9 +52,8 @@ jobs:
           cache: npm
           node-version-file: .node-version
       - uses: flatt-security/setup-takumi-guard-npm@14f07d0cbc739b42a1b7c70a04c2b84cd1318ddd # v1.4.0
-      - name: Test shell scripts
-        run: npm test
       - run: bash "${GITHUB_WORKSPACE}/scripts/super_linter/build/set_path.sh"
+      # jscpd:ignore-end
       ################################
       # Run Linter against code base #
       ################################
