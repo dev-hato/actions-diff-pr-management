@@ -21,16 +21,14 @@ type PushResult = SpawnSyncReturns<string> & {
   markerExists: boolean;
 };
 
-const script: string = fileURLToPath(
-  new URL("../src/push.sh", import.meta.url),
-);
+const script: string = resolvePath("../src/push.sh");
 const marker: string = "injection-marker";
-const mockGit: string = fileURLToPath(
-  new URL("./mock_git.mts", import.meta.url),
-);
-const mockGitWrapper: string = fileURLToPath(
-  new URL("./mock_git.sh", import.meta.url),
-);
+const mockGit: string = resolvePath("./mock_git.mts");
+const mockGitWrapper: string = resolvePath("./mock_git.sh");
+
+function resolvePath(path: string): string {
+  return fileURLToPath(new URL(path, import.meta.url));
+}
 
 function isStringArray(value: any): value is string[] {
   return (
@@ -110,12 +108,23 @@ function expectedCalls(env: NodeJS.ProcessEnv): string[][] {
   ];
 }
 
+function assertPushFailed(
+  result: PushResult,
+  expectedStatus: number,
+  calls: string[][] = expectedCalls(result.env),
+) {
+  assert.equal(result.status, expectedStatus);
+  assert.deepEqual(result.calls, calls);
+}
+
+function assertPushSucceeded(result: PushResult) {
+  assert.equal(result.status, 0, result.stderr);
+  assert.deepEqual(result.calls, expectedCalls(result.env));
+}
+
 for (const value of ["false", "true", undefined, "TRUE"]) {
-  test(`preserves git arguments with NO_VERIFY=${value}`, (t: TestContext) => {
-    const result: PushResult = runPush(t, { NO_VERIFY: value });
-    assert.equal(result.status, 0, result.stderr);
-    assert.deepEqual(result.calls, expectedCalls(result.env));
-  });
+  test(`preserves git arguments with NO_VERIFY=${value}`, (t: TestContext) =>
+    assertPushSucceeded(runPush(t, { NO_VERIFY: value })));
 }
 
 const payloads: string[] = [
@@ -135,26 +144,21 @@ for (const field of ["HEAD_REF", "BRANCH_NAME_PREFIX", "PR_TITLE_PREFIX"]) {
           [field]: payload,
           NO_VERIFY: noVerify,
         });
-        assert.equal(result.status, 0, result.stderr);
+        assertPushSucceeded(result);
         assert.equal(result.markerExists, false);
-        assert.deepEqual(result.calls, expectedCalls(result.env));
       });
     }
   }
 }
 
 for (const title of ["", 'A "quoted" title with spaces\nand a newline']) {
-  test(`preserves the commit title ${JSON.stringify(title)}`, (t: TestContext) => {
-    const result: PushResult = runPush(t, { PR_TITLE_PREFIX: title });
-    assert.equal(result.status, 0, result.stderr);
-    assert.deepEqual(result.calls, expectedCalls(result.env));
-  });
+  test(`preserves the commit title ${JSON.stringify(title)}`, (t: TestContext) =>
+    assertPushSucceeded(runPush(t, { PR_TITLE_PREFIX: title })));
 }
 
 test("does not push after a failed commit", (t: TestContext) => {
   const result: PushResult = runPush(t, { MOCK_COMMIT_STATUS: "17" });
-  assert.equal(result.status, 17);
-  assert.deepEqual(result.calls, expectedCalls(result.env).slice(0, 3));
+  assertPushFailed(result, 17, expectedCalls(result.env).slice(0, 3));
 });
 
 test("propagates push failure without executing the branch name", (t: TestContext) => {
@@ -162,7 +166,6 @@ test("propagates push failure without executing the branch name", (t: TestContex
     HEAD_REF: payloads[0],
     MOCK_PUSH_STATUS: "23",
   });
-  assert.equal(result.status, 23);
+  assertPushFailed(result, 23);
   assert.equal(result.markerExists, false);
-  assert.deepEqual(result.calls, expectedCalls(result.env));
 });
