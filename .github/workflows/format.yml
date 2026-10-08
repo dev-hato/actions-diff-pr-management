@@ -55,7 +55,7 @@ jobs:
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
       - run: tsc
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
-      - uses: ./
+      - uses: $/
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-format
