@@ -32,7 +32,7 @@ const mockGit: string = fileURLToPath(
 function isStringArray(value: any): value is string[] {
   return (
     Array.isArray(value) &&
-    value.every((item): boolean => typeof item === "string")
+    value.every((item): item is string => typeof item === "string")
   );
 }
 
