@@ -6,7 +6,8 @@
     "**/node_modules/**",
     "**/dist/**",
     "**/package.json",
-    "**/package-lock.json"
+    "**/package-lock.json",
+    "**/README.md"
   ],
   "absolute": true
 }
