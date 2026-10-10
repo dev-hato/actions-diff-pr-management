@@ -157,15 +157,23 @@ for (const title of ["", 'A "quoted" title with spaces\nand a newline']) {
 }
 
 test("does not push after a failed commit", (t: TestContext) => {
-  const result: PushResult = runPush(t, { MOCK_COMMIT_STATUS: "17" });
-  assertPushFailed(result, 17, expectedCalls(result.env).slice(0, 3));
+  const mockCommitStatus: number = 17;
+  const result: PushResult = runPush(t, {
+    MOCK_COMMIT_STATUS: String(mockCommitStatus),
+  });
+  assertPushFailed(
+    result,
+    mockCommitStatus,
+    expectedCalls(result.env).slice(0, 3),
+  );
 });
 
 test("propagates push failure without executing the branch name", (t: TestContext) => {
+  const mockPushStatus: number = 23;
   const result: PushResult = runPush(t, {
     HEAD_REF: payloads[0],
-    MOCK_PUSH_STATUS: "23",
+    MOCK_PUSH_STATUS: String(mockPushStatus),
   });
-  assertPushFailed(result, 23);
+  assertPushFailed(result, mockPushStatus);
   assert.equal(result.markerExists, false);
 });
