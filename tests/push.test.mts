@@ -25,6 +25,11 @@ const script: string = resolvePath("../src/push.sh");
 const marker: string = "injection-marker";
 const mockGit: string = resolvePath("./mock_git.mts");
 const mockGitWrapper: string = resolvePath("./mock_git.sh");
+const payloads: string[] = [
+  `poc-$(printf\${IFS}PROOF>${marker})`,
+  `poc-\`printf\${IFS}PROOF>${marker}\``,
+  `poc";printf\${IFS}PROOF>${marker};#`,
+];
 
 function resolvePath(path: string): string {
   return fileURLToPath(new URL(path, import.meta.url));
@@ -126,12 +131,6 @@ for (const value of ["false", "true", undefined, "TRUE"]) {
   test(`preserves git arguments with NO_VERIFY=${value}`, (t: TestContext) =>
     assertPushSucceeded(runPush(t, { NO_VERIFY: value })));
 }
-
-const payloads: string[] = [
-  `poc-$(printf\${IFS}PROOF>${marker})`,
-  `poc-\`printf\${IFS}PROOF>${marker}\``,
-  `poc";printf\${IFS}PROOF>${marker};#`,
-];
 
 for (const field of ["HEAD_REF", "BRANCH_NAME_PREFIX", "PR_TITLE_PREFIX"]) {
   for (const [index, payload] of payloads.entries()) {
