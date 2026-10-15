@@ -54,17 +54,18 @@ runs:
         PR_LABELS: ${{inputs.pr-labels}}
         BRANCH_NAME_PREFIX: ${{inputs.branch-name-prefix}}
       run: | # zizmor: ignore[github-env]
-        echo "HEAD_REF=${HEAD_REF}" >>"${GITHUB_ENV}"
+        # 値に改行が含まれても別の環境変数として解釈されないよう、ランダムなdelimiterで書き込む
+        set_env() {
+          delimiter="$(openssl rand -hex 16)"
+          printf '%s<<%s\n%s\n%s\n' "$1" "${delimiter}" "$2" "${delimiter}" >>"${GITHUB_ENV}"
+        }
 
-        delimiter="$(openssl rand -hex 8)"
-        echo "PR_DESCRIPTION_PREFIX<<${delimiter}" >> "$GITHUB_ENV"
-        echo "${PR_DESCRIPTION_PREFIX_VALUE}" >> "$GITHUB_ENV"
-        echo "${delimiter}" >> "$GITHUB_ENV"
-
-        echo "PR_NUMBER=${PR_NUMBER}" >> "$GITHUB_ENV"
-        echo "PR_TITLE_PREFIX=${PR_TITLE_PREFIX}" >> "$GITHUB_ENV"
-        echo "PR_LABELS=${PR_LABELS}" >> "$GITHUB_ENV"
-        echo "BRANCH_NAME_PREFIX=${BRANCH_NAME_PREFIX}" >> "$GITHUB_ENV"
+        set_env HEAD_REF "${HEAD_REF}"
+        set_env PR_DESCRIPTION_PREFIX "${PR_DESCRIPTION_PREFIX_VALUE}"
+        set_env PR_NUMBER "${PR_NUMBER}"
+        set_env PR_TITLE_PREFIX "${PR_TITLE_PREFIX}"
+        set_env PR_LABELS "${PR_LABELS}"
+        set_env BRANCH_NAME_PREFIX "${BRANCH_NAME_PREFIX}"
     # 差分があったときは、コミットを作りpushする
     - name: Push
       env:
