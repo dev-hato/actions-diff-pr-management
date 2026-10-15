@@ -6,6 +6,8 @@ ${DESCRIPTION}
 
 また、本Actionsを使わずにフォーマットを修正した場合や元のPRを閉じた場合、自動的にPRを閉じます。
 
+ただし、修正PRのブランチに本Action以外によるコミットが追加された場合は、そのブランチへのforce push、修正PRのclose、ブランチの削除を行いません。
+
 ## 使い方
 
 <!-- jscpd:ignore-start -->

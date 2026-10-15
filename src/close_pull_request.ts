@@ -15,6 +15,24 @@ export async function script(
   }
 
   for (const pull of await getPullRequests(github, ctx)) {
+    // 本Action以外によるコミットを消さないよう、最新のコミットが本Actionによるものでなければ、closeもブランチの削除もしない
+    const gitGetCommitParams: RestEndpointMethodTypes["git"]["getCommit"]["parameters"] =
+      {
+        owner: ctx.repo.owner,
+        repo: ctx.repo.repo,
+        commit_sha: pull.head.sha,
+      };
+    console.log("call git.getCommit:", gitGetCommitParams);
+    const commit = await github.rest.git.getCommit(gitGetCommitParams);
+    const committer: string = commit.data.committer.email;
+
+    // src/push.sh がコミットに設定するcommitterのメールアドレス
+    if (committer !== "41898282+github-actions[bot]@users.noreply.github.com") {
+      throw new Error(
+        `Failed to close #${pull.number} because ${headName} has commits not made by this action (the committer of the latest commit is ${committer})`,
+      );
+    }
+
     // 修正PRをcloseする (修正PRのstateをclosedに更新する)
     const pullsUpdateParams: RestEndpointMethodTypes["pulls"]["update"]["parameters"] =
       {

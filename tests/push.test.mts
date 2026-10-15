@@ -25,6 +25,8 @@ const script: string = resolvePath("../src/push.sh");
 const marker: string = "injection-marker";
 const mockGit: string = resolvePath("./mock_git.mts");
 const mockGitWrapper: string = resolvePath("./mock_git.sh");
+const actionEmail: string =
+  "41898282+github-actions[bot]@users.noreply.github.com";
 const payloads: string[] = [
   `poc-$(printf\${IFS}PROOF>${marker})`,
   `poc-\`printf\${IFS}PROOF>${marker}\``,
@@ -95,21 +97,23 @@ function runPush(
 function expectedCalls(env: NodeJS.ProcessEnv): string[][] {
   const options: string[] = env.NO_VERIFY === "true" ? ["--no-verify"] : [];
   assert.ok(env.PR_TITLE_PREFIX !== undefined, "PR_TITLE_PREFIX must be set");
+  const repoUrl: string = `https://${env.GITHUB_ACTOR}:${env.TOKEN}@github.com/${env.GITHUB_REPOSITORY}.git`;
+  const branch: string = `refs/heads/${env.BRANCH_NAME_PREFIX}-${env.HEAD_REF}`;
+  // リモートにブランチが存在する場合は、そのブランチのcommitterを確認する
+  const checkCalls: string[][] =
+    env.MOCK_LS_REMOTE_STATUS === "0"
+      ? [
+          ["fetch", "--no-tags", repoUrl, branch],
+          ["log", "-1", "--format=%ce", "FETCH_HEAD"],
+        ]
+      : [];
   return [
     ["config", "user.name", "github-actions[bot]"],
-    [
-      "config",
-      "user.email",
-      "41898282+github-actions[bot]@users.noreply.github.com",
-    ],
+    ["config", "user.email", actionEmail],
+    ["ls-remote", "--exit-code", "--heads", repoUrl, branch],
+    ...checkCalls,
     ["commit", ...options, "-m", env.PR_TITLE_PREFIX],
-    [
-      "push",
-      ...options,
-      "-f",
-      `https://${env.GITHUB_ACTOR}:${env.TOKEN}@github.com/${env.GITHUB_REPOSITORY}.git`,
-      `HEAD:refs/heads/${env.BRANCH_NAME_PREFIX}-${env.HEAD_REF}`,
-    ],
+    ["push", ...options, "-f", repoUrl, `HEAD:${branch}`],
   ];
 }
 
@@ -163,7 +167,7 @@ test("does not push after a failed commit", (t: TestContext) => {
   assertPushFailed(
     result,
     mockCommitStatus,
-    expectedCalls(result.env).slice(0, 3),
+    expectedCalls(result.env).slice(0, -1),
   );
 });
 
@@ -175,4 +179,37 @@ test("propagates push failure without executing the branch name", (t: TestContex
   });
   assertPushFailed(result, mockPushStatus);
   assert.equal(result.markerExists, false);
+});
+
+test("overwrites a branch whose latest commit is made by this action", (t: TestContext) =>
+  assertPushSucceeded(
+    runPush(t, {
+      MOCK_LS_REMOTE_STATUS: "0",
+      MOCK_REMOTE_COMMITTER_EMAIL: actionEmail,
+    }),
+  ));
+
+// 本Action以外がコミットしているブランチに force push しない
+test("does not overwrite a branch with commits not made by this action", (t: TestContext) => {
+  const result: PushResult = runPush(t, {
+    MOCK_LS_REMOTE_STATUS: "0",
+    MOCK_REMOTE_COMMITTER_EMAIL: "someone@example.com",
+  });
+  assertPushFailed(result, 1, expectedCalls(result.env).slice(0, -2));
+  assert.match(
+    result.stdout,
+    /^::error::Cannot push to refs\/heads\/fix-feature\/test because it already has commits not made by this action \(the committer of the latest commit is someone@example\.com, /m,
+  );
+});
+
+test("propagates ls-remote failure without pushing", (t: TestContext) => {
+  const mockLsRemoteStatus: number = 128;
+  const result: PushResult = runPush(t, {
+    MOCK_LS_REMOTE_STATUS: String(mockLsRemoteStatus),
+  });
+  assertPushFailed(
+    result,
+    mockLsRemoteStatus,
+    expectedCalls(result.env).slice(0, -2),
+  );
 });

@@ -8,6 +8,16 @@ if (mockGitLog === undefined) {
 }
 
 fs.appendFileSync(mockGitLog, JSON.stringify(args) + "\n");
+
+// 既定ではリモートにブランチが存在しない (git ls-remote --exit-code の終了コード2)
+if (args[0] === "ls-remote") {
+  process.exit(Number(process.env.MOCK_LS_REMOTE_STATUS ?? "2"));
+}
+
+if (args[0] === "log") {
+  process.stdout.write((process.env.MOCK_REMOTE_COMMITTER_EMAIL ?? "") + "\n");
+}
+
 const mockCommitStatus: string | undefined = process.env.MOCK_COMMIT_STATUS;
 
 if (args[0] === "commit" && mockCommitStatus) {
