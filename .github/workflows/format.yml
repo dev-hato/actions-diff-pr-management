@@ -29,8 +29,9 @@ jobs:
           node-version-file: .node-version
       - if: github.event_name != 'pull_request' || github.event.action != 'closed'
         uses: flatt-security/setup-takumi-guard-npm@14f07d0cbc739b42a1b7c70a04c2b84cd1318ddd # v1.4.0
+      # 書き込み権限のあるジョブで動くため、依存パッケージのスクリプトは実行しない
       - if: github.event_name != 'pull_request' || github.event.action != 'closed'
-        run: npm install
+        run: npm install --ignore-scripts
       - name: Get inputs markdown
         id: get_inputs_markdown
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
