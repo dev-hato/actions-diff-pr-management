@@ -68,6 +68,13 @@ jobs:
 - workflow_dispatch
 - repository_dispatch
 
+### `pull_request_target`を使わないでください
+
+本Actionsの前のstepでは、PRのコードを使ってフォーマッタを実行します。
+`pull_request`トリガーでは、フォークからのPRの場合はトークンが読み取り専用になります。
+一方、`pull_request_target`トリガーでは、トークンに書き込み権限があります。
+そのため、PRのコードをcheckoutしてフォーマッタを実行すると、PRに含まれる悪意あるコードが書き込み権限のあるトークンを使えてしまいます。
+
 ## 開発
 
 ### 設定
