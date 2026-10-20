@@ -26,7 +26,7 @@ jobs:
           persist-credentials: false
       - name: Generate a token
         id: generate_token
-        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         with:
           client-id: ${{ secrets.PROJECT_AUTOMATION_APP_CLIENT_ID }} # zizmor: ignore[secrets-outside-env]
           private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }} # zizmor: ignore[secrets-outside-env]
@@ -34,7 +34,7 @@ jobs:
           permission-pull-requests: write
           permission-workflows: write
       # jscpd:ignore-end
-      - uses: dev-hato/actions-format-json-yml@a80151a7a49ff32525cc02f03cb687c2188ede86 # v0.0.107
+      - uses: dev-hato/actions-format-json-yml@8159684fbca33674ff3fe02cae360f4432f9bbcc # v0.0.108
         with:
           github-token: ${{steps.generate_token.outputs.token}}
 concurrency:
