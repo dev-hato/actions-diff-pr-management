@@ -68,6 +68,21 @@ ${INPUTS}
 
 ## 開発
 
+### Actionsのlockfile
+
+Actionsの依存関係は`.github/workflows/actions.lock`で固定しています。
+ワークフローやaction.ymlの`uses:`を変更したら、次のコマンドで更新し、変更したファイルと一緒にコミットします。
+`--no-narrow`を付けると、既存のコミットハッシュによる固定を維持できます。
+
+```sh
+gh extension install github/gh-actions-lock --pin v0.3.0
+gh actions-lock --no-narrow
+gh actions-lock --verify --no-narrow
+```
+
+lockfileは自動生成するため、手で編集しないでください。
+PRでは`verify-lockfile`ワークフローで整合性を検証します。
+
 ### 設定
 
 <https://pre-commit.com/>の手順に従って`pre-commit`をインストールします。  
