@@ -41,7 +41,7 @@ jobs:
       ##########################
       # jscpd:ignore-start
       - name: Checkout Code
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           # Full git history is needed to get a proper list
           # of changed files within `super-linter`
