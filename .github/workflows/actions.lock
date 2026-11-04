@@ -5,7 +5,7 @@ version: 'v0.0.3'
 workflows:
     '.github/workflows/add-to-task-list.yml':
         - 'actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510'
-        - 'dev-hato/actions-add-to-projects@68fe0371ddf7f3192888f4a166bc13f528ae49e5'
+        - 'dev-hato/actions-add-to-projects@8c1169d928e375602b9f6f5061fe490f21672ffb'
     '.github/workflows/codeql.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
         - 'github/codeql-action@9b3254085494b55a0f7c4c2b3d2d52cc712ce370'
@@ -61,9 +61,9 @@ dependencies:
         commit: 'sha1-949feb2413d6458794dcd2491c4babbbce0c15c1'
         owner_id: 44036562
         repo_id: 189476904
-    'dev-hato/actions-add-to-projects@68fe0371ddf7f3192888f4a166bc13f528ae49e5':
-        ref: 'v1.0.11'
-        commit: 'sha1-68fe0371ddf7f3192888f4a166bc13f528ae49e5'
+    'dev-hato/actions-add-to-projects@8c1169d928e375602b9f6f5061fe490f21672ffb':
+        ref: 'v1.0.12'
+        commit: 'sha1-8c1169d928e375602b9f6f5061fe490f21672ffb'
         owner_id: 68012105
         repo_id: 526394375
         uses:
