@@ -12,7 +12,7 @@ workflows:
     '.github/workflows/format-json-yml.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
         - 'actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510'
-        - 'dev-hato/actions-format-json-yml@8159684fbca33674ff3fe02cae360f4432f9bbcc'
+        - 'dev-hato/actions-format-json-yml@dccf143ab2b235b2d1716a88a1daa2b10c250d44'
     '.github/workflows/format.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
         - 'actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3'
@@ -76,9 +76,9 @@ dependencies:
         repo_id: 350720117
         uses:
             - 'actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3'
-    'dev-hato/actions-format-json-yml@8159684fbca33674ff3fe02cae360f4432f9bbcc':
-        ref: 'v0.0.108'
-        commit: 'sha1-8159684fbca33674ff3fe02cae360f4432f9bbcc'
+    'dev-hato/actions-format-json-yml@dccf143ab2b235b2d1716a88a1daa2b10c250d44':
+        ref: 'v0.0.109'
+        commit: 'sha1-dccf143ab2b235b2d1716a88a1daa2b10c250d44'
         owner_id: 68012105
         repo_id: 515961063
         uses:
