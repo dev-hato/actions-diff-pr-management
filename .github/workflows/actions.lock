@@ -18,6 +18,8 @@ workflows:
         - 'actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3'
         - 'actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1'
         - 'flatt-security/setup-takumi-guard-npm@14f07d0cbc739b42a1b7c70a04c2b84cd1318ddd'
+    '.github/workflows/ghalint.yml':
+        - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
     '.github/workflows/github-actions-cache-cleaner.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
         - 'dev-hato/github-actions-cache-cleaner@5f61adf350172a1f8bff35c7cc712ac236b01ac5'
