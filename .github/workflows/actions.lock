@@ -32,7 +32,7 @@ workflows:
         - 'flatt-security/setup-takumi-guard-npm@14f07d0cbc739b42a1b7c70a04c2b84cd1318ddd'
     '.github/workflows/update-gitleaks.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
-        - 'dev-hato/actions-update-gitleaks@9ce6c610215914b4f28829b30e7227cb6eeaab8e'
+        - 'dev-hato/actions-update-gitleaks@5fbeca35da4358ea40890fdf5bc3c38c08bdfd20'
     '.github/workflows/verify-lockfile.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
 dependencies:
@@ -83,9 +83,9 @@ dependencies:
         repo_id: 515961063
         uses:
             - 'dev-hato/actions-diff-pr-management@a3c6f1d6cb3f46d2f48ac3856ef603ef2e508061'
-    'dev-hato/actions-update-gitleaks@9ce6c610215914b4f28829b30e7227cb6eeaab8e':
-        ref: 'v0.0.113'
-        commit: 'sha1-9ce6c610215914b4f28829b30e7227cb6eeaab8e'
+    'dev-hato/actions-update-gitleaks@5fbeca35da4358ea40890fdf5bc3c38c08bdfd20':
+        ref: 'v0.0.114'
+        commit: 'sha1-5fbeca35da4358ea40890fdf5bc3c38c08bdfd20'
         owner_id: 68012105
         repo_id: 512097687
         uses:
