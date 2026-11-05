@@ -35,7 +35,7 @@ jobs:
           permission-pull-requests: write
           permission-workflows: write
       # jscpd:ignore-end
-      - uses: dev-hato/actions-format-json-yml@dccf143ab2b235b2d1716a88a1daa2b10c250d44 # v0.0.109
+      - uses: dev-hato/actions-format-json-yml@3e2804614c492e381420cb831b5d0e633fb290e6 # v0.0.111
         with:
           github-token: ${{steps.generate_token.outputs.token}}
 concurrency:
