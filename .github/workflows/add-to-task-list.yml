@@ -24,7 +24,7 @@ jobs:
           permission-organization-projects: write
           permission-pull-requests: read
       # jscpd:ignore-end
-      - uses: dev-hato/actions-add-to-projects@8c1169d928e375602b9f6f5061fe490f21672ffb # v1.0.12
+      - uses: dev-hato/actions-add-to-projects@8db568a7f7c218b090cb5a8038e261f5eb003dba # v1.0.14
         with:
           github-token: ${{steps.generate_token.outputs.token}}
           project-url: https://github.com/orgs/dev-hato/projects/1
