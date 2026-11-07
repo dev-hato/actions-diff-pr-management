@@ -16,6 +16,14 @@
       "datasourceTemplate": "github-release-attachments",
       "depNameTemplate": "suzuki-shunsuke/ghalint",
       "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/^\\.github\\/workflows\\/.+\\.ya?ml$/"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\s+\\w+: (?<currentValue>\\S+)"
+      ],
+      "versioningTemplate": "semver"
     }
   ]
 }
