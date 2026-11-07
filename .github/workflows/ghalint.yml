@@ -19,6 +19,7 @@ jobs:
           persist-credentials: false
       - name: Install ghalint
         env:
+          # renovate: datasource=github-release-attachments depName=suzuki-shunsuke/ghalint
           GHALINT_VERSION: v1.6.0
           GHALINT_SHA256: eda1af79c1a4a31c2de5831cd1333ad582fa6fa72015f8e9c1c4525d550c1d35
         run: |

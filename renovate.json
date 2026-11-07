@@ -9,19 +9,9 @@
   "customManagers": [
     {
       "customType": "regex",
-      "managerFilePatterns": ["/^\\.github\\/workflows\\/ghalint\\.ya?ml$/"],
-      "matchStrings": [
-        "GHALINT_VERSION: (?<currentValue>v[0-9]+\\.[0-9]+\\.[0-9]+)\\s+GHALINT_SHA256: (?<currentDigest>[0-9a-f]{64})"
-      ],
-      "datasourceTemplate": "github-release-attachments",
-      "depNameTemplate": "suzuki-shunsuke/ghalint",
-      "versioningTemplate": "semver"
-    },
-    {
-      "customType": "regex",
       "managerFilePatterns": ["/^\\.github\\/workflows\\/.+\\.ya?ml$/"],
       "matchStrings": [
-        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\s+\\w+: (?<currentValue>\\S+)"
+        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\s+\\w+: (?<currentValue>\\S+)(?:\\s+\\w+_SHA256: (?<currentDigest>[0-9a-f]{64}))?"
       ],
       "versioningTemplate": "semver"
     }
