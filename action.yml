@@ -49,6 +49,8 @@ runs:
       id: diff
       shell: bash
       if: github.event_name != 'pull_request' || github.event.action != 'closed'
+      env:
+        IS_FORK_PR: ${{ steps.fork.outputs.is-fork-pr }}
       working-directory: ${{inputs.working-directory}}
       run: ${{ github.action_path }}/src/detect_diff.sh
     # 後続の修正PRを操作するstepが使う環境変数を設定する
