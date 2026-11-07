@@ -14,8 +14,8 @@ name: Lint Code Base
 # Start the job on all push #
 #############################
 on:
-  merge_group:
   pull_request:
+  merge_group:
 permissions:
   contents: read
   packages: read
