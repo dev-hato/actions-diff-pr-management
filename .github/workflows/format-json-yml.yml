@@ -7,9 +7,7 @@ on:
       - synchronize
       - reopened
       - closed
-  push:
-    branches:
-      - main
+  merge_group:
 permissions:
   contents: write
   pull-requests: write

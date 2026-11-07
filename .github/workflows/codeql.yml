@@ -11,8 +11,7 @@
 #
 name: "CodeQL"
 on:
-  push:
-    branches: ["main"]
+  merge_group:
   pull_request:
     branches: ["main"]
   schedule:
