@@ -16,9 +16,6 @@ permissions:
   contents: read
 jobs:
   format:
-    # forkからのPRではSecretsを使えず、呼び出し先のActionが修正PRのpushやクローズを試みて失敗するため、実行しない
-    # forkからのPRの差分はmerge_groupで検証する
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
@@ -64,11 +61,12 @@ jobs:
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
       - run: tsc
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
-      # 修正PRの操作はpull_requestとpushでのみ行う。merge_groupでは差分の検証のみを行うため、書き込み用のトークンを発行しない
+      # 修正PRの操作はforkからでないpull_requestとpushでのみ行う。それ以外では差分の検証のみを行うため、書き込み用のトークンを発行しない
+      # forkからのPRでは、本Actionsが修正PRを操作せずに差分を検証する
       - name: Generate a token
         id: generate_token
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
-        if: github.event_name == 'pull_request' || github.event_name == 'push'
+        if: (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) || github.event_name == 'push'
         with:
           client-id: ${{ secrets.PROJECT_AUTOMATION_APP_CLIENT_ID }} # zizmor: ignore[secrets-outside-env]
           private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }} # zizmor: ignore[secrets-outside-env]
