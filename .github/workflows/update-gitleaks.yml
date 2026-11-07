@@ -10,7 +10,6 @@ on:
   push:
     branches:
       - main
-  # 必須チェックのため、merge_groupではジョブをスキップして成功扱いにする
   merge_group:
 permissions:
   contents: write
@@ -18,7 +17,6 @@ permissions:
 jobs:
   # jscpd:ignore-start
   update-gitleaks:
-    if: github.event_name != 'merge_group'
     timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
