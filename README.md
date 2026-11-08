@@ -68,6 +68,11 @@ jobs:
 - workflow_dispatch
 - repository_dispatch
 
+### フォークからのPR
+
+`pull_request`トリガーでは、フォークからのPRの場合はトークンが読み取り専用になり、修正PRを作れません。
+そのため、フォークからのPRでは修正PRの作成、更新、クローズはせず、差分がある場合は`exit-failure`にかかわらずCIを失敗させます。
+
 ### `pull_request_target`を使わないでください
 
 本Actionsの前のstepでは、PRのコードを使ってフォーマッタを実行します。
