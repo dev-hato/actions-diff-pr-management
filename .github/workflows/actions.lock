@@ -36,7 +36,7 @@ workflows:
     '.github/workflows/update-gitleaks.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
         - 'actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510'
-        - 'dev-hato/actions-update-gitleaks@91a057e9974efd9a908f2e5bc1bc0ab98846e0cf'
+        - 'dev-hato/actions-update-gitleaks@d33ae3f5380b57036a94ecb1a40344d7cb3f20d6'
     '.github/workflows/verify-lockfile.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
 dependencies:
@@ -80,13 +80,6 @@ dependencies:
         repo_id: 350720117
         uses:
             - 'actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3'
-    'dev-hato/actions-diff-pr-management@a3c6f1d6cb3f46d2f48ac3856ef603ef2e508061':
-        ref: 'v2.4.0'
-        commit: 'sha1-a3c6f1d6cb3f46d2f48ac3856ef603ef2e508061'
-        owner_id: 68012105
-        repo_id: 350720117
-        uses:
-            - 'actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3'
     'dev-hato/actions-format-json-yml@6b0c6a884f1d2653ae3502c32317e8a412845acc':
         ref: 'v0.0.112'
         commit: 'sha1-6b0c6a884f1d2653ae3502c32317e8a412845acc'
@@ -94,13 +87,13 @@ dependencies:
         repo_id: 515961063
         uses:
             - 'dev-hato/actions-diff-pr-management@474e401b8a7df75f1c804a60aa987140c1e0548c'
-    'dev-hato/actions-update-gitleaks@91a057e9974efd9a908f2e5bc1bc0ab98846e0cf':
-        ref: 'v0.0.116'
-        commit: 'sha1-91a057e9974efd9a908f2e5bc1bc0ab98846e0cf'
+    'dev-hato/actions-update-gitleaks@d33ae3f5380b57036a94ecb1a40344d7cb3f20d6':
+        ref: 'v0.0.117'
+        commit: 'sha1-d33ae3f5380b57036a94ecb1a40344d7cb3f20d6'
         owner_id: 68012105
         repo_id: 512097687
         uses:
-            - 'dev-hato/actions-diff-pr-management@a3c6f1d6cb3f46d2f48ac3856ef603ef2e508061'
+            - 'dev-hato/actions-diff-pr-management@474e401b8a7df75f1c804a60aa987140c1e0548c'
     'dev-hato/github-actions-cache-cleaner@88d68a261462dd5f6f6632adec3fa5cf5466c865':
         ref: 'v0.0.97'
         commit: 'sha1-88d68a261462dd5f6f6632adec3fa5cf5466c865'
