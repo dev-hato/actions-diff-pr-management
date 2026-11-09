@@ -10,9 +10,10 @@ on:
   push:
     branches:
       - main
+  merge_group:
+# 書き込みにはGitHub Appのトークンを使うため、GITHUB_TOKENは読み取り権限のみとする
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 jobs:
   format:
     timeout-minutes: 30
@@ -60,9 +61,21 @@ jobs:
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
       - run: tsc
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
+      # 修正PRの操作はforkからでないpull_requestとpushでのみ行う。それ以外では差分の検証のみを行うため、書き込み用のトークンを発行しない
+      # forkからのPRでは、本Actionsが修正PRを操作せずに差分を検証する
+      - name: Generate a token
+        id: generate_token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        if: (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) || github.event_name == 'push'
+        with:
+          client-id: ${{ secrets.PROJECT_AUTOMATION_APP_CLIENT_ID }} # zizmor: ignore[secrets-outside-env]
+          private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }} # zizmor: ignore[secrets-outside-env]
+          permission-contents: write
+          permission-pull-requests: write
+          permission-workflows: write
       - uses: $/
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
+          github-token: ${{ steps.generate_token.outputs.token || github.token }}
           branch-name-prefix: fix-format
           pr-title-prefix: format修正
           pr-description-prefix: formatを修正しました。
