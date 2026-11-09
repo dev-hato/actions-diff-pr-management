@@ -36,16 +36,29 @@ inputs:
 runs:
   using: "composite"
   steps:
+    # forkからのPRかどうかを判定し、後続のstepで使う
+    # forkからのPRでは、トークンが読み取り専用でSecretsも使えないため、修正PRの操作 (push、作成、更新、クローズ) をしない
+    - name: Check fork
+      id: fork
+      shell: bash
+      env:
+        IS_FORK_PR: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository }}
+      run: echo "is-fork-pr=${IS_FORK_PR}" >>"${GITHUB_OUTPUT}"
     # 差分があったときに検知する
     - name: Detect diff
       id: diff
       shell: bash
       if: github.event_name != 'pull_request' || github.event.action != 'closed'
+      env:
+        IS_FORK_PR: ${{ steps.fork.outputs.is-fork-pr }}
       working-directory: ${{inputs.working-directory}}
       run: ${{ github.action_path }}/src/detect_diff.sh
+    # 後続の修正PRを操作するstepが使う環境変数を設定する
+    # forkからのPRではそれらのstepを実行しないため、設定しない
     - name: Set env
       id: set-env
       shell: bash
+      if: steps.fork.outputs.is-fork-pr != 'true'
       env:
         HEAD_REF: ${{github.event.pull_request.head.ref || github.ref_name}}
         PR_DESCRIPTION_PREFIX_VALUE: ${{inputs.pr-description-prefix}}
@@ -71,13 +84,13 @@ runs:
       env:
         TOKEN: ${{inputs.github-token}}
         NO_VERIFY: ${{inputs.no-verify}}
-      if: steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch')
+      if: steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed' && steps.fork.outputs.is-fork-pr != 'true') || github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch')
       working-directory: ${{inputs.working-directory}}
       run: ${{ github.action_path }}/src/push.sh
       shell: bash
     - name: Get a number of PullRequests
       uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
-      if: steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch')
+      if: steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed' && steps.fork.outputs.is-fork-pr != 'true') || github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch')
       id: get_number_of_pull_requests
       with:
         github-token: ${{inputs.github-token}}
@@ -87,7 +100,7 @@ runs:
     # pushしたブランチで修正PRを作る
     - name: Create PullRequest
       uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
-      if: steps.diff.outputs.result != '' && steps.get_number_of_pull_requests.outputs.result == 0 && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch')
+      if: steps.diff.outputs.result != '' && steps.get_number_of_pull_requests.outputs.result == 0 && ((github.event_name == 'pull_request' && github.event.action != 'closed' && steps.fork.outputs.is-fork-pr != 'true') || github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch')
       id: create_pull_request
       with:
         github-token: ${{inputs.github-token}}
@@ -97,7 +110,7 @@ runs:
     # 元のPRを出したユーザーを修正PRにアサインする
     - name: Assign a user
       uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
-      if: steps.diff.outputs.result != '' && steps.get_number_of_pull_requests.outputs.result == 0 && github.event_name == 'pull_request' && github.event.action != 'closed' && github.event.pull_request.user.login != 'dependabot[bot]' && github.event.pull_request.user.login != 'renovate[bot]' && github.event.pull_request.user.login != 'Copilot'
+      if: steps.diff.outputs.result != '' && steps.get_number_of_pull_requests.outputs.result == 0 && github.event_name == 'pull_request' && github.event.action != 'closed' && steps.fork.outputs.is-fork-pr != 'true' && github.event.pull_request.user.login != 'dependabot[bot]' && github.event.pull_request.user.login != 'renovate[bot]' && github.event.pull_request.user.login != 'Copilot'
       env:
         PR_NUMBER: ${{steps.create_pull_request.outputs.result}}
       with:
@@ -108,7 +121,7 @@ runs:
     # 修正PRのタイトルやDescription、ラベルを更新する
     - name: Update PullRequest
       uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
-      if: steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch')
+      if: steps.diff.outputs.result != '' && ((github.event_name == 'pull_request' && github.event.action != 'closed' && steps.fork.outputs.is-fork-pr != 'true') || github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch')
       id: update_pull_request
       with:
         github-token: ${{inputs.github-token}}
@@ -118,14 +131,15 @@ runs:
     # 既に修正PRがある状態で、手動でformatを修正した場合、修正PRを閉じる
     - name: Close PullRequest
       uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
-      if: (github.event_name == 'pull_request' && (github.event.action == 'closed' || steps.diff.outputs.result == '')) || ((github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch') && steps.diff.outputs.result == '')
+      if: (github.event_name == 'pull_request' && steps.fork.outputs.is-fork-pr != 'true' && (github.event.action == 'closed' || steps.diff.outputs.result == '')) || ((github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch') && steps.diff.outputs.result == '')
       with:
         github-token: ${{inputs.github-token}}
         script: |
           const {script} = require('${{ github.action_path }}/dist/close_pull_request.js')
           await script(github, context)
     # exit-failureがtrueで差分がある場合は異常終了する
+    # forkからのPRでは修正PRを作れないため、exit-failureにかかわらず差分がある場合は異常終了する
     - name: Exit
-      if: (github.event_name != 'pull_request' || github.event.action != 'closed') && steps.diff.outputs.result != '' && inputs.exit-failure == 'true'
+      if: (github.event_name != 'pull_request' || github.event.action != 'closed') && steps.diff.outputs.result != '' && (inputs.exit-failure == 'true' || steps.fork.outputs.is-fork-pr == 'true')
       run: exit 1
       shell: bash
