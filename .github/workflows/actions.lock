@@ -33,12 +33,14 @@ workflows:
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
         - 'actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1'
         - 'flatt-security/setup-takumi-guard-npm@14f07d0cbc739b42a1b7c70a04c2b84cd1318ddd'
+    '.github/workflows/update-actions-lock.yml':
+        - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
+        - 'actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510'
+        - 'actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3'
     '.github/workflows/update-gitleaks.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
         - 'actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510'
         - 'dev-hato/actions-update-gitleaks@d33ae3f5380b57036a94ecb1a40344d7cb3f20d6'
-    '.github/workflows/verify-lockfile.yml':
-        - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
 dependencies:
     'actions/add-to-project@5afcf98fcd03f1c2f92c3c83f58ae24323cc57fd':
         ref: 'v2.0.0'
