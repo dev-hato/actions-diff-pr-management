@@ -5,15 +5,5 @@
     "node-fetch",
     "@octokit/plugin-paginate-rest",
     "@octokit/plugin-rest-endpoint-methods"
-  ],
-  "customManagers": [
-    {
-      "customType": "regex",
-      "managerFilePatterns": ["/^\\.github\\/workflows\\/.+\\.ya?ml$/"],
-      "matchStrings": [
-        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\s+\\w+: (?<currentValue>\\S+)(?:\\s+\\w+_SHA256: (?<currentDigest>[0-9a-f]{64}))?"
-      ],
-      "versioningTemplate": "semver"
-    }
   ]
 }
