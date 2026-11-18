@@ -59,7 +59,7 @@ jobs:
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
       - run: npx prettier --write .
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
-      - run: tsc
+      - run: npx --no-install tsc
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
       # 修正PRの操作はforkからでないpull_requestとpushでのみ行う。それ以外では差分の検証のみを行うため、書き込み用のトークンを発行しない
       # forkからのPRでは、本Actionsが修正PRを操作せずに差分を検証する
