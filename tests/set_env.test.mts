@@ -128,7 +128,7 @@ function runSetEnv(
         // action.yml の Set env ステップの env に相当する値
         HEAD_REF: "feature/test",
         PR_DESCRIPTION_PREFIX_VALUE: "",
-        PR_NUMBER: "1",
+        ORIGINAL_PR_NUMBER: "1",
         PR_TITLE_PREFIX: "fix",
         PR_LABELS: "",
         BRANCH_NAME_PREFIX: "fix",
