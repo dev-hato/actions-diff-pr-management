@@ -203,6 +203,8 @@ function runSteps(scenario: Scenario): string[] {
     .map((step: Step) => step.name ?? step.id ?? "");
 }
 
+
+
 // 書き込み権限が必要なstepと、それらが使う環境変数を設定するstep
 const writeSteps: string[] = [
   "Set env",
@@ -210,6 +212,7 @@ const writeSteps: string[] = [
   "Get a number of PullRequests",
   "Create PullRequest",
   "Assign a user",
+  "Create a comment",
   "Update PullRequest",
   "Close PullRequest",
 ];
@@ -264,7 +267,7 @@ test("creates a fix PR on a diff from a PR in the same repository", () => {
     action: "synchronize",
     diff: true,
   });
-  assert.deepEqual(writes(names), writeSteps.slice(0, 6));
+  assert.deepEqual(writes(names), writeSteps.slice(0, 7));
   assert.ok(names.includes("Exit"));
 });
 
