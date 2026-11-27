@@ -5,7 +5,7 @@ async function script(github, ctx) {
     const issuesAddAssigneesParams = {
         owner: ctx.repo.owner,
         repo: ctx.repo.repo,
-        issue_number: Number(process.env.PR_NUMBER),
+        issue_number: Number(process.env.CREATED_PR_NUMBER),
         assignees: [ctx.actor],
     };
     console.log("call issues.addAssignees:");
