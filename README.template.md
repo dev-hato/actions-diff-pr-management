@@ -4,6 +4,8 @@ ${DESCRIPTION}
 
 本Actionsを使ったCIが再度実行されると修正PRにforce pushされます。
 
+`pull_request`トリガーで修正PRを作成した場合は、修正PRに気付けるよう、元のPRに修正PRを知らせるコメントを投稿します。
+
 また、本Actionsを使わずにフォーマットを修正した場合や元のPRを閉じた場合、自動的にPRを閉じます。
 
 ## 使い方
