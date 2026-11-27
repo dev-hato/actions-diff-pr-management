@@ -203,8 +203,6 @@ function runSteps(scenario: Scenario): string[] {
     .map((step: Step) => step.name ?? step.id ?? "");
 }
 
-
-
 // 書き込み権限が必要なstepと、それらが使う環境変数を設定するstep
 const writeSteps: string[] = [
   "Set env",
