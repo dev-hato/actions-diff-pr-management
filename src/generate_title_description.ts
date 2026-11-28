@@ -23,7 +23,7 @@ export function generateTitleDescription(): {
   body: string;
 } {
   const HEAD_REF = process.env.HEAD_REF || "";
-  const PR_NUMBER = process.env.PR_NUMBER;
+  const ORIGINAL_PR_NUMBER = process.env.ORIGINAL_PR_NUMBER;
   const PR_TITLE_PREFIX = process.env.PR_TITLE_PREFIX || "";
   let head = process.env.BRANCH_NAME_PREFIX || "";
 
@@ -44,13 +44,13 @@ export function generateTitleDescription(): {
   body += `本PR ( ${headCode} ) をマージすると差分が次のPRに反映されます。\n`;
   body += "* ";
 
-  if (PR_NUMBER !== "") {
-    body += `#${PR_NUMBER} ( `;
+  if (ORIGINAL_PR_NUMBER !== "") {
+    body += `#${ORIGINAL_PR_NUMBER} ( `;
   }
 
   body += inlineCode(HEAD_REF);
 
-  if (PR_NUMBER !== "") {
+  if (ORIGINAL_PR_NUMBER !== "") {
     body += " )";
   }
 
@@ -80,8 +80,8 @@ export function generateTitleDescription(): {
   body += `  merge "${mermaidHead}"\n`;
   body += "```";
 
-  if (PR_NUMBER !== "") {
-    title += " #" + PR_NUMBER;
+  if (ORIGINAL_PR_NUMBER !== "") {
+    title += " #" + ORIGINAL_PR_NUMBER;
   }
 
   return {

@@ -62,7 +62,7 @@ runs:
       env:
         HEAD_REF: ${{github.event.pull_request.head.ref || github.ref_name}}
         PR_DESCRIPTION_PREFIX_VALUE: ${{inputs.pr-description-prefix}}
-        PR_NUMBER: ${{github.event.pull_request.number}}
+        ORIGINAL_PR_NUMBER: ${{github.event.pull_request.number}}
         PR_TITLE_PREFIX: ${{inputs.pr-title-prefix}}
         PR_LABELS: ${{inputs.pr-labels}}
         BRANCH_NAME_PREFIX: ${{inputs.branch-name-prefix}}
@@ -75,7 +75,7 @@ runs:
 
         set_env HEAD_REF "${HEAD_REF}"
         set_env PR_DESCRIPTION_PREFIX "${PR_DESCRIPTION_PREFIX_VALUE}"
-        set_env PR_NUMBER "${PR_NUMBER}"
+        set_env ORIGINAL_PR_NUMBER "${ORIGINAL_PR_NUMBER}"
         set_env PR_TITLE_PREFIX "${PR_TITLE_PREFIX}"
         set_env PR_LABELS "${PR_LABELS}"
         set_env BRANCH_NAME_PREFIX "${BRANCH_NAME_PREFIX}"
@@ -101,22 +101,28 @@ runs:
     - name: Create PullRequest
       uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
       if: steps.diff.outputs.result != '' && steps.get_number_of_pull_requests.outputs.result == 0 && ((github.event_name == 'pull_request' && github.event.action != 'closed' && steps.fork.outputs.is-fork-pr != 'true') || github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch')
-      id: create_pull_request
       with:
         github-token: ${{inputs.github-token}}
         script: |
           const {script} = require('${{ github.action_path }}/dist/create_pull_request.js')
-          return await script(github, context)
+          await script(github, context, core)
     # 元のPRを出したユーザーを修正PRにアサインする
     - name: Assign a user
       uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
       if: steps.diff.outputs.result != '' && steps.get_number_of_pull_requests.outputs.result == 0 && github.event_name == 'pull_request' && github.event.action != 'closed' && steps.fork.outputs.is-fork-pr != 'true' && github.event.pull_request.user.login != 'dependabot[bot]' && github.event.pull_request.user.login != 'renovate[bot]' && github.event.pull_request.user.login != 'Copilot'
-      env:
-        PR_NUMBER: ${{steps.create_pull_request.outputs.result}}
       with:
         github-token: ${{inputs.github-token}}
         script: |
           const {script} = require('${{ github.action_path }}/dist/assign_a_user.js')
+          await script(github, context)
+    # 元のPRに、修正PRを作成したことをコメントで知らせる
+    - name: Create a comment
+      uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+      if: steps.diff.outputs.result != '' && steps.get_number_of_pull_requests.outputs.result == 0 && github.event_name == 'pull_request' && github.event.action != 'closed' && steps.fork.outputs.is-fork-pr != 'true'
+      with:
+        github-token: ${{inputs.github-token}}
+        script: |
+          const {script} = require('${{ github.action_path }}/dist/create_a_comment.js')
           await script(github, context)
     # 修正PRのタイトルやDescription、ラベルを更新する
     - name: Update PullRequest

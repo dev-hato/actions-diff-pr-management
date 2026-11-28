@@ -95,7 +95,7 @@ for (const { headRef, headCode, headRefCode, mermaidHeadRef } of cases) {
   test(`escapes ${JSON.stringify(headRef)} in the description`, (t: TestContext) => {
     setEnv(t, {
       HEAD_REF: headRef,
-      PR_NUMBER: "1",
+      ORIGINAL_PR_NUMBER: "1",
       PR_TITLE_PREFIX: "fix",
       PR_DESCRIPTION_PREFIX: "",
       BRANCH_NAME_PREFIX: "fix",
@@ -132,7 +132,7 @@ for (const { headRef, headCode, headRefCode, mermaidHeadRef } of cases) {
 test("escapes PR_TITLE_PREFIX in the mermaid commit id", (t: TestContext) => {
   setEnv(t, {
     HEAD_REF: "feature",
-    PR_NUMBER: "",
+    ORIGINAL_PR_NUMBER: "",
     PR_TITLE_PREFIX: 'a"b',
     PR_DESCRIPTION_PREFIX: "",
     BRANCH_NAME_PREFIX: "fix",
