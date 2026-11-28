@@ -90,6 +90,9 @@ export default defineConfig([
 
     rules: {
       "n/no-missing-import": "off",
+      // dist/*.jsはactions/github-scriptから直接読み込まれ、node_modulesのパッケージを使わない。
+      // devDependenciesのパッケージは型にだけ使い、コンパイル後のdistには残らないため、型のimportは許可する。
+      "n/no-unpublished-import": ["error", { ignoreTypeImport: true }],
     },
   },
   ...pluginVue.configs["flat/recommended"],
